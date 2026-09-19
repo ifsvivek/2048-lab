@@ -6,6 +6,7 @@ import { Hono } from 'hono';
 import { ulid, SPEC_VERSION } from '@g2048/engine';
 import type { BenchmarkResult, BenchmarkSuite } from '@g2048/engine/sim';
 import expectedFixture from '../../../../spec/fixtures/benchmarks.json';
+import expectedHeavy from '../../../../spec/fixtures/benchmarks-heavy.json';
 import suiteRandom1k from '../../../../spec/benchmarks/engine-random-1k.json';
 import suiteRandom10k from '../../../../spec/benchmarks/engine-random-10k.json';
 import suiteD2 from '../../../../spec/benchmarks/expectimax-d2-10.json';
@@ -20,7 +21,8 @@ import { type AppEnv, type Ctx, bearer, body, edgeCached, optInt, optObj, optStr
 export const benchmarks = new Hono<AppEnv>();
 
 export const SUITES = [suiteRandom1k, suiteRandom10k, suiteD2, suiteD3, suiteCanonical] as unknown as BenchmarkSuite[];
-const EXPECTED = (expectedFixture as { suites: Record<string, { checksum: string; totalMoves: number; totalScore: number }> }).suites;
+type Expected = Record<string, { checksum: string; totalMoves: number; totalScore: number }>;
+const EXPECTED: Expected = { ...(expectedFixture as { suites: Expected }).suites, ...(expectedHeavy as { suites: Expected }).suites };
 const LANGUAGES = new Set(['typescript', 'rust', 'go', 'python']);
 
 benchmarks.get('/suites', (c) => c.json({ suites: SUITES.map((s) => ({ ...s, expected: EXPECTED[s.id] ?? null })) }));

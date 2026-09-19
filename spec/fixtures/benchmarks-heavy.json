@@ -1,0 +1,21 @@
+{
+ "specVersion": 1,
+ "generatedBy": "typescript-reference",
+ "description": "Expected outcomes of heavy suites (too slow for per-port unit tests); used by the API to mark submitted runs as verified.",
+ "suites": {
+  "engine-random-10k": {
+   "checksum": "9ab1d25b",
+   "games": 10000,
+   "totalMoves": 1186375,
+   "totalScore": 10990912,
+   "maxScore": 4832
+  },
+  "expectimax-canonical-3": {
+   "checksum": "74c35bae",
+   "games": 3,
+   "totalMoves": 21202,
+   "totalScore": 506212,
+   "maxScore": 177984
+  }
+ }
+}

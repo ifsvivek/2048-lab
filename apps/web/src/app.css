@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+	--color-ink-50: #f7f7f5;
+	--color-ink-100: #eeede9;
+	--color-ink-200: #dcdad3;
+	--color-ink-300: #bdbab0;
+	--color-ink-400: #8f8b7f;
+	--color-ink-500: #6b675c;
+	--color-ink-600: #4f4c44;
+	--color-ink-700: #37352f;
+	--color-ink-800: #24231f;
+	--color-ink-900: #171614;
+	--color-ink-950: #0e0d0c;
+	--color-accent-400: #ffb454;
+	--color-accent-500: #f59e2b;
+	--color-accent-600: #d97f0e;
+	--ease-snap: cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+:root {
+	color-scheme: light;
+	--tile-move-ms: 110ms;
+}
+:root.dark {
+	color-scheme: dark;
+}
+
+html,
+body {
+	@apply bg-ink-50 text-ink-900 antialiased dark:bg-ink-950 dark:text-ink-100;
+	font-feature-settings: 'tnum' 1, 'cv11' 1;
+}
+
+:focus-visible {
+	@apply outline-2 outline-offset-2 outline-accent-500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--tile-move-ms: 0ms;
+	}
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* Reusable component classes. Tailwind v4: @utility (not @layer components) so they can be @apply-ed. */
+@utility btn {
+	@apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-[background-color,transform,box-shadow] duration-150 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+	@apply btn bg-ink-900 text-ink-50 hover:bg-ink-700 dark:bg-accent-500 dark:text-ink-950 dark:hover:bg-accent-400;
+}
+@utility btn-ghost {
+	@apply btn bg-ink-900/5 text-ink-800 hover:bg-ink-900/10 dark:bg-white/5 dark:text-ink-100 dark:hover:bg-white/10;
+}
+@utility card {
+	@apply rounded-2xl border border-ink-200/70 bg-white/70 shadow-[0_1px_0_rgba(0,0,0,0.02)] dark:border-white/[0.06] dark:bg-white/[0.03];
+}
+@utility label {
+	@apply text-[11px] font-semibold tracking-[0.08em] text-ink-500 uppercase dark:text-ink-400;
+}
+@utility input {
+	@apply w-full rounded-xl border border-ink-200 bg-white px-3.5 py-2.5 text-sm placeholder:text-ink-400 dark:border-white/10 dark:bg-white/5;
+}
+@utility mono {
+	@apply font-mono tracking-tight;
+}
+
+/* Data-viz tokens (validated: dataviz validate_palette.js, light on #fff, dark on #1a1917).
+   Language → categorical slot is fixed by entity: TS=1, Rust=2, Go=3, Python=4. */
+:root {
+	--surface-chart: #ffffff;
+	--viz-text: #0b0b0b;
+	--viz-text-2: #52514e;
+	--viz-muted: #8a887f;
+	--viz-grid: #e7e5df;
+	--series-1: #2a78d6;
+	--series-2: #eb6834;
+	--series-3: #1baf7a;
+	--series-4: #eda100;
+	--seq-400: #3987e5;
+}
+:root.dark {
+	--surface-chart: #1a1917;
+	--viz-text: #ffffff;
+	--viz-text-2: #c3c2b7;
+	--viz-muted: #8f8d84;
+	--viz-grid: #2c2b28;
+	--series-1: #3987e5;
+	--series-2: #d95926;
+	--series-3: #199e70;
+	--series-4: #c98500;
+	--seq-400: #3987e5;
+}
