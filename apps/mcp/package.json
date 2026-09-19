@@ -1,0 +1,23 @@
+{
+  "name": "@g2048/mcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP server (Streamable HTTP) for the 2048 platform — a thin layer over the public API.",
+  "scripts": {
+    "dev": "wrangler dev --port 8788",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@cfworker/json-schema": "^4.1.1",
+    "@hono/mcp": "^0.3.2",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "hono": "^4.13.8",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260918.1",
+    "wrangler": "^4.134.0"
+  }
+}

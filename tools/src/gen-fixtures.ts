@@ -141,7 +141,7 @@ function randomBoard(density: number, maxExp: number): Board {
   }
   for (const seed of [1, 2]) {
     const { game } = playSync(new ExpectimaxAgent({ depth: 2 }), seed, { maxMoves: 1500 });
-    played.push({ seed, agent: 'expectimax-d2', moves: game.moves, final: omitSeed(game.snapshot()) });
+    played.push({ seed, agent: 'expectimax-d2', maxMoves: 1500, moves: game.moves, final: omitSeed(game.snapshot()) });
   }
   write('games.json', {
     description: 'SPEC §6/§10: new-game states, and full games replayed from (seed, moves). Random-agent games also verify the SPEC §10 agent (replaying the agent must yield exactly `moves`).',

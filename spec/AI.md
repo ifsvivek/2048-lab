@@ -124,7 +124,23 @@ Canonical profile: `depth: "auto", minDepth: 2, maxDepth: 4, fourPruneEmpties: 0
 
 `chance(b, d)` is a pure function of `(b, d)`, so a transposition table keyed
 on the exact pair may cache it at any depth with any replacement policy without
-changing results. Implementations are free to choose table size and policy.
+changing moves or values. Implementations are free to choose table size and policy.
+
+Node counts, however, *do* depend on the table: a chance call counts as a node
+even when it is answered from the table. To make `nodes`/`nodesPerSec`
+comparable across ports, the **reference policy** is:
+
+* `2^ttBits` slots (default `ttBits = 20`), slot index from the TS
+  `TranspositionTable.slot` hash of `(lo, hi, d)`;
+* lookup probes 4 consecutive slots, stopping at the first empty slot;
+* store goes to the first empty slot in the same 4-slot window, else overwrites
+  the home slot;
+* the table persists across decisions and is cleared at the start of a search
+  once more than 75 % of slots are occupied.
+
+Ports that deviate (e.g. Python's dict-based table) must report
+`ttPolicy: "custom"` in benchmark `environment`; dashboards compare their
+node throughput with that caveat.
 
 ### Iterative deepening / time budgets
 

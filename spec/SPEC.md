@@ -159,7 +159,8 @@ is an error (`INVALID_MOVE_AT <n>`).
 * `boardHash(board)` = `fnv1a32` of the 16 exponent bytes in index order.
 * `historyHash(game)` is a running hash: starts at `boardHash(initial board)`,
   and after every applied move `h = fnv1a32(bytes(h as 4 little-endian bytes) ++
-  16 board bytes ++ [direction index])`.
+  16 board bytes ++ [direction index])`, where the board bytes are taken
+  **after** the move's spawn (i.e. the board the next decision will see).
 
 `historyHash` is lowercase 8-digit hex in all serialised forms. Two
 implementations that agree on `historyHash` agree on the entire board history.
@@ -186,7 +187,9 @@ implementations that agree on `historyHash` agree on the entire board history.
 ```
 
 A replay is valid iff replaying `moves` from `new_game(seed)` produces exactly
-`final`. Servers MUST re-simulate before accepting a replay; client-supplied
+`final`. Verification compares `board`, `score`, `moveCount` and `historyHash`
+(any subset the client supplies; error `FINAL_MISMATCH`); `maxTile` and `over`
+are derived values and are recomputed rather than compared. Servers MUST re-simulate before accepting a replay; client-supplied
 `final` values are never trusted.
 
 ## 9. Identifiers
