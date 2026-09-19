@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>G2048</AssemblyName>
+    <RootNamespace>G2048</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <!-- keep bin/ for the tracked launcher script -->
+    <BaseOutputPath>build/bin/</BaseOutputPath>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+
+    <!-- runtime -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <ServerGarbageCollector>false</ServerGarbageCollector>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <TieredPGO>true</TieredPGO>
+    <TieredCompilation>true</TieredCompilation>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    <SelfContained>false</SelfContained>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      Tiered compilation + dynamic PGO give the best steady-state search speed,
+      but the default 100 ms call-counting delay keeps short suites (a few
+      hundred ms) in unoptimised tier-0 code. Promote hot methods immediately.
+    -->
+    <RuntimeHostConfigurationOption Include="System.Runtime.TieredCompilation.CallCountingDelayMs" Value="0" />
+  </ItemGroup>
+
+</Project>

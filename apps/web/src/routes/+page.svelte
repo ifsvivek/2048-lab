@@ -7,7 +7,7 @@
 	import { AiWorker } from '$lib/ai/client';
 	import { api } from '$lib/api';
 	import { BASELINE } from '$lib/bench-data';
-	import { langColor } from '$lib/charts/series';
+	import { LANG_ORDER, langColor } from '$lib/charts/series';
 	import { API_URL, MCP_URL } from '$lib/config';
 	import { LANG_LABEL, fmtCompact, fmtUs } from '$lib/format';
 	import { onVisible, reducedMotion, reveal } from '$lib/motion';
@@ -79,10 +79,12 @@
 	let impact = $state<{ energyKwh: number; phoneCharges: number; tokens: number; costUsd: number } | null>(null);
 
 	// ------------------------------------------------------ runtime race
-	const race = ['rust', 'go', 'typescript', 'python'].map((l) => {
-		const r = BASELINE.find((x) => x.suiteId === 'engine-random-10k' && x.language === l)!;
+	const race = LANG_ORDER.map((l) => {
+		const r = BASELINE.find((x) => x.suiteId === 'engine-random-10k' && x.language === l);
 		return { lang: l, mps: r?.movesPerSec ?? 0, checksum: r?.checksum ?? '' };
-	});
+	})
+		.filter((r) => r.mps > 0)
+		.sort((a, b) => b.mps - a.mps);
 	const fastest = Math.max(...race.map((r) => r.mps));
 	let raceGo = $state(false);
 
@@ -183,7 +185,7 @@
 			A lab for<br />2048 agents<span class="text-accent-500">.</span>
 		</h1>
 		<p class="mt-5 max-w-[30rem] text-lg leading-relaxed text-ink-600 dark:text-ink-300" use:reveal={2}>
-			Play, or let an AI play. Replay any game from a short code and race four languages on identical games.
+			Play, or let an AI play. Replay any game from a short code and race nine languages on identical games.
 		</p>
 		<div class="mt-8 flex max-w-md flex-col gap-3" use:reveal={3}>
 			<button class="btn-primary h-13 text-[15px]" onclick={start} disabled={starting}>
@@ -235,8 +237,8 @@
 <section class="py-24">
 	<div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
 		<div use:reveal={0}>
-			<h2 class="text-3xl font-semibold sm:text-4xl">Same game.<br />Four languages.</h2>
-			<p class="mt-4 max-w-md text-ink-600 dark:text-ink-300">TypeScript, Rust, Go and Python play the same 10,000 games and agree on every board. Only speed differs.</p>
+			<h2 class="text-3xl font-semibold sm:text-4xl">Same game.<br />Nine languages.</h2>
+			<p class="mt-4 max-w-md text-ink-600 dark:text-ink-300">TypeScript, Rust, Go, Python, C, C++, C#, Java and Lua play the same 10,000 games and agree on every board. Only speed differs.</p>
 			<a class="btn-link mt-6" href="/runtimes">Open the runtime dashboard <ArrowRightIcon size={14} /></a>
 		</div>
 		<div class="card p-6 sm:p-8" use:onVisible={() => (raceGo = true)} use:reveal={1}>

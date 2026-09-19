@@ -1,10 +1,15 @@
 /** Fixed entity → slot mapping. Never re-assigned by rank or filter. */
-export const LANG_ORDER = ['typescript', 'rust', 'go', 'python'] as const;
+export const LANG_ORDER = ['typescript', 'rust', 'go', 'python', 'c', 'cpp', 'java', 'csharp', 'lua'] as const;
 export const LANG_COLOR: Record<string, string> = {
 	typescript: 'var(--series-1)',
 	rust: 'var(--series-2)',
 	go: 'var(--series-3)',
-	python: 'var(--series-4)'
+	python: 'var(--series-4)',
+	c: 'var(--series-5)',
+	cpp: 'var(--series-6)',
+	java: 'var(--series-8)',
+	csharp: 'var(--series-7)',
+	lua: 'var(--series-9)'
 };
 export const langColor = (l: string) => LANG_COLOR[l] ?? 'var(--viz-muted)';
 

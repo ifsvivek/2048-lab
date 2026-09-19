@@ -23,7 +23,7 @@ export const benchmarks = new Hono<AppEnv>();
 export const SUITES = [suiteRandom1k, suiteRandom10k, suiteD2, suiteD3, suiteCanonical] as unknown as BenchmarkSuite[];
 type Expected = Record<string, { checksum: string; totalMoves: number; totalScore: number }>;
 const EXPECTED: Expected = { ...(expectedFixture as { suites: Expected }).suites, ...(expectedHeavy as { suites: Expected }).suites };
-const LANGUAGES = new Set(['typescript', 'rust', 'go', 'python']);
+const LANGUAGES = new Set(['typescript', 'rust', 'go', 'python', 'c', 'cpp', 'java', 'csharp', 'lua']);
 
 benchmarks.get('/suites', (c) => c.json({ suites: SUITES.map((s) => ({ ...s, expected: EXPECTED[s.id] ?? null })) }));
 

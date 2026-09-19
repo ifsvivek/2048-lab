@@ -1,7 +1,193 @@
 {
  "set": "baseline",
- "generatedAt": "2026-09-19T05:34:24.682Z",
+ "generatedAt": "2026-09-19T09:40:30.160Z",
  "runs": [
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-10k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "c",
+    "runtime": "native",
+    "runtimeVersion": "gcc 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:49.764Z",
+   "finishedAt": "2026-09-19T09:37:50.062Z",
+   "summary": {
+    "games": 10000,
+    "avgScore": 1099.0912,
+    "medianScore": 1048,
+    "minScore": 92,
+    "maxScore": 4832,
+    "maxTile": 512,
+    "totalMoves": 1186375,
+    "wallMs": 297.580817,
+    "cpuMs": 295.779,
+    "gamesPerSec": 33604.31663846128,
+    "movesPerSec": 3986732.1151954494,
+    "decisionsPerSec": 3986732.1151954494,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 12095488,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 27,
+     "32": 640,
+     "64": 3764,
+     "128": 4772,
+     "256": 794,
+     "512": 3
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "9ab1d25b"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-10k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "cpp",
+    "runtime": "native",
+    "runtimeVersion": "g++ 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x86_64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:50.113Z",
+   "finishedAt": "2026-09-19T09:37:50.432Z",
+   "summary": {
+    "games": 10000,
+    "avgScore": 1099.0912,
+    "medianScore": 1048,
+    "minScore": 92,
+    "maxScore": 4832,
+    "maxTile": 512,
+    "totalMoves": 1186375,
+    "wallMs": 318.639525,
+    "cpuMs": 317.157,
+    "gamesPerSec": 31383.426145893234,
+    "movesPerSec": 3723251.2193834083,
+    "decisionsPerSec": 3723251.2193834083,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 13930496,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 27,
+     "32": 640,
+     "64": 3764,
+     "128": 4772,
+     "256": 794,
+     "512": 3
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "9ab1d25b"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-10k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "csharp",
+    "runtime": "dotnet",
+    "runtimeVersion": "9.0.20",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:51.080Z",
+   "finishedAt": "2026-09-19T09:37:51.511Z",
+   "summary": {
+    "games": 10000,
+    "avgScore": 1099.0912,
+    "medianScore": 1048,
+    "minScore": 92,
+    "maxScore": 4832,
+    "maxTile": 512,
+    "totalMoves": 1186375,
+    "wallMs": 418.055282,
+    "cpuMs": 496.20000000000005,
+    "gamesPerSec": 23920.28143301871,
+    "movesPerSec": 2837842.3885097574,
+    "decisionsPerSec": 2837842.3885097574,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 53768192,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 27,
+     "32": 640,
+     "64": 3764,
+     "128": 4772,
+     "256": 794,
+     "512": 3
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "9ab1d25b"
+  },
   {
    "schemaVersion": 1,
    "suiteId": "engine-random-10k",
@@ -42,6 +228,132 @@
     "nodes": 0,
     "nodesPerSec": 0,
     "peakMemoryBytes": 17383424,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 27,
+     "32": 640,
+     "64": 3764,
+     "128": 4772,
+     "256": 794,
+     "512": 3
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "9ab1d25b"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-10k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "java",
+    "runtime": "jvm",
+    "runtimeVersion": "26.0.2",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "gc": "Copy, MarkSweepCompact",
+    "memoryBytes": 24494026752,
+    "os": "linux",
+    "vm": "OpenJDK 64-Bit Server VM 26.0.2"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:50.492Z",
+   "finishedAt": "2026-09-19T09:37:50.936Z",
+   "summary": {
+    "games": 10000,
+    "avgScore": 1099.0912,
+    "medianScore": 1048,
+    "minScore": 92,
+    "maxScore": 4832,
+    "maxTile": 512,
+    "totalMoves": 1186375,
+    "wallMs": 415.937966,
+    "cpuMs": 600,
+    "gamesPerSec": 24042.046693087883,
+    "movesPerSec": 2852288.3145512138,
+    "decisionsPerSec": 2852288.3145512138,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 80011264,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 27,
+     "32": 640,
+     "64": 3764,
+     "128": 4772,
+     "256": 794,
+     "512": 3
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "9ab1d25b"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-10k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "lua",
+    "runtime": "lua",
+    "runtimeVersion": "5.5.1",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:51.661Z",
+   "finishedAt": "2026-09-19T09:37:55.964Z",
+   "summary": {
+    "games": 10000,
+    "avgScore": 1099.0912,
+    "medianScore": 1048,
+    "minScore": 92,
+    "maxScore": 4832,
+    "maxTile": 512,
+    "totalMoves": 1186375,
+    "wallMs": 4303.07407,
+    "cpuMs": 4279.553,
+    "gamesPerSec": 2323.92002492302,
+    "movesPerSec": 275704.06195680477,
+    "decisionsPerSec": 275704.06195680477,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 14909440,
     "avgDecisionUs": null,
     "p50DecisionUs": null,
     "p99DecisionUs": null,
@@ -258,6 +570,189 @@
    "suiteId": "engine-random-1k",
    "specVersion": 1,
    "implementation": {
+    "language": "c",
+    "runtime": "native",
+    "runtimeVersion": "gcc 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:48.812Z",
+   "finishedAt": "2026-09-19T09:37:48.842Z",
+   "summary": {
+    "games": 1000,
+    "avgScore": 1107.672,
+    "medianScore": 1068,
+    "minScore": 216,
+    "maxScore": 3740,
+    "maxTile": 256,
+    "totalMoves": 119111,
+    "wallMs": 30.066824,
+    "cpuMs": 29.938,
+    "gamesPerSec": 33259.24946379438,
+    "movesPerSec": 3961542.4628820126,
+    "decisionsPerSec": 3961542.4628820126,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 12095488,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 1,
+     "32": 61,
+     "64": 369,
+     "128": 487,
+     "256": 82
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "3d653498"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-1k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "cpp",
+    "runtime": "native",
+    "runtimeVersion": "g++ 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x86_64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:48.853Z",
+   "finishedAt": "2026-09-19T09:37:48.885Z",
+   "summary": {
+    "games": 1000,
+    "avgScore": 1107.672,
+    "medianScore": 1068,
+    "minScore": 216,
+    "maxScore": 3740,
+    "maxTile": 256,
+    "totalMoves": 119111,
+    "wallMs": 32.434033,
+    "cpuMs": 32.269,
+    "gamesPerSec": 30831.811757729913,
+    "movesPerSec": 3672407.9302749676,
+    "decisionsPerSec": 3672407.9302749676,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 12095488,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 1,
+     "32": 61,
+     "64": 369,
+     "128": 487,
+     "256": 82
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "3d653498"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-1k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "csharp",
+    "runtime": "dotnet",
+    "runtimeVersion": "9.0.20",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:49.126Z",
+   "finishedAt": "2026-09-19T09:37:49.202Z",
+   "summary": {
+    "games": 1000,
+    "avgScore": 1107.672,
+    "medianScore": 1068,
+    "minScore": 216,
+    "maxScore": 3740,
+    "maxTile": 256,
+    "totalMoves": 119111,
+    "wallMs": 62.305129,
+    "cpuMs": 83.784,
+    "gamesPerSec": 16050.043006892738,
+    "movesPerSec": 1911736.672594001,
+    "decisionsPerSec": 1911736.672594001,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 49410048,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 1,
+     "32": 61,
+     "64": 369,
+     "128": 487,
+     "256": 82
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "3d653498"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-1k",
+   "specVersion": 1,
+   "implementation": {
     "language": "go",
     "runtime": "go",
     "runtimeVersion": "go1.27.1-X:nodwarf5",
@@ -293,6 +788,130 @@
     "nodes": 0,
     "nodesPerSec": 0,
     "peakMemoryBytes": 12926976,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 1,
+     "32": 61,
+     "64": 369,
+     "128": 487,
+     "256": 82
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "3d653498"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-1k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "java",
+    "runtime": "jvm",
+    "runtimeVersion": "26.0.2",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "gc": "Copy, MarkSweepCompact",
+    "memoryBytes": 24494026752,
+    "os": "linux",
+    "vm": "OpenJDK 64-Bit Server VM 26.0.2"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:48.925Z",
+   "finishedAt": "2026-09-19T09:37:49.030Z",
+   "summary": {
+    "games": 1000,
+    "avgScore": 1107.672,
+    "medianScore": 1068,
+    "minScore": 216,
+    "maxScore": 3740,
+    "maxTile": 256,
+    "totalMoves": 119111,
+    "wallMs": 75.982977,
+    "cpuMs": 200,
+    "gamesPerSec": 13160.842592413823,
+    "movesPerSec": 1567601.122025003,
+    "decisionsPerSec": 1567601.122025003,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 75243520,
+    "avgDecisionUs": null,
+    "p50DecisionUs": null,
+    "p99DecisionUs": null,
+    "tileDistribution": {
+     "16": 1,
+     "32": 61,
+     "64": 369,
+     "128": 487,
+     "256": 82
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "3d653498"
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "engine-random-1k",
+   "specVersion": 1,
+   "implementation": {
+    "language": "lua",
+    "runtime": "lua",
+    "runtimeVersion": "5.5.1",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "random"
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:49.296Z",
+   "finishedAt": "2026-09-19T09:37:49.738Z",
+   "summary": {
+    "games": 1000,
+    "avgScore": 1107.672,
+    "medianScore": 1068,
+    "minScore": 216,
+    "maxScore": 3740,
+    "maxTile": 256,
+    "totalMoves": 119111,
+    "wallMs": 442.535948,
+    "cpuMs": 431.35900000000004,
+    "gamesPerSec": 2259.703430917662,
+    "movesPerSec": 269155.5353600336,
+    "decisionsPerSec": 269155.5353600336,
+    "nodes": 0,
+    "nodesPerSec": 0,
+    "peakMemoryBytes": 8843264,
     "avgDecisionUs": null,
     "p50DecisionUs": null,
     "p99DecisionUs": null,
@@ -505,6 +1124,195 @@
    "suiteId": "expectimax-canonical-3",
    "specVersion": 1,
    "implementation": {
+    "language": "c",
+    "runtime": "native",
+    "runtimeVersion": "gcc 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {}
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:38:06.334Z",
+   "finishedAt": "2026-09-19T09:38:43.966Z",
+   "summary": {
+    "games": 3,
+    "avgScore": 168737.33333333334,
+    "medianScore": 175736,
+    "minScore": 152492,
+    "maxScore": 177984,
+    "maxTile": 8192,
+    "totalMoves": 21202,
+    "wallMs": 37631.22929,
+    "cpuMs": 37360.367999999995,
+    "gamesPerSec": 0.0797210204556674,
+    "movesPerSec": 563.4150252336867,
+    "decisionsPerSec": 563.4150252336867,
+    "nodes": 2077883234,
+    "nodesPerSec": 55216990.60073411,
+    "peakMemoryBytes": 21766144,
+    "avgDecisionUs": 1774.2262994057164,
+    "p50DecisionUs": 1411,
+    "p99DecisionUs": 6219,
+    "tileDistribution": {
+     "8192": 3
+    },
+    "reachRates": {
+     "2048": 1,
+     "4096": 1,
+     "8192": 1,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "74c35bae",
+   "scores": [
+    177984,
+    152492,
+    175736
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-canonical-3",
+   "specVersion": 1,
+   "implementation": {
+    "language": "cpp",
+    "runtime": "native",
+    "runtimeVersion": "g++ 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x86_64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {}
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:38:43.977Z",
+   "finishedAt": "2026-09-19T09:39:20.719Z",
+   "summary": {
+    "games": 3,
+    "avgScore": 168737.33333333334,
+    "medianScore": 175736,
+    "minScore": 152492,
+    "maxScore": 177984,
+    "maxTile": 8192,
+    "totalMoves": 21202,
+    "wallMs": 36742.24597,
+    "cpuMs": 36562.731999999996,
+    "gamesPerSec": 0.0816498806972632,
+    "movesPerSec": 577.0469235144581,
+    "decisionsPerSec": 577.0469235144581,
+    "nodes": 2077883234,
+    "nodesPerSec": 56552972.71964781,
+    "peakMemoryBytes": 31211520,
+    "avgDecisionUs": 1732.0120271672483,
+    "p50DecisionUs": 1393,
+    "p99DecisionUs": 5893,
+    "tileDistribution": {
+     "8192": 3
+    },
+    "reachRates": {
+     "2048": 1,
+     "4096": 1,
+     "8192": 1,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "74c35bae",
+   "scores": [
+    177984,
+    152492,
+    175736
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-canonical-3",
+   "specVersion": 1,
+   "implementation": {
+    "language": "csharp",
+    "runtime": "dotnet",
+    "runtimeVersion": "9.0.20",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {}
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:39:52.409Z",
+   "finishedAt": "2026-09-19T09:40:26.512Z",
+   "summary": {
+    "games": 3,
+    "avgScore": 168737.33333333334,
+    "medianScore": 175736,
+    "minScore": 152492,
+    "maxScore": 177984,
+    "maxTile": 8192,
+    "totalMoves": 21202,
+    "wallMs": 34090.426266,
+    "cpuMs": 33989.715,
+    "gamesPerSec": 0.08800124634968387,
+    "movesPerSec": 621.9341417019992,
+    "decisionsPerSec": 621.9341417019992,
+    "nodes": 2077883234,
+    "nodesPerSec": 60952104.787037276,
+    "peakMemoryBytes": 70737920,
+    "avgDecisionUs": 1605.499622677106,
+    "p50DecisionUs": 1264,
+    "p99DecisionUs": 5633,
+    "tileDistribution": {
+     "8192": 3
+    },
+    "reachRates": {
+     "2048": 1,
+     "4096": 1,
+     "8192": 1,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "74c35bae",
+   "scores": [
+    177984,
+    152492,
+    175736
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-canonical-3",
+   "specVersion": 1,
+   "implementation": {
     "language": "go",
     "runtime": "go",
     "runtimeVersion": "go1.27.1-X:nodwarf5",
@@ -544,6 +1352,71 @@
     "avgDecisionUs": 1770.7458258654844,
     "p50DecisionUs": 1407,
     "p99DecisionUs": 6106,
+    "tileDistribution": {
+     "8192": 3
+    },
+    "reachRates": {
+     "2048": 1,
+     "4096": 1,
+     "8192": 1,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "74c35bae",
+   "scores": [
+    177984,
+    152492,
+    175736
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-canonical-3",
+   "specVersion": 1,
+   "implementation": {
+    "language": "java",
+    "runtime": "jvm",
+    "runtimeVersion": "26.0.2",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "gc": "Copy, MarkSweepCompact",
+    "memoryBytes": 24494026752,
+    "os": "linux",
+    "vm": "OpenJDK 64-Bit Server VM 26.0.2"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {}
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:39:20.781Z",
+   "finishedAt": "2026-09-19T09:39:52.324Z",
+   "summary": {
+    "games": 3,
+    "avgScore": 168737.33333333334,
+    "medianScore": 175736,
+    "minScore": 152492,
+    "maxScore": 177984,
+    "maxTile": 8192,
+    "totalMoves": 21202,
+    "wallMs": 31518.831845,
+    "cpuMs": 31640,
+    "gamesPerSec": 0.09518119246148096,
+    "movesPerSec": 672.6772141894397,
+    "decisionsPerSec": 672.6772141894397,
+    "nodes": 2077883234,
+    "nodesPerSec": 65925134.66927949,
+    "peakMemoryBytes": 105525248,
+    "avgDecisionUs": 1482.7415338175645,
+    "p50DecisionUs": 1158,
+    "p99DecisionUs": 5300,
     "tileDistribution": {
      "8192": 3
     },
@@ -760,6 +1633,231 @@
    "suiteId": "expectimax-d2-10",
    "specVersion": 1,
    "implementation": {
+    "language": "c",
+    "runtime": "native",
+    "runtimeVersion": "gcc 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 2
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:56.147Z",
+   "finishedAt": "2026-09-19T09:37:56.329Z",
+   "summary": {
+    "games": 10,
+    "avgScore": 30834,
+    "medianScore": 35940,
+    "minScore": 7192,
+    "maxScore": 60880,
+    "maxTile": 4096,
+    "totalMoves": 16067,
+    "wallMs": 181.920636,
+    "cpuMs": 180.69199999999998,
+    "gamesPerSec": 54.96902506431431,
+    "movesPerSec": 88318.7325708338,
+    "decisionsPerSec": 88318.7325708338,
+    "nodes": 11723911,
+    "nodesPerSec": 64445195.76107903,
+    "peakMemoryBytes": 21762048,
+    "avgDecisionUs": 11.089624696583058,
+    "p50DecisionUs": 10,
+    "p99DecisionUs": 29,
+    "tileDistribution": {
+     "512": 1,
+     "1024": 2,
+     "2048": 6,
+     "4096": 1
+    },
+    "reachRates": {
+     "2048": 0.7,
+     "4096": 0.1,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "33601a3a",
+   "scores": [
+    10492,
+    37972,
+    17824,
+    35940,
+    7192,
+    37120,
+    60880,
+    38956,
+    33620,
+    28344
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d2-10",
+   "specVersion": 1,
+   "implementation": {
+    "language": "cpp",
+    "runtime": "native",
+    "runtimeVersion": "g++ 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x86_64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 2
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:56.339Z",
+   "finishedAt": "2026-09-19T09:37:56.534Z",
+   "summary": {
+    "games": 10,
+    "avgScore": 30834,
+    "medianScore": 35940,
+    "minScore": 7192,
+    "maxScore": 60880,
+    "maxTile": 4096,
+    "totalMoves": 16067,
+    "wallMs": 194.462826,
+    "cpuMs": 193.356,
+    "gamesPerSec": 51.42371015424819,
+    "movesPerSec": 82622.47510483058,
+    "decisionsPerSec": 82622.47510483058,
+    "nodes": 11723911,
+    "nodesPerSec": 60288700.11382021,
+    "peakMemoryBytes": 31457280,
+    "avgDecisionUs": 11.62824422729819,
+    "p50DecisionUs": 11,
+    "p99DecisionUs": 27,
+    "tileDistribution": {
+     "512": 1,
+     "1024": 2,
+     "2048": 6,
+     "4096": 1
+    },
+    "reachRates": {
+     "2048": 0.7,
+     "4096": 0.1,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "33601a3a",
+   "scores": [
+    10492,
+    37972,
+    17824,
+    35940,
+    7192,
+    37120,
+    60880,
+    38956,
+    33620,
+    28344
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d2-10",
+   "specVersion": 1,
+   "implementation": {
+    "language": "csharp",
+    "runtime": "dotnet",
+    "runtimeVersion": "9.0.20",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 2
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:56.985Z",
+   "finishedAt": "2026-09-19T09:37:57.261Z",
+   "summary": {
+    "games": 10,
+    "avgScore": 30834,
+    "medianScore": 35940,
+    "minScore": 7192,
+    "maxScore": 60880,
+    "maxTile": 4096,
+    "totalMoves": 16067,
+    "wallMs": 262.757893,
+    "cpuMs": 298.052,
+    "gamesPerSec": 38.05784818041603,
+    "movesPerSec": 61147.54467147443,
+    "decisionsPerSec": 61147.54467147443,
+    "nodes": 11723911,
+    "nodesPerSec": 44618682.49187095,
+    "peakMemoryBytes": 70893568,
+    "avgDecisionUs": 14.244414016306715,
+    "p50DecisionUs": 13,
+    "p99DecisionUs": 36,
+    "tileDistribution": {
+     "512": 1,
+     "1024": 2,
+     "2048": 6,
+     "4096": 1
+    },
+    "reachRates": {
+     "2048": 0.7,
+     "4096": 0.1,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "33601a3a",
+   "scores": [
+    10492,
+    37972,
+    17824,
+    35940,
+    7192,
+    37120,
+    60880,
+    38956,
+    33620,
+    28344
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d2-10",
+   "specVersion": 1,
+   "implementation": {
     "language": "go",
     "runtime": "go",
     "runtimeVersion": "go1.27.1-X:nodwarf5",
@@ -801,6 +1899,158 @@
     "avgDecisionUs": 11.086823924814837,
     "p50DecisionUs": 10,
     "p99DecisionUs": 26,
+    "tileDistribution": {
+     "512": 1,
+     "1024": 2,
+     "2048": 6,
+     "4096": 1
+    },
+    "reachRates": {
+     "2048": 0.7,
+     "4096": 0.1,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "33601a3a",
+   "scores": [
+    10492,
+    37972,
+    17824,
+    35940,
+    7192,
+    37120,
+    60880,
+    38956,
+    33620,
+    28344
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d2-10",
+   "specVersion": 1,
+   "implementation": {
+    "language": "java",
+    "runtime": "jvm",
+    "runtimeVersion": "26.0.2",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "gc": "Copy, MarkSweepCompact",
+    "memoryBytes": 24494026752,
+    "os": "linux",
+    "vm": "OpenJDK 64-Bit Server VM 26.0.2"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 2
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:56.600Z",
+   "finishedAt": "2026-09-19T09:37:56.895Z",
+   "summary": {
+    "games": 10,
+    "avgScore": 30834,
+    "medianScore": 35940,
+    "minScore": 7192,
+    "maxScore": 60880,
+    "maxTile": 4096,
+    "totalMoves": 16067,
+    "wallMs": 270.278587,
+    "cpuMs": 500,
+    "gamesPerSec": 36.99886147473458,
+    "movesPerSec": 59446.07073145606,
+    "decisionsPerSec": 59446.07073145606,
+    "nodes": 11723911,
+    "nodesPerSec": 43377135.9031117,
+    "peakMemoryBytes": 101154816,
+    "avgDecisionUs": 13.492251198107923,
+    "p50DecisionUs": 12,
+    "p99DecisionUs": 36,
+    "tileDistribution": {
+     "512": 1,
+     "1024": 2,
+     "2048": 6,
+     "4096": 1
+    },
+    "reachRates": {
+     "2048": 0.7,
+     "4096": 0.1,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "33601a3a",
+   "scores": [
+    10492,
+    37972,
+    17824,
+    35940,
+    7192,
+    37120,
+    60880,
+    38956,
+    33620,
+    28344
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d2-10",
+   "specVersion": 1,
+   "implementation": {
+    "language": "lua",
+    "runtime": "lua",
+    "runtimeVersion": "5.5.1",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 2
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:57.436Z",
+   "finishedAt": "2026-09-19T09:37:59.315Z",
+   "summary": {
+    "games": 10,
+    "avgScore": 30834,
+    "medianScore": 35940,
+    "minScore": 7192,
+    "maxScore": 60880,
+    "maxTile": 4096,
+    "totalMoves": 16067,
+    "wallMs": 1878.267933,
+    "cpuMs": 1866.3319999999999,
+    "gamesPerSec": 5.324054052303303,
+    "movesPerSec": 8554.157645835718,
+    "decisionsPerSec": 8554.157645835718,
+    "nodes": 11723911,
+    "nodesPerSec": 6241873.586839328,
+    "peakMemoryBytes": 41267200,
+    "avgDecisionUs": 110.61517395904649,
+    "p50DecisionUs": 104,
+    "p99DecisionUs": 254,
     "tileDistribution": {
      "512": 1,
      "1024": 2,
@@ -1063,6 +2313,207 @@
    "suiteId": "expectimax-d3-opening",
    "specVersion": 1,
    "implementation": {
+    "language": "c",
+    "runtime": "native",
+    "runtimeVersion": "gcc 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 3
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:59.330Z",
+   "finishedAt": "2026-09-19T09:37:59.790Z",
+   "summary": {
+    "games": 5,
+    "avgScore": 4565.6,
+    "medianScore": 4528,
+    "minScore": 4448,
+    "maxScore": 4776,
+    "maxTile": 512,
+    "totalMoves": 1500,
+    "wallMs": 460.13256,
+    "cpuMs": 456.401,
+    "gamesPerSec": 10.866433794643873,
+    "movesPerSec": 3259.930138393162,
+    "decisionsPerSec": 3259.930138393162,
+    "nodes": 33515071,
+    "nodesPerSec": 72837860.02885777,
+    "peakMemoryBytes": 21577728,
+    "avgDecisionUs": 306.35333333333335,
+    "p50DecisionUs": 295,
+    "p99DecisionUs": 626,
+    "tileDistribution": {
+     "512": 5
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "dcc2b8ef",
+   "scores": [
+    4776,
+    4508,
+    4448,
+    4528,
+    4568
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d3-opening",
+   "specVersion": 1,
+   "implementation": {
+    "language": "cpp",
+    "runtime": "native",
+    "runtimeVersion": "g++ 16.2.1 20260810",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x86_64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 3
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:37:59.800Z",
+   "finishedAt": "2026-09-19T09:38:00.300Z",
+   "summary": {
+    "games": 5,
+    "avgScore": 4565.6,
+    "medianScore": 4528,
+    "minScore": 4448,
+    "maxScore": 4776,
+    "maxTile": 512,
+    "totalMoves": 1500,
+    "wallMs": 499.807498,
+    "cpuMs": 496.475,
+    "gamesPerSec": 10.003851522851704,
+    "movesPerSec": 3001.155456855511,
+    "decisionsPerSec": 3001.155456855511,
+    "nodes": 33515071,
+    "nodesPerSec": 67055958.8123666,
+    "peakMemoryBytes": 31109120,
+    "avgDecisionUs": 332.398,
+    "p50DecisionUs": 324,
+    "p99DecisionUs": 640,
+    "tileDistribution": {
+     "512": 5
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "dcc2b8ef",
+   "scores": [
+    4776,
+    4508,
+    4448,
+    4528,
+    4568
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d3-opening",
+   "specVersion": 1,
+   "implementation": {
+    "language": "csharp",
+    "runtime": "dotnet",
+    "runtimeVersion": "9.0.20",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 3
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:38:00.979Z",
+   "finishedAt": "2026-09-19T09:38:01.593Z",
+   "summary": {
+    "games": 5,
+    "avgScore": 4565.6,
+    "medianScore": 4528,
+    "minScore": 4448,
+    "maxScore": 4776,
+    "maxTile": 512,
+    "totalMoves": 1500,
+    "wallMs": 601.739521,
+    "cpuMs": 633.092,
+    "gamesPerSec": 8.309243161710166,
+    "movesPerSec": 2492.7729485130494,
+    "decisionsPerSec": 2492.7729485130494,
+    "nodes": 33515071,
+    "nodesPerSec": 55696974.904196136,
+    "peakMemoryBytes": 63258624,
+    "avgDecisionUs": 387.54266666666666,
+    "p50DecisionUs": 378,
+    "p99DecisionUs": 768,
+    "tileDistribution": {
+     "512": 5
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "dcc2b8ef",
+   "scores": [
+    4776,
+    4508,
+    4448,
+    4528,
+    4568
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d3-opening",
+   "specVersion": 1,
+   "implementation": {
     "language": "go",
     "runtime": "go",
     "runtimeVersion": "go1.27.1-X:nodwarf5",
@@ -1104,6 +2555,142 @@
     "avgDecisionUs": 294.05533333333335,
     "p50DecisionUs": 284,
     "p99DecisionUs": 548,
+    "tileDistribution": {
+     "512": 5
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "dcc2b8ef",
+   "scores": [
+    4776,
+    4508,
+    4448,
+    4528,
+    4568
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d3-opening",
+   "specVersion": 1,
+   "implementation": {
+    "language": "java",
+    "runtime": "jvm",
+    "runtimeVersion": "26.0.2",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "gc": "Copy, MarkSweepCompact",
+    "memoryBytes": 24494026752,
+    "os": "linux",
+    "vm": "OpenJDK 64-Bit Server VM 26.0.2"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 3
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:38:00.362Z",
+   "finishedAt": "2026-09-19T09:38:00.883Z",
+   "summary": {
+    "games": 5,
+    "avgScore": 4565.6,
+    "medianScore": 4528,
+    "minScore": 4448,
+    "maxScore": 4776,
+    "maxTile": 512,
+    "totalMoves": 1500,
+    "wallMs": 496.896035,
+    "cpuMs": 620,
+    "gamesPerSec": 10.062467091330284,
+    "movesPerSec": 3018.740127399085,
+    "decisionsPerSec": 3018.740127399085,
+    "nodes": 33515071,
+    "nodesPerSec": 67448859.80021958,
+    "peakMemoryBytes": 86228992,
+    "avgDecisionUs": 310.62733333333335,
+    "p50DecisionUs": 290,
+    "p99DecisionUs": 673,
+    "tileDistribution": {
+     "512": 5
+    },
+    "reachRates": {
+     "2048": 0,
+     "4096": 0,
+     "8192": 0,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "dcc2b8ef",
+   "scores": [
+    4776,
+    4508,
+    4448,
+    4528,
+    4568
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-d3-opening",
+   "specVersion": 1,
+   "implementation": {
+    "language": "lua",
+    "runtime": "lua",
+    "runtimeVersion": "5.5.1",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "arch": "amd64",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpus": 16,
+    "memoryBytes": 24494026752,
+    "os": "linux"
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {
+     "depth": 3
+    }
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T09:38:01.768Z",
+   "finishedAt": "2026-09-19T09:38:06.323Z",
+   "summary": {
+    "games": 5,
+    "avgScore": 4565.6,
+    "medianScore": 4528,
+    "minScore": 4448,
+    "maxScore": 4776,
+    "maxTile": 512,
+    "totalMoves": 1500,
+    "wallMs": 4554.992792,
+    "cpuMs": 4525.129,
+    "gamesPerSec": 1.0976965778697987,
+    "movesPerSec": 329.3089733609396,
+    "decisionsPerSec": 329.3089733609396,
+    "nodes": 33515071,
+    "nodesPerSec": 7357875.748752667,
+    "peakMemoryBytes": 35635200,
+    "avgDecisionUs": 3008.7393333333334,
+    "p50DecisionUs": 2922,
+    "p99DecisionUs": 5615,
     "tileDistribution": {
      "512": 5
     },

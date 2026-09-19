@@ -91,7 +91,7 @@ curl -s -X POST ${API_URL}/v1/agents/$AGENT_ID/run -H "Authorization: Bearer $KE
 				<label class="block text-sm"><span class="label">Name</span><input class="input mt-1" required minlength="2" maxlength="64" bind:value={form.name} placeholder="my-expectimax-v2" /></label>
 				<div class="grid grid-cols-2 gap-3">
 					<label class="block text-sm"><span class="label">Kind</span><select class="input mt-1" bind:value={form.kind}>{#each ['remote', 'search', 'llm', 'rl', 'mcp', 'worker', 'other'] as k (k)}<option>{k}</option>{/each}</select></label>
-					<label class="block text-sm"><span class="label">Language</span><select class="input mt-1" bind:value={form.language}>{#each ['python', 'typescript', 'rust', 'go', 'other'] as k (k)}<option>{k}</option>{/each}</select></label>
+					<label class="block text-sm"><span class="label">Language</span><select class="input mt-1" bind:value={form.language}>{#each ['python', 'typescript', 'rust', 'go', 'c', 'cpp', 'csharp', 'java', 'lua', 'other'] as k (k)}<option>{k}</option>{/each}</select></label>
 				</div>
 				<label class="block text-sm"><span class="label">Push endpoint (optional, https)</span><input class="input mt-1" type="url" bind:value={form.endpoint} placeholder="https://my-agent.example.com/decide" /></label>
 				<label class="block text-sm"><span class="label">Description</span><input class="input mt-1" maxlength="500" bind:value={form.description} /></label>

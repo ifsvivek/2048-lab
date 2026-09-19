@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { repoRoot } from './paths.ts';
 
 export interface Runtime {
-  language: 'typescript' | 'rust' | 'go' | 'python';
+  language: 'typescript' | 'rust' | 'go' | 'python' | 'c' | 'cpp' | 'java' | 'csharp' | 'lua';
   cwd: string;
   /** argv prefix for the CLI */
   cmd: string[];
@@ -54,6 +54,41 @@ export const RUNTIMES: Runtime[] = [
     cmd: ['uv', 'run', '--quiet', 'g2048'],
     build: ['uv', 'sync', '--quiet'],
     available: () => which('uv'),
+  },
+  {
+    language: 'c',
+    cwd: join(repoRoot, 'engines/c'),
+    cmd: [join(repoRoot, 'engines/c/bin/g2048')],
+    build: ['make', '--quiet'],
+    available: () => which('make') && which('cc'),
+  },
+  {
+    language: 'cpp',
+    cwd: join(repoRoot, 'engines/cpp'),
+    cmd: [join(repoRoot, 'engines/cpp/bin/g2048')],
+    build: ['make', '--quiet'],
+    available: () => which('make') && which('c++'),
+  },
+  {
+    language: 'java',
+    cwd: join(repoRoot, 'engines/java'),
+    cmd: [join(repoRoot, 'engines/java/bin/g2048')],
+    build: ['make', '--quiet'],
+    available: () => which('make') && which('javac'),
+  },
+  {
+    language: 'csharp',
+    cwd: join(repoRoot, 'engines/csharp'),
+    cmd: [join(repoRoot, 'engines/csharp/bin/g2048')],
+    build: ['make', '--quiet'],
+    available: () => which('make') && (which('dotnet') || existsSync(join(homedir(), '.dotnet/dotnet'))),
+  },
+  {
+    language: 'lua',
+    cwd: join(repoRoot, 'engines/lua'),
+    cmd: [join(repoRoot, 'engines/lua/bin/g2048')],
+    build: ['make', '--quiet'],
+    available: () => which('lua') || which('lua5.4'),
   },
 ];
 

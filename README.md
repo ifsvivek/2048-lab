@@ -7,7 +7,7 @@
 **A deterministic 2048 platform for humans, AI agents and cross-language benchmarking.**
 
 Play in the browser, watch AI agents live, replay any game from a 12-character code,<br/>
-and race TypeScript, Rust, Go and Python on the *exact same* games.
+and race nine language engines on the *exact same* games.
 
 [**Play now →**](https://2048.ifsvivek.in) &nbsp;·&nbsp;
 [API](https://2048api.ifsvivek.in/v1/health) &nbsp;·&nbsp;
@@ -19,6 +19,11 @@ and race TypeScript, Rust, Go and Python on the *exact same* games.
 ![Rust](https://img.shields.io/badge/Rust-port-B7410E?logo=rust&logoColor=white)
 ![Go](https://img.shields.io/badge/Go-port-00ADD8?logo=go&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-port-3776AB?logo=python&logoColor=white)
+![C](https://img.shields.io/badge/C-port-A8B9CC?logo=c&logoColor=white)
+![C++](https://img.shields.io/badge/C%2B%2B-port-00599C?logo=cplusplus&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-port-512BD4?logo=dotnet&logoColor=white)
+![Java](https://img.shields.io/badge/Java-port-ED8B00?logo=openjdk&logoColor=white)
+![Lua](https://img.shields.io/badge/Lua-port-2C2D72?logo=lua&logoColor=white)
 <br/>
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers%20·%20D1%20·%20Durable%20Objects-F38020?logo=cloudflare&logoColor=white)
 ![SvelteKit](https://img.shields.io/badge/SvelteKit-5-FF3E00?logo=svelte&logoColor=white)
@@ -37,10 +42,10 @@ and race TypeScript, Rust, Go and Python on the *exact same* games.
 <tr>
 <td width="50%" valign="top">
 
-### 🎯 Bit-identical in four languages
-Same seed + same moves ⇒ the **same board history** in TypeScript, Rust, Go
-and Python. The expectimax AI even makes the **same decision with the same
-float64 value**. 3,658 shared fixture checks enforce it.
+### 🎯 Bit-identical in nine languages
+Same seed + same moves ⇒ the **same board history** in TypeScript, Rust, Go,
+Python, C, C++, C#, Java and Lua. The expectimax AI even makes the **same decision with the same
+float64 value**. 9,228 shared fixture checks enforce it.
 
 </td>
 <td width="50%" valign="top">
@@ -91,16 +96,21 @@ and Durable Objects only where coordination actually matters.
 ## 🏁 Same games, different speeds
 
 Because every runtime plays identical games, a benchmark measures **speed and
-nothing else**. Every row below has the same checksum in all four languages.
+nothing else**. Every language below produces the same checksum on every suite.
 
-| Workload | TypeScript<br/><sub>Node 26</sub> | Rust | Go | Python<br/><sub>CPython 3.14</sub> |
-|---|--:|--:|--:|--:|
-| Engine throughput — random agent, moves/s | 1.08 M | **4.25 M** | 2.91 M | 89 K |
-| Expectimax depth 2 — time per decision | 24 µs | 13 µs | **11 µs** | 306 µs |
-| Expectimax depth 3 — search nodes/s | 35 M | 72 M | **76 M** | 2.8 M |
-| Peak memory, depth-2 suite | 115 MB | **28 MB** | 35 MB | 229 MB |
-| Canonical AI (auto depth 2–4), avg score over 3 games | 168,737 | 168,737 | 168,737 | 168,737 |
-| Canonical AI — time per decision | 3.7 ms | 1.8 ms | **1.8 ms** | 43 ms |
+| Language | Runtime | Engine, random agent<br/><sub>moves/s</sub> | Expectimax d2<br/><sub>time / decision</sub> | Expectimax d3<br/><sub>search nodes/s</sub> | Peak memory<br/><sub>d2 suite</sub> | Canonical AI<br/><sub>time / decision</sub> |
+|---|---|--:|--:|--:|--:|--:|
+| Rust | native 1.98 | **4.25 M** | 12.5 µs | 71.7 M | 27 MB | 1.8 ms |
+| C | gcc 16 | 3.99 M | 11.1 µs | 72.8 M | **20 MB** | 1.8 ms |
+| C++ | g++ 16 | 3.72 M | 11.6 µs | 67.1 M | 30 MB | 1.7 ms |
+| Go | go 1.27 | 2.91 M | **11.1 µs** | **75.7 M** | 35 MB | 1.8 ms |
+| Java | OpenJDK 26 | 2.85 M | 13.5 µs | 67.4 M | 96 MB | **1.5 ms** |
+| C# | .NET 9 | 2.84 M | 14.2 µs | 55.7 M | 67 MB | 1.6 ms |
+| TypeScript | Node 26 | 1.08 M | 24.3 µs | 35.2 M | 114 MB | 3.7 ms |
+| Lua | Lua 5.5 | 276 K | 111 µs | 7.4 M | 39 MB | — |
+| Python | CPython 3.14 | 89 K | 306 µs | 2.8 M | 229 MB | 43 ms |
+
+Every language scores the same on the canonical suite (auto depth 2–4, 3 games): an average of **168,737**. Lua skips that suite by default because it takes over an hour in an interpreter.
 
 <sub>AMD Ryzen 7 5800H · reproduce with <code>pnpm bench</code> · live numbers on the <a href="https://2048.ifsvivek.in/runtimes">runtime dashboard</a></sub>
 
@@ -110,8 +120,13 @@ $ pnpm validate
   rust        ok    407 passed, 0 failed
   go          ok   1114 passed, 0 failed
   python      ok   1031 passed, 0 failed
-  engine-random-1k   expected 3d653498   typescript=3d653498 rust=3d653498 go=3d653498 python=3d653498   IDENTICAL
-  expectimax-d2-10   expected 33601a3a   typescript=33601a3a rust=33601a3a go=33601a3a python=33601a3a   IDENTICAL
+  c           ok   1114 passed, 0 failed
+  cpp         ok   1114 passed, 0 failed
+  java        ok   1114 passed, 0 failed
+  csharp      ok   1114 passed, 0 failed
+  lua         ok   1114 passed, 0 failed
+  engine-random-1k   expected 3d653498   typescript=… rust=… go=… python=… c=… cpp=… java=… csharp=… lua=3d653498   IDENTICAL
+  expectimax-d2-10   expected 33601a3a   typescript=… rust=… go=… python=… c=… cpp=… java=… csharp=… lua=33601a3a   IDENTICAL
 ```
 
 ## 📸 Tour
@@ -122,7 +137,7 @@ $ pnpm validate
 <td width="50%"><img src="docs/images/replay.jpg" alt="Replay viewer" /><p align="center"><sub><b>Replay viewer</b> — verified, step-by-step playback</sub></p></td>
 </tr>
 <tr>
-<td><img src="docs/images/runtimes.jpg" alt="Runtime comparison dashboard" /><p align="center"><sub><b>Runtime comparison</b> — TypeScript vs Rust vs Go vs Python</sub></p></td>
+<td><img src="docs/images/runtimes.jpg" alt="Runtime comparison dashboard" /><p align="center"><sub><b>Runtime comparison</b> — nine languages, one checksum</sub></p></td>
 <td><img src="docs/images/analytics.jpg" alt="Analytics dashboard" /><p align="center"><sub><b>Analytics</b> — growth, players, scores, agents</sub></p></td>
 </tr>
 </table>
@@ -138,7 +153,7 @@ flowchart LR
         B["🌐 Browser PWA<br/>engine + AI worker<br/>IndexedDB · offline"]
         A["🤖 External agents<br/>REST pull · webhook push"]
         M["🧠 MCP clients<br/>Claude Code · Cursor · Codex"]
-        R["⚙️ Native runners<br/>Rust · Go · Python · Node"]
+        R["⚙️ Native runners<br/>Rust · Go · C · C++ · C# · Java · Python · Lua · Node"]
     end
     subgraph Cloudflare
         W["g2048-web<br/>SvelteKit Worker"]
@@ -171,7 +186,7 @@ flowchart LR
 ```bash
 pnpm install
 pnpm test          # TypeScript unit + fixture tests
-pnpm validate      # all four languages against the shared fixtures
+pnpm validate      # all nine languages against the shared fixtures
 ```
 
 <details>
@@ -235,6 +250,7 @@ Full contract: [`spec/openapi.yaml`](spec/openapi.yaml) · agent protocol: [`spe
 | [`spec/`](spec) | Game & AI specs, agent protocol, OpenAPI, JSON schemas, **cross-language fixtures**, benchmark suites |
 | [`packages/engine`](packages/engine) | TypeScript reference engine, expectimax, simulation & benchmark core |
 | [`engines/rust`](engines/rust) · [`engines/go`](engines/go) · [`engines/python`](engines/python) | Ports with `validate` / `bench` / `play` / `serve` CLIs (Python also ships an API client) |
+| [`engines/c`](engines/c) · [`engines/cpp`](engines/cpp) · [`engines/csharp`](engines/csharp) · [`engines/java`](engines/java) · [`engines/lua`](engines/lua) | Standard-library-only ports with `validate` / `bench` / `play` CLIs, each built with `make` |
 | [`apps/api`](apps/api) | Hono API on Workers · D1 · Durable Objects · daily analytics cron |
 | [`apps/mcp`](apps/mcp) | MCP server — Hono, Streamable HTTP, stateless, service-bound to the API |
 | [`apps/web`](apps/web) | SvelteKit + Tailwind frontend (Worker, offline-first PWA) |

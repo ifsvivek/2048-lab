@@ -13,7 +13,7 @@
       "type": "object",
       "required": ["language", "runtime", "runtimeVersion", "engineVersion", "platform"],
       "properties": {
-        "language": { "enum": ["typescript", "rust", "go", "python"], "description": "extendable; lower-case language name" },
+        "language": { "enum": ["typescript", "rust", "go", "python", "c", "cpp", "java", "csharp", "lua"], "description": "extendable; lower-case language name" },
         "runtime": { "type": "string", "examples": ["node", "browser", "workerd", "native", "cpython", "pypy", "go", "wasm"] },
         "runtimeVersion": { "type": "string" },
         "engineVersion": { "type": "string" },

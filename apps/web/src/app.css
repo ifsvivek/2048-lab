@@ -196,7 +196,9 @@ body::after {
 }
 
 /* Data-viz tokens (validated: dataviz validate_palette.js, light on #fff, dark on #1a1917).
-   Language → categorical slot is fixed by entity: TS=1, Rust=2, Go=3, Python=4. */
+   Language → categorical slot is fixed by entity: TS=1, Rust=2, Go=3, Python=4, C=5, C++=6, C#=7, Java=8.
+   Lua=9 (navy) is outside the validated 8-slot set. Slots 5-9 need the relief rule:
+   every language chart carries direct labels, so hue never identifies a series alone. */
 :root {
 	--surface-chart: #ffffff;
 	--viz-text: #0b0b0b;
@@ -207,6 +209,11 @@ body::after {
 	--series-2: #eb6834;
 	--series-3: #1baf7a;
 	--series-4: #eda100;
+	--series-5: #e87ba4;
+	--series-6: #008300;
+	--series-7: #4a3aa7;
+	--series-8: #e34948;
+	--series-9: #1f2f7a;
 	--seq-400: #3987e5;
 }
 :root.dark {
@@ -219,5 +226,10 @@ body::after {
 	--series-2: #d95926;
 	--series-3: #199e70;
 	--series-4: #c98500;
+	--series-5: #d55181;
+	--series-6: #008300;
+	--series-7: #9085e9;
+	--series-8: #e66767;
+	--series-9: #8d9bd8;
 	--seq-400: #3987e5;
 }

@@ -61,7 +61,7 @@
 <div class="flex flex-wrap items-end justify-between gap-4">
 	<div>
 		<h1 class="text-3xl font-extrabold tracking-tight">Runtime comparison</h1>
-		<p class="mt-1 max-w-2xl text-ink-500">The same deterministic workload in four languages. Because every implementation plays the <em>identical</em> games, the only thing that differs is speed.</p>
+		<p class="mt-1 max-w-2xl text-ink-500">The same deterministic workload in nine languages. Because every implementation plays the <em>identical</em> games, the only thing that differs is speed.</p>
 	</div>
 </div>
 

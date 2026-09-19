@@ -1,0 +1,17 @@
+#!/bin/sh
+# Launcher for the C# port: runs build/publish/G2048.dll with a located dotnet.
+set -e
+dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+if [ -n "$DOTNET_ROOT" ] && [ -x "$DOTNET_ROOT/dotnet" ]; then
+  dotnet="$DOTNET_ROOT/dotnet"
+elif [ -x "$HOME/.dotnet/dotnet" ]; then
+  dotnet="$HOME/.dotnet/dotnet"
+  DOTNET_ROOT="$HOME/.dotnet"; export DOTNET_ROOT
+elif command -v dotnet >/dev/null 2>&1; then
+  dotnet=$(command -v dotnet)
+else
+  echo "g2048: dotnet runtime not found (set DOTNET_ROOT or install to ~/.dotnet)" >&2
+  exit 127
+fi
+DOTNET_CLI_TELEMETRY_OPTOUT=1; DOTNET_NOLOGO=1; export DOTNET_CLI_TELEMETRY_OPTOUT DOTNET_NOLOGO
+exec "$dotnet" "$dir/build/publish/G2048.dll" "$@"

@@ -1,0 +1,32 @@
+#!/bin/sh
+# g2048 — Lua port launcher.
+# Sets LUA_PATH relative to this script and execs the best available
+# Lua >= 5.4 (override with G2048_LUA=/path/to/lua). LuaJIT is not supported:
+# the port needs Lua 5.3+ native 64-bit integers and bitwise operators.
+DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd) || exit 2
+
+LUA_BIN=
+LUA_VER=
+for c in ${G2048_LUA:-} lua lua5.5 lua5.4 lua55 lua54; do
+  command -v "$c" >/dev/null 2>&1 || continue
+  ver=$("$c" -v 2>&1 | sed -n 's/^Lua \([0-9][0-9]*\.[0-9][0-9]*[0-9.]*\).*/\1/p' | head -n 1)
+  [ -n "$ver" ] || continue
+  major=${ver%%.*}
+  rest=${ver#*.}
+  minor=${rest%%.*}
+  if [ "$major" -gt 5 ] || { [ "$major" -eq 5 ] && [ "$minor" -ge 4 ]; }; then
+    LUA_BIN=$c
+    LUA_VER=$ver
+    break
+  fi
+done
+
+if [ -z "$LUA_BIN" ]; then
+  echo "g2048: no Lua >= 5.4 found (tried: ${G2048_LUA:-} lua lua5.5 lua5.4 lua55 lua54)" >&2
+  exit 2
+fi
+
+G2048_LUA_VERSION=$LUA_VER
+LUA_PATH="$DIR/?.lua;;"
+export G2048_LUA_VERSION LUA_PATH
+exec "$LUA_BIN" "$DIR/main.lua" "$@"

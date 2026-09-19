@@ -303,7 +303,7 @@ export function buildServer(api: ApiClient): McpServer {
     'compare_runtimes',
     {
       title: 'Compare runtimes',
-      description: 'Cross-language benchmark comparison (TypeScript, Rust, Go, Python) for one shared suite: best/latest throughput, latency, memory and score per implementation.',
+      description: 'Cross-language benchmark comparison (TypeScript, Rust, Go, Python, C, C++, C#, Java, Lua) for one shared suite: best/latest throughput, latency, memory and score per implementation.',
       inputSchema: {
         suite: z.string().optional().describe('Suite id, e.g. engine-random-1k (default), expectimax-d2-10, expectimax-d3-opening.'),
       },

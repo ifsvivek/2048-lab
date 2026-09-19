@@ -102,7 +102,7 @@
 	<div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 text-sm sm:grid-cols-[1.4fr_1fr_1fr] sm:px-6">
 		<div>
 			<div class="flex items-center gap-2 font-semibold"><img src={favicon} alt="" class="h-6 w-6" /> 2048 Lab</div>
-			<p class="mt-2 max-w-xs text-ink-500 dark:text-ink-400">A deterministic 2048 lab. Every game is a seed plus a list of moves, and it replays identically in four languages.</p>
+			<p class="mt-2 max-w-xs text-ink-500 dark:text-ink-400">A deterministic 2048 lab. Every game is a seed plus a list of moves, and it replays identically in nine languages.</p>
 		</div>
 		<div>
 			<div class="label mb-2">Build on it</div>

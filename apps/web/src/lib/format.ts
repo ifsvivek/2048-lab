@@ -27,4 +27,4 @@ export function fmtAgo(ts: number | null | undefined): string {
 	if (s < 86400) return `${Math.round(s / 3600)}h ago`;
 	return new Date(ts).toLocaleDateString();
 }
-export const LANG_LABEL: Record<string, string> = { typescript: 'TypeScript', rust: 'Rust', go: 'Go', python: 'Python' };
+export const LANG_LABEL: Record<string, string> = { typescript: 'TypeScript', rust: 'Rust', go: 'Go', python: 'Python', c: 'C', cpp: 'C++', java: 'Java', csharp: 'C#', lua: 'Lua' };

@@ -17,8 +17,8 @@ const suites = (opt('suites') ?? 'engine-random-1k,engine-random-10k,expectimax-
 const runtimes = selected(opt('lang'));
 const outDir = resolve(opt('out') ?? join(resultsDir, 'local'));
 const submit = opt('submit');
-// CPython takes hours on the canonical suite; skip it unless explicitly requested.
-const heavySkip = new Set(argv.includes('--all') ? [] : ['python:expectimax-canonical-3']);
+// Interpreters (CPython, Lua) take hours on the canonical suite; skip it unless explicitly requested.
+const heavySkip = new Set(argv.includes('--all') ? [] : ['python:expectimax-canonical-3', 'lua:expectimax-canonical-3']);
 
 /** The API stores ≤1000 per-game rows; checksum + summary already cover every game. */
 const forUpload = (r: { games: unknown[] }) => (r.games.length > 1000 ? { ...r, games: r.games.slice(0, 1000) } : r);

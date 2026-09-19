@@ -1,7 +1,7 @@
 # 2048 Canonical Game Specification — version 1
 
 This document is the single source of truth for game behaviour. Every engine
-(TypeScript, Rust, Go, Python, and any future port) MUST implement it exactly
+(TypeScript, Rust, Go, Python, C, C++, C#, Java, Lua, and any future port) MUST implement it exactly
 and MUST pass every fixture in `spec/fixtures/`. When prose and fixtures
 disagree, the fixtures win and the prose is a bug.
 
