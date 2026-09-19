@@ -1,6 +1,6 @@
 {
  "set": "baseline",
- "generatedAt": "2026-09-19T04:46:48.758Z",
+ "generatedAt": "2026-09-19T05:34:24.682Z",
  "runs": [
   {
    "schemaVersion": 1,
@@ -544,6 +544,70 @@
     "avgDecisionUs": 1770.7458258654844,
     "p50DecisionUs": 1407,
     "p99DecisionUs": 6106,
+    "tileDistribution": {
+     "8192": 3
+    },
+    "reachRates": {
+     "2048": 1,
+     "4096": 1,
+     "8192": 1,
+     "16384": 0,
+     "32768": 0,
+     "65536": 0
+    }
+   },
+   "checksum": "74c35bae",
+   "scores": [
+    177984,
+    152492,
+    175736
+   ]
+  },
+  {
+   "schemaVersion": 1,
+   "suiteId": "expectimax-canonical-3",
+   "specVersion": 1,
+   "implementation": {
+    "language": "python",
+    "runtime": "cpython",
+    "runtimeVersion": "3.14.7",
+    "engineVersion": "1.0.0",
+    "platform": "linux"
+   },
+   "environment": {
+    "os": "linux",
+    "osRelease": "7.2.6-1-cachyos",
+    "arch": "x86_64",
+    "cpus": 16,
+    "cpuModel": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "memoryBytes": 24494026752
+   },
+   "agent": {
+    "id": "expectimax",
+    "config": {}
+   },
+   "deterministic": true,
+   "startedAt": "2026-09-19T05:18:31.557Z",
+   "finishedAt": "2026-09-19T05:33:54.886Z",
+   "summary": {
+    "games": 3,
+    "avgScore": 168737.33333333334,
+    "medianScore": 175736,
+    "minScore": 152492,
+    "maxScore": 177984,
+    "maxTile": 8192,
+    "totalMoves": 21202,
+    "wallMs": 923328.8484659997,
+    "cpuMs": 920041.768813,
+    "gamesPerSec": 0.003249113254702418,
+    "movesPerSec": 22.962566408733554,
+    "decisionsPerSec": 22.962566408733554,
+    "nodes": 2076660781,
+    "nodesPerSec": 2249102.0230225916,
+    "peakMemoryBytes": 266952704,
+    "avgDecisionUs": 43494.503820394304,
+    "p50DecisionUs": 34660,
+    "p99DecisionUs": 149439,
     "tileDistribution": {
      "8192": 3
     },

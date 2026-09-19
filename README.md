@@ -99,7 +99,8 @@ nothing else**. Every row below has the same checksum in all four languages.
 | Expectimax depth 2 — time per decision | 24 µs | 13 µs | **11 µs** | 306 µs |
 | Expectimax depth 3 — search nodes/s | 35 M | 72 M | **76 M** | 2.8 M |
 | Peak memory, depth-2 suite | 115 MB | **28 MB** | 35 MB | 229 MB |
-| Canonical AI (auto depth 2–4), avg score over 3 games | 168,737 | 168,737 | 168,737 | ⏳ running |
+| Canonical AI (auto depth 2–4), avg score over 3 games | 168,737 | 168,737 | 168,737 | 168,737 |
+| Canonical AI — time per decision | 3.7 ms | 1.8 ms | **1.8 ms** | 43 ms |
 
 <sub>AMD Ryzen 7 5800H · reproduce with <code>pnpm bench</code> · live numbers on the <a href="https://g2048-web.ifsvivek.workers.dev/runtimes">runtime dashboard</a></sub>
 
