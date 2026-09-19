@@ -1,0 +1,27 @@
+[package]
+name = "g2048"
+version = "1.0.0"
+edition = "2021"
+description = "Rust port of the canonical deterministic 2048 engine and expectimax AI (spec/SPEC.md, spec/AI.md)."
+publish = false
+build = "build.rs"
+
+[lib]
+name = "g2048"
+path = "src/lib.rs"
+
+[[bin]]
+name = "g2048"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+# The fixture tests replay full expectimax games; keep plain `cargo test` fast too.
+[profile.test]
+opt-level = 3
