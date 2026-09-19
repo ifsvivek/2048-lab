@@ -2,6 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import type { BenchmarkResult, GameResult } from '@g2048/engine/sim';
 	import { AiWorker } from '$lib/ai/client';
+	import { count } from '$lib/telemetry';
 	import { api } from '$lib/api';
 	import { EXPECTED, type Run, SUITES, remoteRuns } from '$lib/bench-data';
 	import Columns from '$lib/charts/Columns.svelte';
@@ -45,6 +46,7 @@
 		result = null;
 		submitted = null;
 		progress = { done: 0, total: suite.seeds.count, last: null };
+		count('benchmarks_run_browser');
 		worker?.terminate();
 		worker = new AiWorker();
 		try {

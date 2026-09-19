@@ -34,7 +34,7 @@
 
 <script lang="ts">
 	import { moveMotions } from '@g2048/engine';
-	import { untrack } from 'svelte';
+	import { type Snippet, untrack } from 'svelte';
 
 	interface Props {
 		board: Uint8Array;
@@ -42,11 +42,12 @@
 		step?: BoardStep | null;
 		animate?: boolean;
 		label?: string;
-		/** highlight the cell of the last spawn */
 		dim?: boolean;
+		/** content layered over the board with the board's exact bounds and radius (e.g. game over) */
+		overlay?: Snippet;
 	}
 
-	let { board, step = null, animate = true, label = 'Game board', dim = false }: Props = $props();
+	let { board, step = null, animate = true, label = 'Game board', dim = false, overlay }: Props = $props();
 
 	type Tile = { id: number; e: number; pos: number; kind: 'idle' | 'new' | 'merged'; dying: boolean };
 
@@ -108,7 +109,7 @@
 	}
 </script>
 
-<div class="board relative aspect-square w-full select-none" class:opacity-60={dim} style="container-type: inline-size;">
+<div class="board relative isolate aspect-square w-full select-none" class:opacity-60={dim} style="container-type: inline-size;">
 	<!-- Accessible representation -->
 	<table class="sr-only" aria-label={label}>
 		<tbody>
@@ -150,6 +151,10 @@
 			</div>
 		{/each}
 	</div>
+
+	{#if overlay}
+		<div class="absolute inset-0 z-10 overflow-hidden rounded-[3.2cqw]">{@render overlay()}</div>
+	{/if}
 </div>
 
 <style>

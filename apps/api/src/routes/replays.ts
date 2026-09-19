@@ -15,6 +15,7 @@ import {
   verifyReplay,
 } from '@g2048/engine';
 import { type GameRecord, getGameRow, rollupStatements, rowToReplay, upsertGame } from '../lib/db.ts';
+import { isClientId } from '../lib/analytics.ts';
 import { ApiError } from '../lib/errors.ts';
 import { type AppEnv, body, edgeCached, optInt, optObj, optStr, rateLimit, rpc } from '../lib/http.ts';
 import type { LiveReplay } from '../do/game-session.ts';
@@ -88,8 +89,17 @@ replays.post('/', async (c) => {
     runtime: optObj(b.runtime, 'runtime') ?? null,
     startedAt: optInt(b.startedAt, 'startedAt', 0, now + 60_000) ?? now,
     finishedAt: optInt(b.finishedAt, 'finishedAt', 0, now + 60_000) ?? now,
+    // Anonymous browser identifiers (random tokens; no personal data).
+    playerId: isClientId(b.playerId) ? b.playerId : null,
+    sessionId: isClientId(b.sessionId) ? b.sessionId : null,
   };
-  await c.env.DB.batch([upsertGame(c.env.DB, rec), ...rollupStatements(c.env.DB, rec)]);
+  const stats = optObj(b.stats, 'stats');
+  const facts = {
+    agentKind: rec.playerKind === 'agent' ? 'browser' : null,
+    depthSum: typeof stats?.depthSum === 'number' ? Math.max(0, Math.round(stats.depthSum)) : 0,
+    depthSamples: typeof stats?.depthSamples === 'number' ? Math.max(0, Math.round(stats.depthSamples)) : 0,
+  };
+  await c.env.DB.batch([upsertGame(c.env.DB, rec), ...rollupStatements(c.env.DB, rec, facts)]);
   const row = await getGameRow(c.env.DB, rec.id);
   return c.json(rowToReplay(row!), 201);
 });

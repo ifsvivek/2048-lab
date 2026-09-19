@@ -13,10 +13,19 @@
 		color: string;
 		detail?: string;
 	}
-	let { items, format, title, unit = '', lowerIsBetter = false }: { items: Item[]; format: (v: number) => string; title: string; unit?: string; lowerIsBetter?: boolean } = $props();
+	let {
+		items,
+		format,
+		title,
+		unit = '',
+		lowerIsBetter = false,
+		/** mark the best entity (comparisons); off for distributions */
+		markBest = true,
+		tickCount = 4
+	}: { items: Item[]; format: (v: number) => string; title: string; unit?: string; lowerIsBetter?: boolean; markBest?: boolean; tickCount?: number } = $props();
 
 	const max = $derived(Math.max(0, ...items.map((i) => i.value ?? 0)));
-	const ticks = $derived(niceTicks(max));
+	const ticks = $derived(niceTicks(max, tickCount));
 	const top = $derived(ticks[ticks.length - 1] || 1);
 	const best = $derived.by(() => {
 		const vals = items.filter((i) => i.value !== null && i.value > 0);
@@ -48,7 +57,7 @@
 							></div>
 							<span class="ml-2 text-sm font-semibold whitespace-nowrap text-[var(--viz-text)] tabular-nums">
 								{format(it.value)}{unit}
-								{#if best === it.key && items.filter((i) => i.value !== null).length > 1}<span class="ml-1 text-[11px] font-medium text-[var(--viz-muted)]">{lowerIsBetter ? 'lowest' : 'best'}</span>{/if}
+								{#if markBest && best === it.key && items.filter((i) => i.value !== null).length > 1}<span class="ml-1 text-[11px] font-medium text-[var(--viz-muted)]">{lowerIsBetter ? 'lowest' : 'best'}</span>{/if}
 							</span>
 						{:else}
 							<span class="text-xs text-[var(--viz-muted)]">no run yet</span>

@@ -22,6 +22,8 @@ export interface LocalGame {
 	over: boolean;
 	/** 'local' → not uploaded; 'synced' → stored server-side (replayCode may have been reassigned) */
 	sync: 'local' | 'pending' | 'synced' | 'skipped';
+	/** search statistics when an AI played (for agent analytics) */
+	aiStats?: { depthSum: number; depthSamples: number };
 }
 
 const DB_NAME = 'g2048';

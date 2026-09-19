@@ -302,6 +302,27 @@ export function buildServer(api: ApiClient): McpServer {
   );
 
   server.registerTool(
+    'get_analytics',
+    {
+      title: 'Platform analytics',
+      description:
+        'Analytics & insights. report: overview (executive KPIs), platform (growth trends; granularity day|week|month), players (unique/new/returning, retention), scores (distribution, percentiles P50–P99.9, trend; kind all|human|agent), tiles (achievement rates), moves (length, direction frequency, latency), agents (per-agent median/P90/P99, decision time, depth), leaderboards (scores/tiles/longest runs, agents, runtimes), devices (aggregated audience).',
+      inputSchema: {
+        report: z.enum(['overview', 'platform', 'players', 'scores', 'tiles', 'moves', 'agents', 'leaderboards', 'devices']),
+        kind: z.enum(['all', 'human', 'agent']).optional(),
+        granularity: z.enum(['day', 'week', 'month']).optional(),
+      },
+      annotations: { readOnlyHint: true, openWorldHint: false },
+    },
+    ({ report, kind, granularity }) => {
+      const q = new URLSearchParams();
+      if (kind) q.set('kind', kind);
+      if (granularity) q.set('granularity', granularity);
+      return run(() => api.call('GET', `/v1/analytics/${report}${q.size ? `?${q}` : ''}`));
+    },
+  );
+
+  server.registerTool(
     'get_rules',
     {
       title: 'Game rules',

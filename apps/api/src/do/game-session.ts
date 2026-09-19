@@ -67,6 +67,9 @@ export class GameSession extends DurableObject<Env> {
   private driver: Driver | null = null;
   private driverFailures = 0;
   private finishedAt: number | null = null;
+  /** Σ search depth / samples reported in move metrics (for agent analytics). */
+  private depthSum = 0;
+  private depthSamples = 0;
   private readonly sql: SqlStorage;
 
   constructor(ctx: DurableObjectState, env: Env) {
@@ -196,6 +199,10 @@ export class GameSession extends DurableObject<Env> {
       applied++;
     }
     const maxMoves = Number(this.env.MAX_MOVES_PER_GAME) || 100000;
+    if (applied > 0 && typeof metrics?.depth === 'number' && metrics.depth > 0) {
+      this.depthSum += metrics.depth * applied;
+      this.depthSamples += applied;
+    }
     if (applied > 0) {
       // Persist before anything observes the new state. sql.exec is synchronous and
       // the output gate holds the response until the write is durable.
@@ -254,12 +261,16 @@ export class GameSession extends DurableObject<Env> {
     this.finished = status;
     this.finishedAt = Date.now();
     const rec = this.record(status);
+    const meta = this.meta!;
     const min = Number(this.env.MIN_STORE_MOVES) || 10;
     if (status === 'abandoned' && rec.moveCount < min) {
       // Not worth keeping: drop the placeholder row instead of storing noise.
       await this.env.DB.prepare('DELETE FROM games WHERE id = ?1').bind(rec.id).run();
     } else {
-      await this.env.DB.batch([upsertGame(this.env.DB, rec), ...rollupStatements(this.env.DB, rec)]);
+      await this.env.DB.batch([
+        upsertGame(this.env.DB, rec),
+        ...rollupStatements(this.env.DB, rec, { agentKind: meta.driver?.type ?? (rec.playerKind === 'agent' ? 'api' : null), depthSum: this.depthSum, depthSamples: this.depthSamples }),
+      ]);
     }
     this.broadcast({ type: 'end', status, state: this.state() });
     log('info', 'game.finished', { gameId: rec.id, status, score: rec.score, moves: rec.moveCount, maxTile: rec.maxTile, source: rec.source });

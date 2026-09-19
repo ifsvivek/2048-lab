@@ -5,6 +5,8 @@
 	import { onMount } from 'svelte';
 	import { flushPending } from '$lib/sync';
 	import { online, theme } from '$lib/theme.svelte';
+	import { afterNavigate } from '$app/navigation';
+	import { count, startTelemetry } from '$lib/telemetry';
 
 	let { children } = $props();
 
@@ -16,12 +18,16 @@
 		{ href: '/runtimes', label: 'Runtimes' },
 		{ href: '/leaderboard', label: 'Leaderboard' },
 		{ href: '/agents', label: 'Agents' },
+		{ href: '/analytics', label: 'Analytics' },
 		{ href: '/history', label: 'History' }
 	];
 
 	const active = (href: string) => page.url.pathname === href || page.url.pathname.startsWith(href + '/');
 
+	afterNavigate(() => count('page_views'));
+
 	onMount(() => {
+		startTelemetry();
 		flushPending();
 		addEventListener('online', flushPending);
 		return () => removeEventListener('online', flushPending);

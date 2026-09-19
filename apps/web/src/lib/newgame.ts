@@ -1,5 +1,6 @@
 import { generateReplayCode, randomSeed, ulid } from '@g2048/engine';
 import { type LocalGame, saveGame } from './store';
+import { count } from './telemetry';
 
 /** Create a local game record: deterministic seed, game ID and replay code — no network needed. */
 export async function createLocalGame(opts: { seed?: number; playerKind?: 'human' | 'agent'; agent?: LocalGame['agent'] } = {}): Promise<LocalGame> {
@@ -21,5 +22,6 @@ export async function createLocalGame(opts: { seed?: number; playerKind?: 'human
 		sync: 'local'
 	};
 	await saveGame(g);
+	count(opts.playerKind === 'agent' ? 'ai_games_started' : 'games_started');
 	return g;
 }

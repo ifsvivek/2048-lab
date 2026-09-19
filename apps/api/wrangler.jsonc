@@ -20,6 +20,8 @@
     { "name": "CREATE_LIMITER", "namespace_id": "2048001", "simple": { "limit": 30, "period": 60 } },
     { "name": "WRITE_LIMITER", "namespace_id": "2048002", "simple": { "limit": 600, "period": 60 } }
   ],
+  // Daily analytics rollup (players, retention, snapshots). Cron triggers are free.
+  "triggers": { "crons": ["15 0 * * *"] },
   "vars": {
     "MIN_STORE_MOVES": "10",
     "LIVE_IDLE_TIMEOUT_MS": "86400000",

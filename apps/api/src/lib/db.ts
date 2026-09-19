@@ -1,5 +1,6 @@
 /** D1 access. Every write path is a single `batch()` so it is one round trip. */
 import { type Replay, SPEC_VERSION, boardFromHex, classifyGameRef, maxTile } from '@g2048/engine';
+import { type GameFacts, analyticsStatements } from './analytics.ts';
 import type { GameRow } from './state.ts';
 
 export interface GameRecord {
@@ -23,6 +24,8 @@ export interface GameRecord {
   runtime: Record<string, unknown> | null;
   startedAt: number;
   finishedAt: number | null;
+  playerId?: string | null;
+  sessionId?: string | null;
 }
 
 const REACH = [2048, 4096, 8192, 16384, 32768, 65536];
@@ -36,8 +39,8 @@ export function upsertGame(db: D1Database, g: GameRecord): D1PreparedStatement {
     .prepare(
       `INSERT INTO games (id, replay_code, status, source, spec_version, seed, moves, timing, score, max_tile, move_count,
          final_board, history_hash, player_kind, agent_id, agent_name, agent_version, agent_config, runtime,
-         started_at, finished_at, created_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22)
+         started_at, finished_at, created_at, player_id, session_id)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24)
        ON CONFLICT(id) DO UPDATE SET status = excluded.status, moves = excluded.moves, timing = excluded.timing,
          score = excluded.score, max_tile = excluded.max_tile, move_count = excluded.move_count,
          final_board = excluded.final_board, history_hash = excluded.history_hash, finished_at = excluded.finished_at`,
@@ -65,27 +68,14 @@ export function upsertGame(db: D1Database, g: GameRecord): D1PreparedStatement {
       g.startedAt,
       g.finishedAt,
       Date.now(),
+      g.playerId ?? null,
+      g.sessionId ?? null,
     );
 }
 
-/** Statements that roll a finished game into the aggregates (stats_daily + agent counters). */
-export function rollupStatements(db: D1Database, g: GameRecord): D1PreparedStatement[] {
-  const day = new Date(g.finishedAt ?? Date.now()).toISOString().slice(0, 10);
-  const r = REACH.map((t) => (g.maxTile >= t ? 1 : 0));
-  const stmts = [
-    db
-      .prepare(
-        `INSERT INTO stats_daily (day, player_kind, games, total_score, total_moves, best_score, best_tile,
-           r2048, r4096, r8192, r16384, r32768, r65536)
-         VALUES (?1, ?2, 1, ?3, ?4, ?3, ?5, ?6, ?7, ?8, ?9, ?10, ?11)
-         ON CONFLICT(day, player_kind) DO UPDATE SET games = games + 1,
-           total_score = total_score + excluded.total_score, total_moves = total_moves + excluded.total_moves,
-           best_score = MAX(best_score, excluded.best_score), best_tile = MAX(best_tile, excluded.best_tile),
-           r2048 = r2048 + excluded.r2048, r4096 = r4096 + excluded.r4096, r8192 = r8192 + excluded.r8192,
-           r16384 = r16384 + excluded.r16384, r32768 = r32768 + excluded.r32768, r65536 = r65536 + excluded.r65536`,
-      )
-      .bind(day, g.playerKind, g.score, g.moveCount, g.maxTile, ...r),
-  ];
+/** Statements that roll a finished game into every aggregate (analytics + agent counters). */
+export function rollupStatements(db: D1Database, g: GameRecord, facts: GameFacts = {}): D1PreparedStatement[] {
+  const stmts = analyticsStatements(db, g, { playerId: g.playerId, sessionId: g.sessionId, ...facts });
   if (g.agentId) {
     const reached = REACH.filter((t) => g.maxTile >= t);
     const reachedExpr = reached.reduce(

@@ -119,6 +119,10 @@
 			lastAiMove = d.move;
 			if (!aiOn) return;
 			aiUsed = true;
+			if (record && d.metrics.depth) {
+				const s = record.aiStats ?? { depthSum: 0, depthSamples: 0 };
+				record.aiStats = { depthSum: s.depthSum + d.metrics.depth, depthSamples: s.depthSamples + 1 };
+			}
 			play(d.move, d.metrics.timeUs);
 		} finally {
 			thinking = false;
@@ -190,22 +194,22 @@
 			</div>
 
 			<div class="relative rounded-[22px]" use:swipe={(d) => !aiOn && play(d)}>
-				<Board {board} {step} label="2048 board, score {score}" />
-				{#if hint !== null}
-					<div class="pointer-events-none absolute inset-x-0 -bottom-3 flex justify-center">
-						<span class="rounded-full bg-ink-900 px-3 py-1 text-xs font-semibold text-white shadow dark:bg-accent-500 dark:text-ink-950">Hint: {DIRECTION_NAMES[hint]}</span>
-					</div>
-				{/if}
-				{#if over}
-					<div class="absolute inset-0 flex flex-col items-center justify-center rounded-[3.2cqw] bg-ink-50/85 p-6 text-center backdrop-blur-sm dark:bg-ink-950/80" role="dialog" aria-label="Game over">
+				<Board {board} {step} label="2048 board, score {score}" overlay={over ? gameOver : undefined} />
+				{#snippet gameOver()}
+					<div class="flex h-full w-full flex-col items-center justify-center bg-ink-50/85 p-6 text-center backdrop-blur-sm dark:bg-ink-950/80" role="dialog" aria-label="Game over">
 						<p class="label">Game over</p>
 						<p class="mt-1 text-5xl font-extrabold tracking-tight tabular-nums">{fmtInt(score)}</p>
 						<p class="mt-1 text-sm text-ink-500">max tile {maxTile(board).toLocaleString()} · {moveCount} moves</p>
 						<div class="mt-5 flex flex-wrap justify-center gap-2">
 							<button class="btn-primary" onclick={() => newGame()}>New game</button>
-							<a class="btn-ghost" href="/replay/{record.replayCode}">Watch replay</a>
+							<a class="btn-ghost" href="/replay/{record?.replayCode}">Watch replay</a>
 							<button class="btn-ghost" onclick={() => newGame(true)}>Retry this seed</button>
 						</div>
+					</div>
+				{/snippet}
+				{#if hint !== null}
+					<div class="pointer-events-none absolute inset-x-0 -bottom-3 z-10 flex justify-center">
+						<span class="rounded-full bg-ink-900 px-3 py-1 text-xs font-semibold text-white shadow dark:bg-accent-500 dark:text-ink-950">Hint: {DIRECTION_NAMES[hint]}</span>
 					</div>
 				{/if}
 			</div>

@@ -26,7 +26,10 @@ function fromLocal(g: LocalGame): ResolvedReplay {
 	};
 }
 
+import { count } from './telemetry';
+
 export async function resolveReplay(ref: string): Promise<ResolvedReplay> {
+	count('replay_views');
 	const c = classifyGameRef(ref);
 	if (!c) throw new ApiError('BAD_REF', 'Not a valid replay code or game ID.', 400);
 	if (c.kind === 'id') {

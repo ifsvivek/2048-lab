@@ -7,6 +7,7 @@
  *   /v1/benchmarks   suites, cross-language results, comparisons, server sessions
  *   /v1/leaderboard  top games and agents
  *   /v1/stats        aggregate platform statistics
+ *   /v1/analytics    analytics & insights (aggregate tables only; see migrations/0002)
  *
  * Contract: spec/openapi.yaml. Errors: { error: true, code, message, details? }.
  */
@@ -17,7 +18,9 @@ import { SPEC_VERSION } from '@g2048/engine';
 import { ApiError, decodeRpcError } from './lib/errors.ts';
 import type { AppEnv } from './lib/http.ts';
 import { log } from './lib/log.ts';
+import { runRollup } from './lib/rollup.ts';
 import { agents } from './routes/agents.ts';
+import { analytics } from './routes/analytics.ts';
 import { benchmarks } from './routes/benchmarks.ts';
 import { games } from './routes/games.ts';
 import { replays } from './routes/replays.ts';
@@ -59,7 +62,7 @@ app.get('/', (c) =>
     version: API_VERSION,
     specVersion: SPEC_VERSION,
     docs: 'https://github.com/ (see spec/openapi.yaml and spec/AGENT_PROTOCOL.md)',
-    endpoints: ['/v1/games', '/v1/replays', '/v1/agents', '/v1/benchmarks', '/v1/leaderboard', '/v1/stats', '/v1/health'],
+    endpoints: ['/v1/games', '/v1/replays', '/v1/agents', '/v1/benchmarks', '/v1/leaderboard', '/v1/stats', '/v1/analytics/overview', '/v1/health'],
   }),
 );
 
@@ -69,6 +72,7 @@ app.route('/v1/games', games);
 app.route('/v1/replays', replays);
 app.route('/v1/agents', agents);
 app.route('/v1/benchmarks', benchmarks);
+app.route('/v1/analytics', analytics);
 app.route('/v1', stats);
 
 app.notFound((c) => c.json(new ApiError('NOT_FOUND', `no route for ${c.req.method} ${c.req.path}`).toJSON(), 404));
@@ -80,4 +84,10 @@ app.onError((err, c) => {
   return c.json(new ApiError('INTERNAL', 'internal error').toJSON(), 500);
 });
 
-export default app;
+export default {
+  fetch: app.fetch,
+  /** Daily analytics rollup (wrangler.jsonc triggers.crons). */
+  async scheduled(_event: ScheduledController, env: AppEnv['Bindings'], ctx: ExecutionContext) {
+    ctx.waitUntil(runRollup(env.DB));
+  },
+} satisfies ExportedHandler<AppEnv['Bindings']>;

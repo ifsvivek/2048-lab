@@ -81,19 +81,20 @@ agents.get('/:ref{.+}', async (c) => {
   const builtin = BUILTIN_AGENTS.find((a) => a.id === ref || a.name === ref);
   if (builtin) {
     return edgeCached(c, 60, async () => {
-      const s = await c.env.DB.prepare(
-        `SELECT COUNT(*) AS games, COALESCE(AVG(score), 0) AS avg, COALESCE(MAX(score), 0) AS best, COALESCE(MAX(max_tile), 0) AS tile,
-                COALESCE(SUM(move_count), 0) AS moves, COALESCE(SUM(max_tile >= 2048), 0) AS r2048
-         FROM games WHERE agent_id = ?1 AND status != 'live'`,
-      )
-        .bind(builtin.id)
-        .first<{ games: number; avg: number; best: number; tile: number; moves: number; r2048: number }>();
+      // Aggregates come from agent_stats (maintained incrementally), never a scan of games.
+      const s = await c.env.DB.prepare('SELECT * FROM agent_stats WHERE agent_key = ?1').bind(builtin.id).first<Record<string, number>>();
       const games = s?.games ?? 0;
-      const top = await topGames(c, builtin.id);
       return {
         ...builtin,
-        stats: { gamesPlayed: games, totalMoves: s?.moves ?? 0, avgScore: Math.round(s?.avg ?? 0), bestScore: s?.best ?? 0, bestTile: s?.tile ?? 0, reachRates: { 2048: games ? (s?.r2048 ?? 0) / games : 0 } },
-        topGames: top,
+        stats: {
+          gamesPlayed: games,
+          totalMoves: s?.total_moves ?? 0,
+          avgScore: games ? Math.round(s!.total_score / games) : 0,
+          bestScore: s?.best_score ?? 0,
+          bestTile: s?.best_tile ?? 0,
+          reachRates: Object.fromEntries([2048, 4096, 8192, 16384, 32768, 65536].map((t) => [t, games ? (s?.[`r${t}`] ?? 0) / games : 0])),
+        },
+        topGames: await topGames(c, builtin.id),
       };
     });
   }

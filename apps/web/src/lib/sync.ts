@@ -5,6 +5,7 @@
 import { SPEC_VERSION } from '@g2048/engine';
 import { ApiError, ApiUnavailable, api } from './api';
 import { MIN_UPLOAD_MOVES } from './config';
+import { playerId, sessionId } from './telemetry';
 import { type LocalGame, allGames, saveGame } from './store';
 
 export async function uploadGame(g: LocalGame): Promise<LocalGame> {
@@ -28,7 +29,10 @@ export async function uploadGame(g: LocalGame): Promise<LocalGame> {
 				runtime: { language: 'typescript', runtime: 'browser', platform: 'web' },
 				startedAt: g.startedAt,
 				finishedAt: g.finishedAt,
-				final: { score: g.score, moveCount: g.moves.length }
+				final: { score: g.score, moveCount: g.moves.length },
+				playerId: playerId(),
+				sessionId: sessionId(),
+				stats: g.aiStats
 			}
 		});
 		const synced = { ...g, replayCode: r.replayCode, sync: 'synced' as const };
