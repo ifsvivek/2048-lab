@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://2048.dev/schemas/benchmark-result.json",
+  "title": "BenchmarkResult",
+  "description": "Output of running one benchmark suite (spec/benchmarks/*.json) on one implementation. Emitted identically by every language's bench CLI and accepted by POST /v1/benchmarks/runs.",
+  "type": "object",
+  "required": ["schemaVersion", "suiteId", "specVersion", "implementation", "environment", "agent", "deterministic", "startedAt", "finishedAt", "games", "summary", "checksum"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "suiteId": { "type": "string" },
+    "specVersion": { "type": "integer" },
+    "implementation": {
+      "type": "object",
+      "required": ["language", "runtime", "runtimeVersion", "engineVersion", "platform"],
+      "properties": {
+        "language": { "enum": ["typescript", "rust", "go", "python"], "description": "extendable; lower-case language name" },
+        "runtime": { "type": "string", "examples": ["node", "browser", "workerd", "native", "cpython", "pypy", "go", "wasm"] },
+        "runtimeVersion": { "type": "string" },
+        "engineVersion": { "type": "string" },
+        "platform": { "type": "string", "examples": ["linux", "darwin", "win32", "browser"] }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Free-form host facts: os, arch, cpu, cores, memoryBytes, userAgent, …",
+      "additionalProperties": { "type": ["string", "number"] }
+    },
+    "agent": {
+      "type": "object",
+      "required": ["id"],
+      "properties": { "id": { "type": "string" }, "config": { "type": "object" } }
+    },
+    "deterministic": { "type": "boolean" },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "finishedAt": { "type": "string", "format": "date-time" },
+    "games": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["seed", "score", "maxTile", "moveCount", "over", "historyHash", "wallMs", "nodes"],
+        "properties": {
+          "seed": { "type": "integer" },
+          "score": { "type": "integer" },
+          "maxTile": { "type": "integer" },
+          "moveCount": { "type": "integer" },
+          "over": { "type": "boolean" },
+          "historyHash": { "type": "string", "pattern": "^[0-9a-f]{8}$" },
+          "wallMs": { "type": "number" },
+          "nodes": { "type": "integer" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["games", "avgScore", "medianScore", "minScore", "maxScore", "maxTile", "totalMoves", "wallMs", "cpuMs", "gamesPerSec", "movesPerSec", "decisionsPerSec", "nodes", "nodesPerSec", "peakMemoryBytes", "avgDecisionUs", "p50DecisionUs", "p99DecisionUs", "tileDistribution", "reachRates"],
+      "properties": {
+        "games": { "type": "integer" },
+        "avgScore": { "type": "number" },
+        "medianScore": { "type": "number", "description": "scores sorted ascending, element at index floor(n/2)" },
+        "minScore": { "type": "integer" },
+        "maxScore": { "type": "integer" },
+        "maxTile": { "type": "integer" },
+        "totalMoves": { "type": "integer" },
+        "wallMs": { "type": "number" },
+        "cpuMs": { "type": ["number", "null"] },
+        "gamesPerSec": { "type": "number" },
+        "movesPerSec": { "type": "number" },
+        "decisionsPerSec": { "type": "number" },
+        "nodes": { "type": "integer" },
+        "nodesPerSec": { "type": "number" },
+        "peakMemoryBytes": { "type": ["integer", "null"] },
+        "avgDecisionUs": { "type": ["number", "null"] },
+        "p50DecisionUs": { "type": ["number", "null"], "description": "sorted[floor(0.5 n)]" },
+        "p99DecisionUs": { "type": ["number", "null"], "description": "sorted[min(n-1, floor(0.99 n))]" },
+        "tileDistribution": { "type": "object", "description": "max tile value -> number of games ending with exactly that max tile", "additionalProperties": { "type": "integer" } },
+        "reachRates": { "type": "object", "description": "keys 2048,4096,8192,16384,32768,65536 -> fraction of games with maxTile >= key", "additionalProperties": { "type": "number" } }
+      }
+    },
+    "checksum": { "type": "string", "pattern": "^[0-9a-f]{8}$", "description": "fnv1a32 over the ASCII bytes of all games' historyHash strings concatenated in seed order" }
+  }
+}

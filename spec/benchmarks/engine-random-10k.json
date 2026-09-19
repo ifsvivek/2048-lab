@@ -1,0 +1,11 @@
+{
+  "id": "engine-random-10k",
+  "name": "Engine throughput — 10,000 random games",
+  "description": "Larger random-agent workload for stable engine throughput numbers.",
+  "specVersion": 1,
+  "agent": { "id": "random" },
+  "seeds": { "start": 1, "count": 10000 },
+  "maxMoves": 0,
+  "timeDecisions": false,
+  "tags": ["engine", "throughput"]
+}

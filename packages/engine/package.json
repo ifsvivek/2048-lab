@@ -1,0 +1,16 @@
+{
+  "name": "@g2048/engine",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Canonical TypeScript reference implementation of the 2048 spec, plus the built-in agents.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./ai": "./src/ai/index.ts",
+    "./sim": "./src/sim.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p ."
+  }
+}

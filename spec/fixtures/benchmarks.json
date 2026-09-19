@@ -1,0 +1,28 @@
+{
+ "specVersion": 1,
+ "generatedBy": "typescript-reference",
+ "description": "Expected deterministic outcomes of the shared benchmark suites. Every runtime must report the same checksum, move and score totals.",
+ "suites": {
+  "engine-random-1k": {
+   "checksum": "3d653498",
+   "games": 1000,
+   "totalMoves": 119111,
+   "totalScore": 1107672,
+   "maxScore": 3740
+  },
+  "expectimax-d2-10": {
+   "checksum": "33601a3a",
+   "games": 10,
+   "totalMoves": 16067,
+   "totalScore": 308340,
+   "maxScore": 60880
+  },
+  "expectimax-d3-opening": {
+   "checksum": "dcc2b8ef",
+   "games": 5,
+   "totalMoves": 1500,
+   "totalScore": 22828,
+   "maxScore": 4776
+  }
+ }
+}

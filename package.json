@@ -1,0 +1,24 @@
+{
+  "name": "g2048-platform",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.0.9",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "fixtures": "pnpm --filter @g2048/tools fixtures",
+    "validate": "pnpm --filter @g2048/tools validate",
+    "bench": "pnpm --filter @g2048/tools bench",
+    "dev:web": "pnpm --filter @g2048/web dev",
+    "dev:api": "pnpm --filter @g2048/api dev",
+    "build": "pnpm -r --if-present build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
+}

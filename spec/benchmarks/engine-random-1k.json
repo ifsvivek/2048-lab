@@ -1,0 +1,11 @@
+{
+  "id": "engine-random-1k",
+  "name": "Engine throughput — 1,000 random games",
+  "description": "SPEC §10 random agent over seeds 1..1000. Measures raw rules-engine speed (move + spawn + game-over checks). Outcomes are identical across languages, so the checksum doubles as a determinism check.",
+  "specVersion": 1,
+  "agent": { "id": "random" },
+  "seeds": { "start": 1, "count": 1000 },
+  "maxMoves": 0,
+  "timeDecisions": false,
+  "tags": ["engine", "throughput", "quick"]
+}

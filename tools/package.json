@@ -1,0 +1,16 @@
+{
+  "name": "@g2048/tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Fixture generation, cross-language validation and benchmark orchestration.",
+  "scripts": {
+    "fixtures": "node src/gen-fixtures.ts",
+    "validate": "node src/validate.ts",
+    "bench": "node src/bench.ts",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@g2048/engine": "workspace:*"
+  }
+}

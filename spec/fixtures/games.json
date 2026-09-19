@@ -1,0 +1,632 @@
+{
+ "specVersion": 1,
+ "generatedBy": "typescript-reference",
+ "description": "SPEC §6/§10: new-game states, and full games replayed from (seed, moves). Random-agent games also verify the SPEC §10 agent (replaying the agent must yield exactly `moves`).",
+ "newGames": [
+  {
+   "seed": 0,
+   "board": "0100000010000000",
+   "rngState": [
+    2190444731,
+    2110970850,
+    1895269158,
+    2402239551
+   ],
+   "historyHash": "f02d56cb"
+  },
+  {
+   "seed": 1,
+   "board": "0000001000000010",
+   "rngState": [
+    3944469308,
+    2053882130,
+    2723049814,
+    950341786
+   ],
+   "historyHash": "36e3d4e5"
+  },
+  {
+   "seed": 7,
+   "board": "1000000000000001",
+   "rngState": [
+    4004871382,
+    3862909744,
+    3624387629,
+    603720124
+   ],
+   "historyHash": "360d9857"
+  },
+  {
+   "seed": 42,
+   "board": "0010000000001000",
+   "rngState": [
+    2211311650,
+    1639752229,
+    3329302215,
+    2393945593
+   ],
+   "historyHash": "e121f9fd"
+  },
+  {
+   "seed": 99,
+   "board": "0000000001100000",
+   "rngState": [
+    2840917849,
+    1731915582,
+    4128745842,
+    3607577062
+   ],
+   "historyHash": "3169b403"
+  },
+  {
+   "seed": 2048,
+   "board": "0010000000001000",
+   "rngState": [
+    1971068356,
+    2059648246,
+    3823907118,
+    4228240150
+   ],
+   "historyHash": "e121f9fd"
+  },
+  {
+   "seed": 4294967295,
+   "board": "0000001000000001",
+   "rngState": [
+    271755281,
+    1374410621,
+    598756941,
+    290117792
+   ],
+   "historyHash": "11e15c0f"
+  }
+ ],
+ "games": [
+  {
+   "seed": 1,
+   "agent": "random",
+   "moves": "RRULUDRDUDLRLRLDLRUDRDUDLRLDUDRDDRUDRURRUDLURLLDULRUDLLDRLRDDLRDRLUDLRULRURDLRLLUDULRLULRRLDLULDRDRRRULURRDRURRRRLDDULLRUULLUDUDDLLURLUDDRDLUDRDDURUULDRRRLUURULRDULLRDLRDU",
+   "final": {
+    "board": "2321143425811432",
+    "score": 2052,
+    "moveCount": 171,
+    "maxTile": 256,
+    "over": true,
+    "historyHash": "a83c4ee9"
+   }
+  },
+  {
+   "seed": 2,
+   "agent": "random",
+   "moves": "LURUUUDRRRRULULDRLUDRRRUUDRULRDRDLRULDLDDRLRLLDUDUDLLUDRDULRDLLDLRUUULDLUDULRULRDRUDLUURLURRLLDUDRUDULLDLDDLLDDUDLULDRULDLLRLDURDUDLDULUDRLRRDRDRDRLURLLR",
+   "final": {
+    "board": "2121341556711342",
+    "score": 1452,
+    "moveCount": 153,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "9fee7936"
+   }
+  },
+  {
+   "seed": 3,
+   "agent": "random",
+   "moves": "LDDUUDLRURRDRDURLDDRRRRUDULLRDLRRUURLULULDDRLDRRURRLRDUDLRDURUDRDULDRULRRDRUUURRLRDLRDRUDURUDRDDULRULULDRUDRDLRRUDDUDURRR",
+   "final": {
+    "board": "1247342121531431",
+    "score": 1084,
+    "moveCount": 121,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "7478c185"
+   }
+  },
+  {
+   "seed": 4,
+   "agent": "random",
+   "moves": "URDUUDDDURLDURDLRUUUDRLLDLRDUDRUDLRLDRRLLLLLDLULDRUDDRDDDUURLLDLULRDLRLUUULDDULDD",
+   "final": {
+    "board": "3121535235141432",
+    "score": 528,
+    "moveCount": 81,
+    "maxTile": 32,
+    "over": true,
+    "historyHash": "6644e41a"
+   }
+  },
+  {
+   "seed": 5,
+   "agent": "random",
+   "moves": "RDDUUDRDUDDLDUDULRUDUDLRLDLDLRRUDRDLDULDUUUDUDLDULUUUDRDRLUDLLLRDDUDDDUUDLRDUDRDDULRLURDRUD",
+   "final": {
+    "board": "1213413132642632",
+    "score": 756,
+    "moveCount": 91,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "f20a456f"
+   }
+  },
+  {
+   "seed": 6,
+   "agent": "random",
+   "moves": "DUUDDDRLRRLRURLRDULRUULRRRURDRULLLUDUDUUDURRLULRRLRDULDDLDRULDLRUUURLDRLLLUULRDRUDRURLDDURRLRDURDRULLLDLDUUUDDLRDULDR",
+   "final": {
+    "board": "2431164263611213",
+    "score": 1052,
+    "moveCount": 117,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "78a08e39"
+   }
+  },
+  {
+   "seed": 7,
+   "agent": "random",
+   "moves": "RLDLURDLLURURLURDRUUURRLDLDLLURLRUDURDLDLUDUUDUDURLRDULUUULLRDDULDURUDDLUDULDRLURRLLRLULDDURURLDUDRLRDLRDLDLDRLUUDUDULLDUDLLRLDURRDRRDRUUURUDRUUUDRUURLLDURDUDDRURUUR",
+   "final": {
+    "board": "1237435127121241",
+    "score": 1752,
+    "moveCount": 165,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "737b93e1"
+   }
+  },
+  {
+   "seed": 8,
+   "agent": "random",
+   "moves": "ULURURLDDURDLDLURRURDRULRRLRUULDRLRDDULDUDLULRLRDDLDRLLLDLULDRDL",
+   "final": {
+    "board": "2321145421321315",
+    "score": 388,
+    "moveCount": 64,
+    "maxTile": 32,
+    "over": true,
+    "historyHash": "143c926c"
+   }
+  },
+  {
+   "seed": 9,
+   "agent": "random",
+   "moves": "DLULRUDLUDULLDRLDRLULLULRUUULURRRDDRRDURULDRDLDLLDLLLRRDLRLRDDLDLDUURRUDURDLUDLDRDUDULRULDDRUURULLRDULRRDDDRUDUDLLULRLDRLRUURRRDDRDUDLLULRUDLDUDDDLURLDLR",
+   "final": {
+    "board": "1212476126243241",
+    "score": 1528,
+    "moveCount": 153,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "050d071c"
+   }
+  },
+  {
+   "seed": 10,
+   "agent": "random",
+   "moves": "RUURLUDULLRRDDLLUURUDRLDDULLDRLRRDULUUDLDRURURDUDDRRDRRRUDUDRDLULRURUUDLDDRRRULURDDDLDLULDRURDUDRLULUURLDULURUUDLUDLDRUURU",
+   "final": {
+    "board": "1251357324341212",
+    "score": 1136,
+    "moveCount": 122,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "e0e823af"
+   }
+  },
+  {
+   "seed": 11,
+   "agent": "random",
+   "moves": "DDUULLDLDRUDRRRRRLRULDRDRLULULRUULRDRUDUDUDRDLDDRDLRDRRDLLULULRULRULLRLRUDDUUULRLRLUUDUURLRDDRUDUDRLRDRRDDULRLRULLRDULLDLDLUDLURLD",
+   "final": {
+    "board": "1512247445311242",
+    "score": 1200,
+    "moveCount": 130,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "7904d0a9"
+   }
+  },
+  {
+   "seed": 12,
+   "agent": "random",
+   "moves": "UUUDURLRURULRLDUDRLDRUURRLURDLLUUUDRURRRDUDULRDRUDULRUDUURRDLURDLURLURDLRURDLDRDDDDRLUDLDDURDLLDLDRDDDLRLDLLURULDLURLRURLDRUURUU",
+   "final": {
+    "board": "1212314125621371",
+    "score": 1264,
+    "moveCount": 128,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "276dcb86"
+   }
+  },
+  {
+   "seed": 13,
+   "agent": "random",
+   "moves": "UDLURLLRRDURRLRUDRLLDURDURLRRRRLURDUDDRDURLRLLLDULLURLRDRURDDUDUULDLDRURRURURLDRLULRDUDRUUL",
+   "final": {
+    "board": "3642245115132321",
+    "score": 692,
+    "moveCount": 91,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "f0039e9d"
+   }
+  },
+  {
+   "seed": 14,
+   "agent": "random",
+   "moves": "UULDULUUDURRLLLRLUURLULUDDLRDLLRDLRUURLUDUDUURUDRLRLURULULUUULRURURULDLDRRLDRUDRURDUUR",
+   "final": {
+    "board": "1313353124641232",
+    "score": 612,
+    "moveCount": 86,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "5308757c"
+   }
+  },
+  {
+   "seed": 15,
+   "agent": "random",
+   "moves": "RRDURULRDDLDURLLURDLDLDDRLLULURLDDDRDRDLDUUUULRRDULULDRRDLUDLULRRLRRUDLULRDDRDLURDLRLRUURUUUU",
+   "final": {
+    "board": "1421316426311312",
+    "score": 760,
+    "moveCount": 93,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "ab61c7cd"
+   }
+  },
+  {
+   "seed": 16,
+   "agent": "random",
+   "moves": "LLRURLURRLURLULLDRLLUUUULLLLRULRLRULRLDURRLDUDLDULDDURLRRLRLRDURDRURLURDUURRLUURRDURDLRLDDRLR",
+   "final": {
+    "board": "1232352142652342",
+    "score": 700,
+    "moveCount": 93,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "ab92573d"
+   }
+  },
+  {
+   "seed": 17,
+   "agent": "random",
+   "moves": "DLLURDRLDRDULDRUDLDLDUURRLURLRULRURUDUDRDRULRRRDLLDRULRLRLLULRLURDLLDLUURLDLUURDRLDUDLLLULLLDLDLDULDLRLDLRDULDDLDLLRULULRUDRLLDDRDDLLRLUULRUUUDLRULRDLLRULDLURLD",
+   "final": {
+    "board": "1313265613732431",
+    "score": 1600,
+    "moveCount": 160,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "e31c8e05"
+   }
+  },
+  {
+   "seed": 18,
+   "agent": "random",
+   "moves": "LDRRULRDLUUURUUULRDUDDUUDULLRULDULRLRLDLULRRLULRLDRLLUDRDDDRRUULRDUUDLURDRLLRDLUDRLRLDRL",
+   "final": {
+    "board": "1312456132322414",
+    "score": 632,
+    "moveCount": 88,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "c4c9c2d0"
+   }
+  },
+  {
+   "seed": 19,
+   "agent": "random",
+   "moves": "DDLUURUDUUDLURDRDLRDUULLURLDLRDRLURUDLRURDLLDLDURDULLDUDRUDRULRRURRRDDLUDDDLLURURLDURDLDUDRDRULLLLDRUDRRDDRLUDULUDRUUURLRDDUURRLRULLRUDLURDLDULURULDRRRUDDRLRULDRLULDLLDDULRULDRUULUDRDURLRLLLRDDDLUDLRULDURR",
+   "final": {
+    "board": "2512313812635141",
+    "score": 2412,
+    "moveCount": 205,
+    "maxTile": 256,
+    "over": true,
+    "historyHash": "114e2a2c"
+   }
+  },
+  {
+   "seed": 20,
+   "agent": "random",
+   "moves": "UUDRLRUUULRRRURRRLDDRUDRRLRRDLRDLDRRDURULRDRLRRDLUULLDLRULLULRUULDURULLDRDDURLRDRLDLDULLU",
+   "final": {
+    "board": "2532141532421631",
+    "score": 684,
+    "moveCount": 89,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "c4a84cdd"
+   }
+  },
+  {
+   "seed": 21,
+   "agent": "random",
+   "moves": "LDLLLDDDLLDDRUULLURRULRDURDLDLURRUDRUDDLLUULLDDUDDRLRRDUURDDLUDRDLDRDRDUDURDDDLUDRLRLULDURULDRDULURLRDULUDDLDLDLR",
+   "final": {
+    "board": "2312143123521474",
+    "score": 1052,
+    "moveCount": 113,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "0b8fe169"
+   }
+  },
+  {
+   "seed": 22,
+   "agent": "random",
+   "moves": "RDUURURDUDRDRLDDDLLURLRRLRLURLUULDDUDUDULUUDRDRRDRLUDRLDR",
+   "final": {
+    "board": "1231242435411323",
+    "score": 316,
+    "moveCount": 57,
+    "maxTile": 32,
+    "over": true,
+    "historyHash": "f1563ec7"
+   }
+  },
+  {
+   "seed": 23,
+   "agent": "random",
+   "moves": "URDLRURDLURLURDULDURRULDURUULDRULRRDLUDURURLRDDLDDULDLULDURUDLRDRDRDLUDLLULDLRRLUDRLLLDDDULRUDDDLLURLRUDRUDRUDLLD",
+   "final": {
+    "board": "5121146236312342",
+    "score": 908,
+    "moveCount": 113,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "63cb49b2"
+   }
+  },
+  {
+   "seed": 24,
+   "agent": "random",
+   "moves": "DDDLRDLDRURLDURURULUUDLUDLDDLUUURRRDRUURURDRDLDRULDUDDUULRDURLUUDLDDUDRLUUURLRLUDRLRUU",
+   "final": {
+    "board": "1242262431422531",
+    "score": 620,
+    "moveCount": 86,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "c2f57ea8"
+   }
+  },
+  {
+   "seed": 25,
+   "agent": "random",
+   "moves": "DULRLUDDUDRUDUDLDDDLRDUUDDDLRLLLURURUDRDDRURDRDDLRDUDRURRDURRLUDRLRULDDLRULRDULDDUDRRLRULDURRULDURDDLUURURDRDULURLRRDRULDLRLUDU",
+   "final": {
+    "board": "1242452317423531",
+    "score": 1176,
+    "moveCount": 127,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "6437bcf4"
+   }
+  },
+  {
+   "seed": 26,
+   "agent": "random",
+   "moves": "RDDRDUDLRUDUDRURDULRRLLULRDRULUDLDRUDDRRRDUDRDLRDURLLDULRUDDRUURULLRLRLUDDRLLDURDLDRRLLDL",
+   "final": {
+    "board": "1321623213544521",
+    "score": 684,
+    "moveCount": 89,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "71e4d052"
+   }
+  },
+  {
+   "seed": 27,
+   "agent": "random",
+   "moves": "RRRDDUUDRDDLRLDRRLLDRLLDDLDRLDRDDRLUDDUDRLRDURRDLRDLLRDURLRUULDRLUDRRDLURDURLDUDLUDLUDRUDLURRDUDRRRLURDURDDLLLDRDRDUDULDLUDUULLRDDLURDLRDUDDLLUURDUDLL",
+   "final": {
+    "board": "2721143232652523",
+    "score": 1424,
+    "moveCount": 150,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "eb0b8bcf"
+   }
+  },
+  {
+   "seed": 28,
+   "agent": "random",
+   "moves": "DURUUDLRRURRRLLRURULDRRDLRLLDUDURDDLUULRRDURRLURDLDLLDLRDLUDRLRRURLRUDDLRLULRDDLRLDDURURUUDU",
+   "final": {
+    "board": "1232545136231312",
+    "score": 680,
+    "moveCount": 92,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "6dfa7fc0"
+   }
+  },
+  {
+   "seed": 29,
+   "agent": "random",
+   "moves": "UDRULDRLDDLRURDRDLRULLDLULRLUDDDRULLLLRULLDULDURDULDLRDUDUDULDUDRRLLUDURDRUUUDRDUDULLRLU",
+   "final": {
+    "board": "1323353226511412",
+    "score": 664,
+    "moveCount": 88,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "afb13034"
+   }
+  },
+  {
+   "seed": 30,
+   "agent": "random",
+   "moves": "LLLRUDLURUDRRDLLLURLLUURDULURDRLRDRDUDUDDRDLULDUDRDULURDRLDRLDDLRRLULDRRDLDUDDUDDDRDLLRRDLDLRDRDLUDRLLLLLLRULRURDULRDRUDLUULLRDR",
+   "final": {
+    "board": "2421154347521421",
+    "score": 1192,
+    "moveCount": 128,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "e8b65120"
+   }
+  },
+  {
+   "seed": 31,
+   "agent": "random",
+   "moves": "LDLRLUULLDDDLUDURRDDLUDDRLRRLLLRURRRDURRDRRURURUUUULDRLLDULDRRLLLRRURULRRDLDURDRLULRLLDRRRULRURUURRDURRRDLULDRUDDLLRDUDRRLURULRURRRDLUDRLUU",
+   "final": {
+    "board": "2142352474621241",
+    "score": 1364,
+    "moveCount": 139,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "265a1236"
+   }
+  },
+  {
+   "seed": 32,
+   "agent": "random",
+   "moves": "DRRDUUDRUURLRDDLLLRRUURRUDDRDLDRDULDRULDRURUDLRLDLUURLRLLURDURDRDDLURUUDURUUDDURDRUULLDUDRLDLRUDRLLRULRDLRURUUDDUDUDRURDURUDLUULLRRDDRLURRDLRDDUDRLDRLRRDDUDULULLUDDURDRRRLRUDDULDLR",
+   "final": {
+    "board": "1242252343511283",
+    "score": 2136,
+    "moveCount": 180,
+    "maxTile": 256,
+    "over": true,
+    "historyHash": "5c934aad"
+   }
+  },
+  {
+   "seed": 33,
+   "agent": "random",
+   "moves": "LLRDULDLLLRRDULDDLULLLRULRRLURLURUDDRLULDRDDULDRURLDULRLRUULDURDUURLLRUDLURDLDRUDRDURRRULDRLLDUULRRUURUDURDR",
+   "final": {
+    "board": "1243271235411312",
+    "score": 1012,
+    "moveCount": 108,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "96d22353"
+   }
+  },
+  {
+   "seed": 34,
+   "agent": "random",
+   "moves": "DLLLRUURLLDULRURLDRLLLRDURDUUDDULDLRUDUDDULDDLRDUUDURUURRDDLURDLDRDLUDLRLURRUDLLULRDLULULRUDDRLUDLRDDULULLUDULLRLDDURDU",
+   "final": {
+    "board": "1432254331571212",
+    "score": 1124,
+    "moveCount": 119,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "d4dcd0aa"
+   }
+  },
+  {
+   "seed": 35,
+   "agent": "random",
+   "moves": "URLRDDDURUURRDLDURUDUDDRUUULRLDRLUDLURUDRLLRULDRURDLRURDDRDLRLDLLUULURURUDLDRDUDRDURUULRUDLDDDRLRRLRULRURDLDRRRLUURDRLUDRLDRDDRULRDLUDULRURDDLDLUDUDRLL",
+   "final": {
+    "board": "1321248231241412",
+    "score": 1900,
+    "moveCount": 151,
+    "maxTile": 256,
+    "over": true,
+    "historyHash": "9355bfe0"
+   }
+  },
+  {
+   "seed": 36,
+   "agent": "random",
+   "moves": "DLLULRRRUDURDLDLLLUDDUDULRUUUDLULURDLLRLUUDUURDLULRLULDULURDDDLRLDUDUDRLDURDLDRDRULRULDRURLULURLRDDLRRLRRUUUUDRDLURURLRDLULLLULRDUDUDDRD",
+   "final": {
+    "board": "2131145236471313",
+    "score": 1324,
+    "moveCount": 136,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "d7d817c5"
+   }
+  },
+  {
+   "seed": 37,
+   "agent": "random",
+   "moves": "DRRDULRDULDLUDRLRDLDRDLRDLULURDUULDLLUULULULRLLDDUDRDUULRULDRRLDLURLRRDURDLDULDLRLLLDDRDRLULUURLDURLDLRLULDRDRLLRLDL",
+   "final": {
+    "board": "1321273253254132",
+    "score": 1096,
+    "moveCount": 116,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "6ea8ff52"
+   }
+  },
+  {
+   "seed": 38,
+   "agent": "random",
+   "moves": "URUDLRLDRUUULUUDLULLUUDUDLRDDLURRDUUUUDRLRULRLLRDLRDRLURDLRDRUDURURDLRURLDRDDDUDLRLUDRULRU",
+   "final": {
+    "board": "2151423226531321",
+    "score": 668,
+    "moveCount": 90,
+    "maxTile": 64,
+    "over": true,
+    "historyHash": "1e3466e1"
+   }
+  },
+  {
+   "seed": 39,
+   "agent": "random",
+   "moves": "LULDUUDDRLDUULDRUDDLRDLULURULDRDLDRUDURLRDLDRLLRRURLDRDRLRLLLUDULLUUDUDLRURLURLRRLDRLLULRDLDDLDDDDURDRRLDUDULLRUDRDURUDRDURLRRDRURLULDUDUULDUR",
+   "final": {
+    "board": "4321154374622321",
+    "score": 1364,
+    "moveCount": 142,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "9bc432cc"
+   }
+  },
+  {
+   "seed": 40,
+   "agent": "random",
+   "moves": "DLUUDLLUULDLRLLUDUDUDUDRUDDRULURLLULLLLRRDURRDDRDDURDLURLRDULDURULRULDUDDUDLDRLLDULLRULDDURUDURURRUUDRLDLULDLUDDUURDDRULLDRRDRURLDURRUD",
+   "final": {
+    "board": "1314626227211213",
+    "score": 1420,
+    "moveCount": 135,
+    "maxTile": 128,
+    "over": true,
+    "historyHash": "a7ff8bec"
+   }
+  },
+  {
+   "seed": 1,
+   "agent": "expectimax-d2",
+   "moves": "LDRLRRURRRUDRDRRDUDDDRRDRDDDRRRDDDDDDDUDRDRDDRDRDDDDRDRRUDDUUUDRRRRRRDRRRRRRRDDDDDDRDRRRRRUDURRRDDRRRDDDDDDRRRRRRDDDDDRRUUUUDDRRDUURRDRRUUURDRDDRRUURDDRDRDDDDDDDDDDDDDDDDDDRRDDRURDLDRRDDDRDRUDRLRDDDDRDDDRDDDRRRRRDURDDURRDDRLRRDRRDLDDDLLLLLLLLLLLLLLLLLLLLLDLRDDLLLLDDLRDDRDDRDRDRRRDDDRRUDRRRDUDUDRRUUURDRRUDRURDRRDDDRRRRRRDRDDDDRRRDRRDRRRRDRDUDDRDRRRDDRDDRRURDDRRRRUDRURRUDURUUDUUUURDRLDDDURUURUDUUUUDURRUUUUUUUURDRDDDDDDRURRDDDRRRRDDRRUDUDDRRRDURRDRUUUUUUUUDUDRRUDUURRUDRDRRUUUUURUDURURURDRDDLRDUDDDRDDLLLLRLLLLLRDRRDRUDDDDRDDRRDDDURRDDDURDDRDRRRURUUUUUUUUUUUUUUUUUUUUDUDRDRRRRRDURUDDUDURRDUURUDDDRDUUUUDRDRDUURDDU",
+   "final": {
+    "board": "124523163547243a",
+    "score": 10492,
+    "moveCount": 614,
+    "maxTile": 1024,
+    "over": true,
+    "historyHash": "f4429fc3"
+   }
+  },
+  {
+   "seed": 2,
+   "agent": "expectimax-d2",
+   "moves": "DDURLLUULLRLLULLLLDDLDDDDDDLDDDDDLLLLLLLDRRRDDLDLDLLLRLLRLLLLLLLDLDRRRDDRLRLULLLDDUDDLDLLLLULDLDLDULLDLDLDDLUDDULLDULDULDLDDDULDUDUUUULUUDUUUULDLDLLDDLLLLLLDDDDLLLULDLLLUDULLUUUUULLULDUUULUUULLLLLUUUUULURULRRLUULUURLRUUUUULULLLLLLLULUUUUURLRUULLUULUUUURLRLUUULULLLLULULLRURRRURLLLULLRUULLUUULLLLLLULULUUDLUUUUUDLUULDLDDDDLULLLUDDUUUULULLULLLLLUUULUULULLUDLULULLULLUUUULULLLLLLDDDLURURRLRLURURRRUULRRRURRRRRURRRRDDRRURRRURUUUURRRRRURRLUUULLURUULRLLLRURRRRULURULUUURLUUULLUULLULLLLLULLLLLLULULLLULULLLLLLUURLULRRURRRLULURUURRRLLULURLRUURUUURUUUULULRLULRRLULLUULRRRRRRULULDLULDULULULUUULULRLLUURRLLULUURLURURLRULULLULUULULULLURRULLUULRULLLLLLLLLLLLLLRLUULURRLULLLLULULRURUULRRUDLDLUDLDDDLDDDLLLRULLLLLUUDLDLDUUUUUUULUULDLDUULRURURUULULRLRRRULRRRURRUUUURUURUULUURUUUUURURUURLRRRURURRRRRRRRULLLLLUULRULLLRLUURULULLLURLLURLULULLUURRUUUULULRUULLLRUUURRRRLRRRUURUUUURRRUUUURRLULUURLLUUULUULLLURLRLULLRUULULURLLUULLUUULULLLUUUULUULULRUULLUULULUUUULLUUUUULUUUUUULULLULLULLLLLLUULULRUURULURRRRULRRULLUUURUULLLLULLLLLLLULLLURRULULRLRLLLLUUURLULRLURUUULUULULLDDDUUULUDDLDUDDLUUUUUDULUDLUDDDDDLULULDULLLUDUDLDLUDUUUUUUUUUUDUUUULLLLLDULLLUULUDLDDDDDDDDDDDULULDLLLLLLDDDLLLULUULUULUDUUULLUUDULUUUULLULDUUULULLLUULLULDLULLLLLLLLULLUDUDDLLULUDULUDDURURLULLLLUUULULLLLLRULLLRURRULLUDLLLDULDUUDULLDLDULDULUULDUUDUULUULLULULLUDLULULRLULRRDDULULUUUUUULLLULLLLLUUDLULDLUDLULLLLULLRULRLDLLUULLRUULRDLUDLLLLUDDDULLDULLDLDUUDLDLUDLUDUULDUDLDDDDDDLLUDUUDLDLDDDDDDLUDLDLDLLULLUULLUDUDDLDDDDLDLDLULULDLULDLLLDDLLLLULUDDLUULLLLLUL",
+   "final": {
+    "board": "b632a34163104200",
+    "score": 29960,
+    "moveCount": 1500,
+    "maxTile": 2048,
+    "over": false,
+    "historyHash": "86dbbfe4"
+   }
+  }
+ ]
+}

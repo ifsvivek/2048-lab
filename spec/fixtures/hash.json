@@ -1,0 +1,147 @@
+{
+ "specVersion": 1,
+ "generatedBy": "typescript-reference",
+ "description": "SPEC §7: fnv1a32 board hash and history step.",
+ "cases": [
+  {
+   "board": "0009902002000060",
+   "boardHash": "546d116d",
+   "prev": "bea62aea",
+   "dir": 3,
+   "historyStep": "6a8fbcfa"
+  },
+  {
+   "board": "023046611a450018",
+   "boardHash": "eb1f33a2",
+   "prev": "30519313",
+   "dir": 2,
+   "historyStep": "5bbbe731"
+  },
+  {
+   "board": "00007c000000ca30",
+   "boardHash": "b2e43d4f",
+   "prev": "9a064de3",
+   "dir": 0,
+   "historyStep": "b88c2cf9"
+  },
+  {
+   "board": "aa0b900709000076",
+   "boardHash": "58990b06",
+   "prev": "aa5b6d80",
+   "dir": 1,
+   "historyStep": "0872507b"
+  },
+  {
+   "board": "650c0b0600000085",
+   "boardHash": "46d1ca98",
+   "prev": "47408ac0",
+   "dir": 2,
+   "historyStep": "094235e3"
+  },
+  {
+   "board": "b098101700073426",
+   "boardHash": "5d1a4780",
+   "prev": "f3fef818",
+   "dir": 0,
+   "historyStep": "ae815b0d"
+  },
+  {
+   "board": "047c06001785c509",
+   "boardHash": "97092ba3",
+   "prev": "b132674a",
+   "dir": 3,
+   "historyStep": "b1811586"
+  },
+  {
+   "board": "b2248803152044c6",
+   "boardHash": "892cb949",
+   "prev": "6263e215",
+   "dir": 1,
+   "historyStep": "ca3506d6"
+  },
+  {
+   "board": "6340000517030b60",
+   "boardHash": "c81f59cb",
+   "prev": "0b2adb58",
+   "dir": 0,
+   "historyStep": "518ed41b"
+  },
+  {
+   "board": "96ca40000c400c70",
+   "boardHash": "33325ef3",
+   "prev": "1eebe4ce",
+   "dir": 0,
+   "historyStep": "b63fab18"
+  },
+  {
+   "board": "0010104009000021",
+   "boardHash": "e05df8e7",
+   "prev": "7cf520a8",
+   "dir": 3,
+   "historyStep": "4e5bac4f"
+  },
+  {
+   "board": "0a0856a00b1704ca",
+   "boardHash": "6ddf534d",
+   "prev": "8848ac82",
+   "dir": 3,
+   "historyStep": "4024aa08"
+  },
+  {
+   "board": "34100b000000200b",
+   "boardHash": "578c90fd",
+   "prev": "05cab7b3",
+   "dir": 0,
+   "historyStep": "5837d21a"
+  },
+  {
+   "board": "b0c050616a00b0a8",
+   "boardHash": "4385493f",
+   "prev": "2bb21f24",
+   "dir": 0,
+   "historyStep": "f3fc8edf"
+  },
+  {
+   "board": "a4cc7986c5a40090",
+   "boardHash": "86e0ab01",
+   "prev": "98100ca2",
+   "dir": 0,
+   "historyStep": "8fdf73fd"
+  },
+  {
+   "board": "80008002b6209a0b",
+   "boardHash": "1b91a1e2",
+   "prev": "13f5ed87",
+   "dir": 3,
+   "historyStep": "9a61e0eb"
+  },
+  {
+   "board": "c503b23c10405376",
+   "boardHash": "1308bb95",
+   "prev": "90a58725",
+   "dir": 1,
+   "historyStep": "4353609f"
+  },
+  {
+   "board": "8230169a0373b0aa",
+   "boardHash": "c17f2a60",
+   "prev": "b72544cd",
+   "dir": 2,
+   "historyStep": "958d2659"
+  },
+  {
+   "board": "5680010900a03271",
+   "boardHash": "509a58a9",
+   "prev": "0c689947",
+   "dir": 2,
+   "historyStep": "a5d64b95"
+  },
+  {
+   "board": "005ac05045300074",
+   "boardHash": "03f03cec",
+   "prev": "41cff19a",
+   "dir": 3,
+   "historyStep": "c58ffe26"
+  }
+ ]
+}

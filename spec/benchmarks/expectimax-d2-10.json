@@ -1,0 +1,11 @@
+{
+  "id": "expectimax-d2-10",
+  "name": "Expectimax depth 2 — 10 full games",
+  "description": "Fixed-depth canonical search (depth 2) played to completion on seeds 1..10. Cheap enough for every runtime, including Python.",
+  "specVersion": 1,
+  "agent": { "id": "expectimax", "config": { "depth": 2 } },
+  "seeds": { "start": 1, "count": 10 },
+  "maxMoves": 0,
+  "timeDecisions": true,
+  "tags": ["search", "quick"]
+}

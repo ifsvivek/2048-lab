@@ -1,0 +1,11 @@
+{
+  "id": "expectimax-d3-opening",
+  "name": "Expectimax depth 3 — 5 × 300-move openings",
+  "description": "Search-latency workload: fixed depth 3, first 300 moves of seeds 1..5.",
+  "specVersion": 1,
+  "agent": { "id": "expectimax", "config": { "depth": 3 } },
+  "seeds": { "start": 1, "count": 5 },
+  "maxMoves": 300,
+  "timeDecisions": true,
+  "tags": ["search", "latency"]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "expectimax-canonical-3",
+  "name": "Canonical expectimax — 3 full games",
+  "description": "The canonical AI profile (auto depth 2..4) played to completion on seeds 1..3. Measures playing strength and sustained search throughput. Heavy: minutes in compiled runtimes, hours in CPython.",
+  "specVersion": 1,
+  "agent": { "id": "expectimax", "config": {} },
+  "seeds": { "start": 1, "count": 3 },
+  "maxMoves": 0,
+  "timeDecisions": true,
+  "tags": ["search", "strength", "heavy"]
+}

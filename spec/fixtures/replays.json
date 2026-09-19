@@ -1,0 +1,59 @@
+{
+ "specVersion": 1,
+ "generatedBy": "typescript-reference",
+ "description": "SPEC §6/§8: replay verification including error cases.",
+ "cases": [
+  {
+   "name": "valid",
+   "seed": 77,
+   "moves": "LURDLURDLURDLURDLURDLURDLURDLURDLURDLURD",
+   "expect": {
+    "ok": true,
+    "final": {
+     "board": "1000013103524131",
+     "score": 224,
+     "moveCount": 40,
+     "maxTile": 32,
+     "over": false,
+     "historyHash": "9def66dd"
+    }
+   }
+  },
+  {
+   "name": "empty",
+   "seed": 12,
+   "moves": "",
+   "expect": {
+    "ok": true,
+    "final": {
+     "board": "0000000110000000",
+     "score": 0,
+     "moveCount": 0,
+     "maxTile": 2,
+     "over": false,
+     "historyHash": "a581b733"
+    }
+   }
+  },
+  {
+   "name": "bad-letter",
+   "seed": 77,
+   "moves": "LURDLX",
+   "expect": {
+    "ok": false,
+    "error": "BAD_LETTER",
+    "moveIndex": 5
+   }
+  },
+  {
+   "name": "invalid-mid-game",
+   "seed": 106,
+   "moves": "URUDDURLDLDDUDLRDLLRRRRLURUURDD",
+   "expect": {
+    "ok": false,
+    "error": "INVALID_MOVE_AT",
+    "moveIndex": 30
+   }
+  }
+ ]
+}

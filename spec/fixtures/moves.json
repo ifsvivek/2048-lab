@@ -1,0 +1,4027 @@
+{
+ "specVersion": 1,
+ "generatedBy": "typescript-reference",
+ "description": "SPEC §3: line merge / moves in every direction. `changed=false` means the move is invalid.",
+ "cases": [
+  {
+   "board": "0000000000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "0000000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "0000000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "L",
+     "board": "0000000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "0000000000000000",
+     "gained": 0,
+     "changed": false
+    }
+   ],
+   "over": true
+  },
+  {
+   "board": "1111000000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1111000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "0000000000001111",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2200000000000000",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0022000000000000",
+     "gained": 8,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "1120000000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1120000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "0000000000001120",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2200000000000000",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0022000000000000",
+     "gained": 4,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "2110000000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "2110000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "0000000000002110",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2200000000000000",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0022000000000000",
+     "gained": 4,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "1010101010101010",
+   "results": [
+    {
+     "dir": "U",
+     "board": "2020202000000000",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000020202020",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2000200020002000",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0002000200020002",
+     "gained": 16,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "1234432112344321",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1234432112344321",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "1234432112344321",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "L",
+     "board": "1234432112344321",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "1234432112344321",
+     "gained": 0,
+     "changed": false
+    }
+   ],
+   "over": true
+  },
+  {
+   "board": "1212212112122121",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1212212112122121",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "1212212112122121",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "L",
+     "board": "1212212112122121",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "1212212112122121",
+     "gained": 0,
+     "changed": false
+    }
+   ],
+   "over": true
+  },
+  {
+   "board": "0001001001001000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1111000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000001111",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "1000100010001000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0001000100010001",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "bbbb000000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "bbbb000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "000000000000bbbb",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "cc00000000000000",
+     "gained": 8192,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00cc000000000000",
+     "gained": 8192,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "ffff000000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "ffff000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "000000000000ffff",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "gg00000000000000",
+     "gained": 131072,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00gg000000000000",
+     "gained": 131072,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "gg00000000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "gg00000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "000000000000gg00",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "h000000000000000",
+     "gained": 131072,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000h000000000000",
+     "gained": 131072,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "hggf000000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "hggf000000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "000000000000hggf",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "hhf0000000000000",
+     "gained": 131072,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0hhf000000000000",
+     "gained": 131072,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "2211221122112211",
+   "results": [
+    {
+     "dir": "U",
+     "board": "3322332200000000",
+     "gained": 48,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000033223322",
+     "gained": 48,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "3200320032003200",
+     "gained": 48,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0032003200320032",
+     "gained": 48,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "1122334455667788",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1122334455667788",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "1122334455667788",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "L",
+     "board": "2300450067008900",
+     "gained": 1020,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0023004500670089",
+     "gained": 1020,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "6131105a8b848005",
+   "results": [
+    {
+     "dir": "U",
+     "board": "61311b5a90840005",
+     "gained": 512,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0001603a11549b85",
+     "gained": 512,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "613115a08b848500",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "6131015a8b840085",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "000b630000000090",
+   "results": [
+    {
+     "dir": "U",
+     "board": "639b000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000000639b",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b000630000009000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000b006300000009",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "8000a20b00050000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "820ba00500000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000800ba205",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "8000a2b050000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00080a2b00050000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "7000000a00100004",
+   "results": [
+    {
+     "dir": "U",
+     "board": "701a000400000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000000a7014",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "7000a00010004000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0007000a00010004",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00102083000069b0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "2913608000b00000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000010208069b3",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "10002830000069b0",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000102830000069b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "57042b5200b0a7b8",
+   "results": [
+    {
+     "dir": "U",
+     "board": "57542bc2a7080000",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000057042b52a7c8",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "57402b52b000a7b8",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "05742b52000ba7b8",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "b041090103330000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b942033300000000",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000942b333",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b410910043000000",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0b41009100340000",
+     "gained": 16,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00650b00000400a0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "0b6500a400000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000650ba4",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "6500b0004000a000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0065000b0004000a",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0000000000300000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "0030000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000000030",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000000030000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0000000000030000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "6201130a04660995",
+   "results": [
+    {
+     "dir": "U",
+     "board": "6261139a04060905",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0201030a64661995",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "621013a04700a500",
+     "gained": 1152,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0621013a004700a5",
+     "gained": 1152,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "501670b2a5059042",
+   "results": [
+    {
+     "dir": "U",
+     "board": "551670b2a0459002",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "50067012a0b59542",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "51607b20a6009420",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "051607b200a60942",
+     "gained": 64,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0300000000280050",
+   "results": [
+    {
+     "dir": "U",
+     "board": "0328005000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000200358",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "3000000028005000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0003000000280005",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0300200007000691",
+   "results": [
+    {
+     "dir": "U",
+     "board": "2391070006000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000030007002691",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "3000200070006910",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0003000200070691",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0600a000b30a0005",
+   "results": [
+    {
+     "dir": "U",
+     "board": "a60ab30500000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000a60ab305",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "6000a000b3a05000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0006000a0b3a0005",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "589197523bb81180",
+   "results": [
+    {
+     "dir": "U",
+     "board": "589197523bb81180",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "589097513bb21188",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "589197523c802800",
+     "gained": 4100,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "5891975203c80028",
+     "gained": 4100,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "a0ab582776759746",
+   "results": [
+    {
+     "dir": "U",
+     "board": "a8ab562777759046",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "a0ab582776759746",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "L",
+     "board": "bb00582776759746",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00bb582776759746",
+     "gained": 2048,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "602a064097324250",
+   "results": [
+    {
+     "dir": "U",
+     "board": "662a974242300050",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00206640973a4252",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "62a0640097324250",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "062a006497320425",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "000b068060400435",
+   "results": [
+    {
+     "dir": "U",
+     "board": "668b044500300000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000080064b6435",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b000680064004350",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000b006800640435",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "80a620722b8378a9",
+   "results": [
+    {
+     "dir": "U",
+     "board": "8ba63872708300a9",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00a680723b8378a9",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "8a6027202b8378a9",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "08a602722b8378a9",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "b5b809b9188152b0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b5c8198958b10200",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0500b9c8188952b1",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b5b89b90191052b0",
+     "gained": 512,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "b5b809b90191052b",
+     "gained": 512,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "3000000007030000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "3703000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000003703",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "3000000073000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0003000000730000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "16a196544314089a",
+   "results": [
+    {
+     "dir": "U",
+     "board": "17a19355481a0090",
+     "gained": 160,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00a017519315489a",
+     "gained": 160,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "16a19654431489a0",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "16a196544314089a",
+     "gained": 0,
+     "changed": false
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "010104600300000b",
+   "results": [
+    {
+     "dir": "U",
+     "board": "0161040b03000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000001000401036b",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "200046003000b000",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000200460003000b",
+     "gained": 4,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "1308019000000277",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1398017702000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000030001981277",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "1380190000002800",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0138001900000028",
+     "gained": 256,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "401b9ab94843b113",
+   "results": [
+    {
+     "dir": "U",
+     "board": "4a1b98b94144b010",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "40109abb4849b114",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "41b09ab94843b230",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "041b9ab948430b23",
+     "gained": 4,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "70200a15101b017a",
+   "results": [
+    {
+     "dir": "U",
+     "board": "7a25112b007a0000",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000257a2b117a",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "7200a1502b0017a0",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00720a15002b017a",
+     "gained": 4,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "60004100ba101000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "61104a00b0001000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "60004000b1001a10",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "60004100ba101000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "000600410ba10001",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "721620009a508a70",
+   "results": [
+    {
+     "dir": "U",
+     "board": "72162b5090708000",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "7000201092508b76",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "721620009a508a70",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "7216000209a508a7",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "441b423083587415",
+   "results": [
+    {
+     "dir": "U",
+     "board": "541b823873550410",
+     "gained": 32,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0410523b83587415",
+     "gained": 32,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "51b0423083587415",
+     "gained": 32,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "051b042383587415",
+     "gained": 32,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "1b93771000235647",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1b94771756200040",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00901b1077245647",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "1b93810023005647",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "1b93008100235647",
+     "gained": 256,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0000160000830b00",
+   "results": [
+    {
+     "dir": "U",
+     "board": "16830b0000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000006001b83",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "000016008300b000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000000160083000b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "083b9b6033124020",
+   "results": [
+    {
+     "dir": "U",
+     "board": "983b3b6243100020",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "003098603b1b4322",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "83b09b6041204200",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "083b09b604120042",
+     "gained": 16,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0000900010930005",
+   "results": [
+    {
+     "dir": "U",
+     "board": "9093100500000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000090031095",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000900019305000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0000000901930005",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "030910043b006005",
+   "results": [
+    {
+     "dir": "U",
+     "board": "13093b0460050000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000100933046b05",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "390014003b006500",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00390014003b0065",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "9494514630209003",
+   "results": [
+    {
+     "dir": "U",
+     "board": "9494514630239000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "9000509434469123",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "9494514632009300",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "9494514600320093",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "1009700000052000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1009700520000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000100070092005",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "1900700050002000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0019000700050002",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00000a000000000b",
+   "results": [
+    {
+     "dir": "U",
+     "board": "0a0b000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000000a0b",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000a0000000b000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0000000a0000000b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "1109009241122950",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1299491320500000",
+     "gained": 12,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000109042192953",
+     "gained": 12,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2900920042202950",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0029009204220295",
+     "gained": 8,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "983017a749400739",
+   "results": [
+    {
+     "dir": "U",
+     "board": "983717a949400730",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "083097a019474739",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "983017a749407390",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "098317a704940739",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00004500a0280059",
+   "results": [
+    {
+     "dir": "U",
+     "board": "4528a05900000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000004028a559",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "00004500a2805900",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000000450a280059",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "63a5378999b5a0b0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "63a5378999c5a000",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "600033a59789a9c5",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "63a53789ab50ab00",
+     "gained": 1024,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "63a537890ab500ab",
+     "gained": 1024,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0033a00000000a03",
+   "results": [
+    {
+     "dir": "U",
+     "board": "aa34000000000000",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000000aa34",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "4000a0000000a300",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0004000a000000a3",
+     "gained": 16,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "4772090002049835",
+   "results": [
+    {
+     "dir": "U",
+     "board": "4772993402050800",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0700090242749835",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "4820900024009835",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0482000900249835",
+     "gained": 256,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0638103040184b00",
+   "results": [
+    {
+     "dir": "U",
+     "board": "16495b1000000000",
+     "gained": 560,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000016405b19",
+     "gained": 560,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "6380130041804b00",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "063800130418004b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "020a1569407a1711",
+   "results": [
+    {
+     "dir": "U",
+     "board": "126a4579171a0001",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000a1269457a1711",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2a00156947a01720",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "002a1569047a0172",
+     "gained": 4,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "b08a4b7079940645",
+   "results": [
+    {
+     "dir": "U",
+     "board": "bb8a497476950040",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0080bb7a49947645",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b8a04b707a406450",
+     "gained": 1024,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0b8a04b707a40645",
+     "gained": 1024,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "7050ab4685002a3b",
+   "results": [
+    {
+     "dir": "U",
+     "board": "7b56a54b8a302000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "7000ab5085462a3b",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "7500ab4685002a3b",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0075ab4600852a3b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "000a0205160a7100",
+   "results": [
+    {
+     "dir": "U",
+     "board": "120a7605010a0000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000020a1605710a",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "a000250016a07100",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000a0025016a0071",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0350001109690949",
+   "results": [
+    {
+     "dir": "U",
+     "board": "03510a1a00600040",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0050001003610a4a",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "3500200096909490",
+     "gained": 4,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0035000209690949",
+     "gained": 4,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "16a52b09088b2b69",
+   "results": [
+    {
+     "dir": "U",
+     "board": "16a53b89086b0b09",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "06050ba9188b3b69",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "16a52b909b002b69",
+     "gained": 512,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "16a502b9009b2b69",
+     "gained": 512,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0715767003430092",
+   "results": [
+    {
+     "dir": "U",
+     "board": "7715067303420090",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0010077506437392",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "7150767034309200",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0715076703430092",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "aaa006573a816a83",
+   "results": [
+    {
+     "dir": "U",
+     "board": "aaa736516b930000",
+     "gained": 2560,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000aaa736516b93",
+     "gained": 2560,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "ba0065703a816a83",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00ab06573a816a83",
+     "gained": 2048,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "000040b167b93430",
+   "results": [
+    {
+     "dir": "U",
+     "board": "47c1643930000000",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000400067c13439",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "00004b1067b93430",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000004b167b90343",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "17904385a062bab9",
+   "results": [
+    {
+     "dir": "U",
+     "board": "17954382aa69b0b0",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "10904785a362bab9",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "17904385a620bab9",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "017943850a62bab9",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "5697640ab804a289",
+   "results": [
+    {
+     "dir": "U",
+     "board": "5697648ab804a209",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "5607640ab894a289",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "569764a0b840a289",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "5697064a0b84a289",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "9bb834542a2a2167",
+   "results": [
+    {
+     "dir": "U",
+     "board": "9bb834543a2a0167",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0bb894543a2a3167",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "9c8034542a2a2167",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "09c834542a2a2167",
+     "gained": 4096,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "9003075003000840",
+   "results": [
+    {
+     "dir": "U",
+     "board": "9753034008000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000070003509843",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "9300750030008400",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0093007500030084",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "04a00a0580204a84",
+   "results": [
+    {
+     "dir": "U",
+     "board": "84a54b2400800000",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000a084254b84",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "4a00a50082004a84",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "004a00a500824a84",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00003a009008000b",
+   "results": [
+    {
+     "dir": "U",
+     "board": "3a08900b00000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000030089a0b",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "00003a009800b000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0000003a0098000b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "6089059285050a03",
+   "results": [
+    {
+     "dir": "U",
+     "board": "66898a9200050003",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0009000266858a93",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "689059208600a300",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "06890592008600a3",
+     "gained": 64,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "a529655840749008",
+   "results": [
+    {
+     "dir": "U",
+     "board": "a629605840749008",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "a009602840549678",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "a529668047409800",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "a529066804740098",
+     "gained": 64,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "70531797b2477165",
+   "results": [
+    {
+     "dir": "U",
+     "board": "77531298b1457060",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "70501793b2487165",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "75301797b2477165",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "07531797b2477165",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0000900000309000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "a030000000000000",
+     "gained": 1024,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000000a030",
+     "gained": 1024,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000900030009000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0000000900030009",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "04871b00005500a7",
+   "results": [
+    {
+     "dir": "U",
+     "board": "14870b5500a70000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000008704551ba7",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "48701b006000a700",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0487001b000600a7",
+     "gained": 64,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0075020060960000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "6275009600000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000756296",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "7500200069600000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0075000206960000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "728a2341433b7791",
+   "results": [
+    {
+     "dir": "U",
+     "board": "728a2441473b7091",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "708a2241443b7791",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "728a234144b08910",
+     "gained": 272,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "728a2341044b0891",
+     "gained": 272,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0000a00000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "a000000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000000a000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000a00000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "0000000a00000000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "040000006060047a",
+   "results": [
+    {
+     "dir": "U",
+     "board": "656a007000000000",
+     "gained": 32,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000060657a",
+     "gained": 32,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "40000000700047a0",
+     "gained": 128,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000400000007047a",
+     "gained": 128,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "600b000131a01459",
+   "results": [
+    {
+     "dir": "U",
+     "board": "61ab345110090000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000600b31a11459",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "6b00100031a01459",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "006b0001031a1459",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "225500070a001484",
+   "results": [
+    {
+     "dir": "U",
+     "board": "22551a8704040000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000002052a571484",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "36007000a0001484",
+     "gained": 72,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00360007000a1484",
+     "gained": 72,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "a090bb0049010a30",
+   "results": [
+    {
+     "dir": "U",
+     "board": "ab91b9304a000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000ab00b9904a31",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "a900c0004910a300",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00a9000c049100a3",
+     "gained": 4096,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00a0010b00007017",
+   "results": [
+    {
+     "dir": "U",
+     "board": "71ab001700000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000ab7117",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "a0001b0000007170",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000a001b00000717",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "323a371000b46007",
+   "results": [
+    {
+     "dir": "U",
+     "board": "423a671400b70000",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000003a421467b7",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "323a3710b4006700",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "323a037100b40067",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "290108008a0270b0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "29b188027a000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000290088017ab2",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "291080008a207b00",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0291000808a2007b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0000b000000000b0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b0b0000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000000b0b0",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000b0000000b000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0000000b0000000b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "a903000000079000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "a903900700000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000a0039907",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "a930000070009000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0a93000000070009",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00988b50a3492160",
+   "results": [
+    {
+     "dir": "U",
+     "board": "8b98a35921400060",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00908b50a3482169",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "98008b50a3492160",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "009808b5a3490216",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "29a86020b0ab6073",
+   "results": [
+    {
+     "dir": "U",
+     "board": "29a8602bb0a36070",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "20a06028b0ab6973",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "29a86200bab06730",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "29a800620bab0673",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "b00000a070500030",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b0a0705000300000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000a0b0507030",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b000a00075003000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000b000a00750003",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "302a082050001a01",
+   "results": [
+    {
+     "dir": "U",
+     "board": "383a5a0110000000",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00003000580a1a31",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "32a0820050001a10",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "032a0082000501a1",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "09004392a0800900",
+   "results": [
+    {
+     "dir": "U",
+     "board": "4992a38009000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000009004390a982",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "90004392a8009000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0009439200a80009",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0000000210000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "1002000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000001002",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000200010000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0000000200010000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "23b30a10b07a2010",
+   "results": [
+    {
+     "dir": "U",
+     "board": "23b3ba1a20700010",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00b02010b3732a1a",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "23b3a100b7a02100",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "23b300a10b7a0021",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00b4092010800003",
+   "results": [
+    {
+     "dir": "U",
+     "board": "19b4002300800000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000b000241983",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b400920018003000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00b4009200180003",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "7098764913052a70",
+   "results": [
+    {
+     "dir": "U",
+     "board": "869813492a750000",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000869813492a75",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "7980764913502a70",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "07987649013502a7",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "020000000003b0b5",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b2b3000500000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000003b2b5",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "200000003000c500",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00020000000300c5",
+     "gained": 4096,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "b8710090000640b0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b871409600b00000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000070b09148b6",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b871900060004b00",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "b87100090006004b",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0000500000000000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "5000000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000005000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000500000000000",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "0000000500000000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00000000003366a0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "663300a000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000003066a3",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000000040007a00",
+     "gained": 144,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000000000004007a",
+     "gained": 144,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "a858a66030637690",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b858377370900000",
+     "gained": 2304,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000b05038787793",
+     "gained": 2304,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "a858a70036307690",
+     "gained": 128,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "a85800a703630769",
+     "gained": 128,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "b319906107673800",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b319977138070000",
+     "gained": 128,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000b30997113877",
+     "gained": 128,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b319961076703800",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "b319096107670038",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "2507912917083185",
+   "results": [
+    {
+     "dir": "U",
+     "board": "2527918917083105",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "2507910917283185",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2570912917803185",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0257912901783185",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "3502950968910066",
+   "results": [
+    {
+     "dir": "U",
+     "board": "3692986960010006",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0002300996916866",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "3520959068917000",
+     "gained": 128,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0352095968910007",
+     "gained": 128,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "000000a040a0300a",
+   "results": [
+    {
+     "dir": "U",
+     "board": "40ba300000000000",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000400030ba",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "0000a0004a003a00",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0000000a004a003a",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0200b00051250000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b225510000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000b2005125",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2000b00051250000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0002000b51250000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "5b32716906359770",
+   "results": [
+    {
+     "dir": "U",
+     "board": "5b32716996350770",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0b30516276399775",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "5b32716963509800",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "5b32716906350098",
+     "gained": 256,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "a930006030033809",
+   "results": [
+    {
+     "dir": "U",
+     "board": "a933486900000000",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000a9334869",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "a930600040003890",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0a93000600040389",
+     "gained": 16,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "4000000002b00b0b",
+   "results": [
+    {
+     "dir": "U",
+     "board": "42bb0b0000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000002004bbb",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "400000002b00c000",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00040000002b000c",
+     "gained": 4096,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "9497078bb779b5a9",
+   "results": [
+    {
+     "dir": "U",
+     "board": "9497c88b057a00a0",
+     "gained": 5376,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00900487987bc5aa",
+     "gained": 5376,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "949778b0b890b5a9",
+     "gained": 256,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "9497078b0b89b5a9",
+     "gained": 256,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "4a769730b621b846",
+   "results": [
+    {
+     "dir": "U",
+     "board": "4a769731c6260840",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0a7047369621c846",
+     "gained": 4096,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "4a769730b621b846",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "4a760973b621b846",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "08d8a569fcg1c409",
+   "results": [
+    {
+     "dir": "U",
+     "board": "a8d8f569ccg10409",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0808a5d9fc61c4g9",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "8d80a569fcg1c490",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "08d8a569fcg10c49",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0d0090070eh00040",
+   "results": [
+    {
+     "dir": "U",
+     "board": "9dh70e4000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000dh09e47",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "d0009700eh004000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000d009700eh0004",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "f380721700gae220",
+   "results": [
+    {
+     "dir": "U",
+     "board": "f387731ae0g00020",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0080f01073g7e32a",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "f3807217ga00e300",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0f38721700ga00e3",
+     "gained": 8,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0060060001e330h4",
+   "results": [
+    {
+     "dir": "U",
+     "board": "366301e400h00000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000006006e331h4",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "600060001e303h40",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "0006000601e303h4",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "30g2f00fb00dd00a",
+   "results": [
+    {
+     "dir": "U",
+     "board": "30g2f00fb00dd00a",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "D",
+     "board": "3002f00fb00dd0ga",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "3g20g000bd00da00",
+     "gained": 65536,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "03g2000g00bd00da",
+     "gained": 65536,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00e0000000300f0h",
+   "results": [
+    {
+     "dir": "U",
+     "board": "0feh003000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000000e00f3h",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "e00000003000fh00",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000e0000000300fh",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "80d0000030600000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "80d0306000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0000000080d03060",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "8d00000036000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "008d000000360000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "010f000090000009",
+   "results": [
+    {
+     "dir": "U",
+     "board": "910f000900000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000000f9109",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "1f00000090009000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "001f000000090009",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "g54f090d4a000100",
+   "results": [
+    {
+     "dir": "U",
+     "board": "g54f490d0a000100",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "05000900ga0f414d",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "g54f9d004a001000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "g54f009d004a0001",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "7c22e8483d513636",
+   "results": [
+    {
+     "dir": "U",
+     "board": "7c22e8484d510636",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "0c227848ed514636",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "7c30e8483d513636",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "07c3e8483d513636",
+     "gained": 8,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "c9dgh9637d7194ca",
+   "results": [
+    {
+     "dir": "U",
+     "board": "cadghd63747190ca",
+     "gained": 1024,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "c0dgha637d7194ca",
+     "gained": 1024,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "c9dgh9637d7194ca",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "R",
+     "board": "c9dgh9637d7194ca",
+     "gained": 0,
+     "changed": false
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "92700fe06000c000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "92706fe0c0000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000090006270cfe0",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "9270fe006000c000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "092700fe0006000c",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "00600bg00haae300",
+   "results": [
+    {
+     "dir": "U",
+     "board": "eb6a0hg003a00000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000b600hg0e3aa",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "6000bg00hb00e300",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000600bg00hb00e3",
+     "gained": 2048,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "20g00hh08ddah2e0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "2hga8dh0h2d000e0",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00g02hh08dd0h2ea",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "2g00i0008ea0h2e0",
+     "gained": 278528,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "002g000i08ea0h2e",
+     "gained": 278528,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "096fgaa20e40h0e9",
+   "results": [
+    {
+     "dir": "U",
+     "board": "g96fhaa20e4900e0",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "006009afga42hee9",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "96f0gb20e400he90",
+     "gained": 2048,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "096f0gb200e40he9",
+     "gained": 2048,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "b6000000000e0000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b60e000000000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "000000000000b60e",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b6000000e0000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00b60000000e0000",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "09000f0408cahb7f",
+   "results": [
+    {
+     "dir": "U",
+     "board": "h9c40f7a080f0b00",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "09000f0408cahb7f",
+     "gained": 0,
+     "changed": false
+    },
+    {
+     "dir": "L",
+     "board": "9000f4008ca0hb7f",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "000900f408cahb7f",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "b46909035h2259d1",
+   "results": [
+    {
+     "dir": "U",
+     "board": "b46969230hd20901",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "04090963bh2269d1",
+     "gained": 64,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "b46993005h3059d1",
+     "gained": 8,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "b469009305h359d1",
+     "gained": 8,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "0833h300g0090000",
+   "results": [
+    {
+     "dir": "U",
+     "board": "h833g30900000000",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000000h803g339",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "8400h300g9000000",
+     "gained": 16,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "008400h300g90000",
+     "gained": 16,
+     "changed": true
+    }
+   ],
+   "over": false
+  },
+  {
+   "board": "a06000be0cdb4hd0",
+   "results": [
+    {
+     "dir": "U",
+     "board": "ac6e4hbb00e00000",
+     "gained": 16384,
+     "changed": true
+    },
+    {
+     "dir": "D",
+     "board": "00000060acbe4heb",
+     "gained": 16384,
+     "changed": true
+    },
+    {
+     "dir": "L",
+     "board": "a600be00cdb04hd0",
+     "gained": 0,
+     "changed": true
+    },
+    {
+     "dir": "R",
+     "board": "00a600be0cdb04hd",
+     "gained": 0,
+     "changed": true
+    }
+   ],
+   "over": false
+  }
+ ]
+}

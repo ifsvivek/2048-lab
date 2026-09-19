@@ -1,0 +1,53 @@
+{
+ "specVersion": 1,
+ "generatedBy": "typescript-reference",
+ "description": "SPEC §9: replay code normalisation.",
+ "alphabet": "ABCDEFGHJKLMNPQRSTUVWXYZ23456789",
+ "cases": [
+  {
+   "input": "A7KF-29LM-XQ4P",
+   "normalized": "A7KF29LMXQ4P",
+   "formatted": "A7KF-29LM-XQ4P"
+  },
+  {
+   "input": "a7kf29lmxq4p",
+   "normalized": "A7KF29LMXQ4P",
+   "formatted": "A7KF-29LM-XQ4P"
+  },
+  {
+   "input": " a7kf 29lm xq4p ",
+   "normalized": "A7KF29LMXQ4P",
+   "formatted": "A7KF-29LM-XQ4P"
+  },
+  {
+   "input": "A7KF-29LM-XQ4",
+   "normalized": null,
+   "formatted": null
+  },
+  {
+   "input": "A7KF-29LM-XQ4PP",
+   "normalized": null,
+   "formatted": null
+  },
+  {
+   "input": "A7KF-29LM-XQ40",
+   "normalized": null,
+   "formatted": null
+  },
+  {
+   "input": "I7KF-29LM-XQ4P",
+   "normalized": null,
+   "formatted": null
+  },
+  {
+   "input": "O7KF-29LM-XQ4P",
+   "normalized": null,
+   "formatted": null
+  },
+  {
+   "input": "A7KF_29LM_XQ4P",
+   "normalized": "A7KF29LMXQ4P",
+   "formatted": "A7KF-29LM-XQ4P"
+  }
+ ]
+}
