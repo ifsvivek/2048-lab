@@ -20,7 +20,7 @@
 		});
 	});
 	const scoreSeries = $derived([{ key: filter, label: 'Score', color: 'var(--series-1)', points: finished.map((g, i) => ({ x: i + 1, y: g.score })) }]);
-	const reach = (t: number) => (finished.length ? Math.round((finished.filter((g) => g.maxTile >= t).length / finished.length) * 100) + '%' : '—');
+	const reach = (t: number) => (finished.length ? Math.round((finished.filter((g) => g.maxTile >= t).length / finished.length) * 100) + '%' : '-');
 
 	async function remove(id: string) {
 		await deleteGame(id);

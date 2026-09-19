@@ -28,7 +28,7 @@
 
 <div class="mx-auto max-w-xl pt-6">
 	<h1 class="text-3xl font-extrabold tracking-tight">Open a replay</h1>
-	<p class="mt-1 text-ink-500">Every game is rebuilt move-by-move from its seed — the result is bit-for-bit what was played.</p>
+	<p class="mt-1 text-ink-500">Every game is rebuilt move by move from its seed, bit for bit as it was played.</p>
 	<form class="card mt-6 flex gap-2 p-2" onsubmit={submit}>
 		<label for="r" class="sr-only">Replay code or game ID</label>
 		<input id="r" class="min-w-0 flex-1 bg-transparent px-3 font-mono tracking-wider uppercase outline-none placeholder:tracking-normal placeholder:normal-case" placeholder="A7KF-29LM-XQ4P or game ID" bind:value={ref} oninput={() => (err = '')} autocomplete="off" spellcheck="false" />

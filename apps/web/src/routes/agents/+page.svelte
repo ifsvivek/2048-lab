@@ -33,7 +33,7 @@
 	const curl = $derived(`# 1. create a game (add -H "Authorization: Bearer $KEY" to attribute it to your agent)
 curl -s -X POST ${API_URL}/v1/games -H 'content-type: application/json' -d '{"seed": 42}'
 
-# 2. submit moves until "status" is "over" — every response is the full state
+# 2. submit moves until "status" is "over"; every response is the full state
 curl -s -X POST ${API_URL}/v1/games/$GAME_ID/moves -H 'content-type: application/json' -d '{"move": "left"}'
 
 # batch several moves in one request (stops at the first invalid one)
@@ -64,7 +64,7 @@ curl -s -X POST ${API_URL}/v1/agents/$AGENT_ID/run -H "Authorization: Bearer $KE
 <svelte:head><title>Agents · 2048 Lab</title></svelte:head>
 
 <h1 class="text-3xl font-extrabold tracking-tight">Agents</h1>
-<p class="mt-1 max-w-2xl text-ink-500">Any program can play — no browser automation. Connect over the REST API, as an MCP client (Claude Code, Codex, Cursor…), or expose an HTTP endpoint and let the platform call you.</p>
+<p class="mt-1 max-w-2xl text-ink-500">Any program can play, no browser automation needed. Connect over the REST API, as an MCP client (Claude Code, Codex, Cursor…), or expose an HTTP endpoint and let the platform call you.</p>
 
 <section class="card mt-6 p-5">
 	<div class="flex gap-1 rounded-xl bg-ink-900/5 p-1 dark:bg-white/5" role="tablist" aria-label="Integration">
@@ -82,7 +82,7 @@ curl -s -X POST ${API_URL}/v1/agents/$AGENT_ID/run -H "Authorization: Bearer $KE
 		<p class="mt-1 text-sm text-ink-500">Registration gives you an API key so games, stats and leaderboard entries are attributed to your agent.</p>
 		{#if created}
 			<div class="mt-4 space-y-3">
-				<CopyField label="API key — shown once, store it now" value={created.apiKey} />
+				<CopyField label="API key (shown once, store it now)" value={created.apiKey} />
 				<CopyField label="Agent ID" value={created.agent.id} />
 				<button class="btn-ghost" onclick={() => (created = null)}>Register another</button>
 			</div>
@@ -109,7 +109,7 @@ curl -s -X POST ${API_URL}/v1/agents/$AGENT_ID/run -H "Authorization: Bearer $KE
 				{/each}
 				{#each list.agents as a (a.id)}
 					<li class="rounded-xl bg-ink-900/[0.03] p-3 dark:bg-white/[0.03]">
-						<div class="flex items-center gap-2"><span class="font-semibold">{a.name}</span><span class="text-xs text-ink-500">{a.kind} · {a.language ?? '—'}</span>{#if a.pushEnabled}<span class="rounded bg-accent-500/20 px-1.5 text-[10px] font-semibold uppercase">push</span>{/if}<span class="ml-auto text-sm font-bold tabular-nums">{fmtInt(a.stats.bestScore)}</span></div>
+						<div class="flex items-center gap-2"><span class="font-semibold">{a.name}</span><span class="text-xs text-ink-500">{a.kind} · {a.language ?? '-'}</span>{#if a.pushEnabled}<span class="rounded bg-accent-500/20 px-1.5 text-[10px] font-semibold uppercase">push</span>{/if}<span class="ml-auto text-sm font-bold tabular-nums">{fmtInt(a.stats.bestScore)}</span></div>
 						<p class="text-xs text-ink-500">{a.stats.gamesPlayed} games · avg {fmtInt(a.stats.avgScore)} · 2048 reached {Math.round((a.stats.reachRates['2048'] ?? 0) * 100)}%</p>
 					</li>
 				{/each}

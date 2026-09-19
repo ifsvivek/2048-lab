@@ -14,4 +14,4 @@
 	});
 </script>
 
-<span class="tabular-nums" use:onVisible={() => (seen = true)}>{value === null || value === undefined ? '—' : format(seen ? shown : 0)}</span>
+<span class="tabular-nums" use:onVisible={() => (seen = true)}>{value === null || value === undefined ? '-' : format(seen ? shown : 0)}</span>

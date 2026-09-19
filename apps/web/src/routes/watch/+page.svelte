@@ -49,13 +49,13 @@
 <svelte:head><title>Watch AI · 2048 Lab</title></svelte:head>
 
 <h1 class="text-3xl font-extrabold tracking-tight">Watch AI play</h1>
-<p class="mt-1 text-ink-500">Spectate built-in agents, external agents playing through the API or MCP, and benchmark runs — in real time.</p>
+<p class="mt-1 text-ink-500">Spectate built-in agents, external agents playing through the API or MCP, and benchmark runs in real time.</p>
 
 <div class="mt-6 grid gap-4 md:grid-cols-3">
 	<button class="card p-5 text-left transition hover:-translate-y-0.5" onclick={watchLocal}>
 		<p class="label">In your browser</p>
 		<p class="mt-1 text-lg font-bold">Expectimax, full strength</p>
-		<p class="mt-1 text-sm text-ink-500">Canonical search (depth 2–4) in a Web Worker, with live reasoning. Works offline.</p>
+		<p class="mt-1 text-sm text-ink-500">Canonical search (depth 2-4) in a Web Worker, with live reasoning. Works offline.</p>
 	</button>
 	<button class="card p-5 text-left transition hover:-translate-y-0.5 disabled:opacity-60" onclick={() => startServer('expectimax')} disabled={!!starting || offline}>
 		<p class="label">On the platform</p>
@@ -65,7 +65,7 @@
 	<button class="card p-5 text-left transition hover:-translate-y-0.5 disabled:opacity-60" onclick={() => startServer('greedy')} disabled={!!starting || offline}>
 		<p class="label">On the platform</p>
 		<p class="mt-1 text-lg font-bold">{starting === 'greedy' ? 'Starting…' : 'Server greedy'}</p>
-		<p class="mt-1 text-sm text-ink-500">A one-ply baseline — fast, and a useful yardstick.</p>
+		<p class="mt-1 text-sm text-ink-500">A one-ply baseline: fast, and a useful yardstick.</p>
 	</button>
 </div>
 {#if err}<p class="mt-3 text-sm text-red-600" role="alert">{err}</p>{/if}
@@ -75,7 +75,7 @@
 	<button class="btn-ghost py-1.5 text-xs" onclick={refresh}>Refresh</button>
 </div>
 {#if offline}
-	<p class="mt-3 text-sm text-ink-500">You're offline — live games need the network. The in-browser AI still works.</p>
+	<p class="mt-3 text-sm text-ink-500">You're offline. Live games need the network, but the in-browser AI still works.</p>
 {:else if live === null}
 	<Skeleton rows={3} class="mt-3" />
 {:else if live.length === 0}

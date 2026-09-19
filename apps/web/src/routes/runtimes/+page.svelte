@@ -81,12 +81,12 @@
 		{#if fastest}
 			<div class="mt-1 text-2xl font-bold">{LANG_LABEL[fastest.top.language]}</div>
 			<div class="text-sm text-ink-500">{fastest.ratio.toFixed(fastest.ratio < 10 ? 1 : 0)}× faster than {LANG_LABEL[fastest.slow.language]}</div>
-		{:else}<div class="mt-1 text-ink-500">—</div>{/if}
+		{:else}<div class="mt-1 text-ink-500">-</div>{/if}
 	</div>
 	<div class="card p-4">
 		<div class="label">Determinism</div>
-		<div class="mt-1 text-2xl font-bold">{agree.identical && agree.checksum === agree.expected ? 'Identical' : agree.n ? 'Mismatch' : '—'}</div>
-		<div class="mono text-sm text-ink-500">{agree.n} runs · checksum {agree.checksum ?? '—'}</div>
+		<div class="mt-1 text-2xl font-bold">{agree.identical && agree.checksum === agree.expected ? 'Identical' : agree.n ? 'Mismatch' : '-'}</div>
+		<div class="mono text-sm text-ink-500">{agree.n} runs · checksum {agree.checksum ?? '-'}</div>
 	</div>
 	<div class="card p-4">
 		<div class="label">Outcome</div>

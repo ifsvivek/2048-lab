@@ -28,7 +28,7 @@ agents.post('/', async (c) => {
   const b = await body(c);
   const name = optStr(b.name, 'name', 64);
   if (!name || !/^[A-Za-z0-9][A-Za-z0-9 ._-]{1,63}$/.test(name)) {
-    throw new ApiError('BAD_REQUEST', 'name is required: 2–64 chars of letters, digits, space, dot, underscore or dash');
+    throw new ApiError('BAD_REQUEST', 'name is required: 2-64 chars of letters, digits, space, dot, underscore or dash');
   }
   const kind = optStr(b.kind, 'kind', 16) ?? 'remote';
   if (!KINDS.has(kind)) throw new ApiError('BAD_REQUEST', `kind must be one of ${[...KINDS].join(', ')}`);

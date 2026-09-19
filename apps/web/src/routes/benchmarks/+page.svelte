@@ -133,7 +133,7 @@
 			</div>
 			<p class="mt-3 text-sm">
 				Checksum <span class="mono">{result.checksum}</span>
-				{#if ok}<span class="ml-1 font-semibold text-emerald-700 dark:text-emerald-400">✓ matches the reference — identical games to Rust, Go and Python</span>{:else}<span class="ml-1 font-semibold text-red-600">✗ differs from reference</span>{/if}
+				{#if ok}<span class="ml-1 font-semibold text-emerald-700 dark:text-emerald-400">✓ matches the reference: identical games to Rust, Go and Python</span>{:else}<span class="ml-1 font-semibold text-red-600">✗ differs from reference</span>{/if}
 			</p>
 			<div class="mt-4"><div class="label mb-2">Max tile distribution</div><Columns title="Games by max tile" data={tiles} /></div>
 			<div class="mt-4 flex items-center gap-3">
@@ -174,7 +174,7 @@
 			<DataTable
 				caption="Recent benchmark runs"
 				columns={[{ key: 'suite', label: 'Suite' }, { key: 'lang', label: 'Language' }, { key: 'rt', label: 'Runtime' }, { key: 'mps', label: 'Moves/s', align: 'right' }, { key: 'score', label: 'Avg score', align: 'right' }, { key: 'v', label: 'Verified' }, { key: 'when', label: 'When' }]}
-				rows={runs.slice(0, 25).map((r) => ({ suite: r.suiteId, lang: LANG_LABEL[r.language] ?? r.language, rt: r.runtime, mps: fmtCompact(r.movesPerSec), score: fmtInt(r.avgScore), v: r.verified ? '✓' : '—', when: fmtAgo(r.createdAt) }))}
+				rows={runs.slice(0, 25).map((r) => ({ suite: r.suiteId, lang: LANG_LABEL[r.language] ?? r.language, rt: r.runtime, mps: fmtCompact(r.movesPerSec), score: fmtInt(r.avgScore), v: r.verified ? '✓' : '-', when: fmtAgo(r.createdAt) }))}
 			/>
 		</div>
 	{/if}

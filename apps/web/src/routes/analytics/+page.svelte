@@ -68,12 +68,12 @@
 		scores = await load(`/v1/analytics/scores?kind=${k}`);
 	}
 
-	const pct = (v: number | null | undefined, d = 0) => (v === null || v === undefined ? '—' : `${(v * 100).toFixed(d)}%`);
-	const ms = (v: number | null | undefined) => (v === null || v === undefined ? '—' : v < 60000 ? `${(v / 1000).toFixed(0)} s` : `${(v / 60000).toFixed(1)} min`);
+	const pct = (v: number | null | undefined, d = 0) => (v === null || v === undefined ? '-' : `${(v * 100).toFixed(d)}%`);
+	const ms = (v: number | null | undefined) => (v === null || v === undefined ? '-' : v < 60000 ? `${(v / 1000).toFixed(0)} s` : `${(v / 60000).toFixed(1)} min`);
 	const tileLabel = (t: number) => (t >= 1024 ? `${t / 1024}k` : String(t));
 	const lang = (l: string) => LANG_LABEL[l] ?? l;
 	function runtimeRows(b: Any): [string, string][] {
-		const row = (r: Any | undefined, unit: string) => (r ? `${lang(r.language)} · ${fmtCompact(r.value)} ${unit}` : '—');
+		const row = (r: Any | undefined, unit: string) => (r ? `${lang(r.language)} · ${fmtCompact(r.value)} ${unit}` : '-');
 		return [
 			['Fastest engine', row(b.runtimes.fastestEngine[0], 'moves/s')],
 			['Fastest search', row(b.runtimes.fastestSearch[0], 'moves/s')],
@@ -89,7 +89,7 @@
 	}
 	const SECTIONS = ['overview', 'impact', 'platform', 'players', 'scores', 'tiles', 'moves', 'agents', 'llm', 'leaderboards', 'devices'];
 	const SECTION_LABEL: Record<string, string> = { llm: 'LLM usage', impact: 'Cost & impact' };
-	const usd = (v: number | null | undefined) => (v === null || v === undefined ? '—' : v === 0 ? '$0' : v < 0.01 ? `$${v.toFixed(5)}` : v < 1 ? `$${v.toFixed(4)}` : `$${v.toFixed(2)}`);
+	const usd = (v: number | null | undefined) => (v === null || v === undefined ? '-' : v === 0 ? '$0' : v < 0.01 ? `$${v.toFixed(5)}` : v < 1 ? `$${v.toFixed(4)}` : `$${v.toFixed(2)}`);
 </script>
 
 <svelte:head><title>Analytics · 2048 Lab</title></svelte:head>
@@ -97,9 +97,9 @@
 <div class="flex flex-wrap items-end justify-between gap-3">
 	<div>
 		<h1 class="text-3xl font-extrabold tracking-tight">Analytics &amp; insights</h1>
-		<p class="mt-1 max-w-2xl text-ink-500">Platform growth, player behaviour, game difficulty and agent performance — served from incremental aggregates, never raw scans.</p>
+		<p class="mt-1 max-w-2xl text-ink-500">Platform growth, player behaviour, game difficulty and agent performance, served from incremental aggregates rather than raw scans.</p>
 	</div>
-	{#if offline}<span class="rounded-full bg-accent-500/15 px-3 py-1 text-xs font-semibold text-accent-600">Offline — showing cached figures</span>{/if}
+	{#if offline}<span class="rounded-full bg-accent-500/15 px-3 py-1 text-xs font-semibold text-accent-600">Offline: showing cached figures</span>{/if}
 </div>
 
 <nav aria-label="Analytics sections" class="sticky top-14 z-20 -mx-4 mt-4 flex gap-1 overflow-x-auto bg-ink-50/90 px-4 py-2 backdrop-blur dark:bg-ink-950/90 [scrollbar-width:none]">
@@ -143,7 +143,7 @@
 				{#if overview.topRuntime}
 					<div class="mt-1 text-xl font-bold">{LANG_LABEL[overview.topRuntime.language] ?? overview.topRuntime.language}</div>
 					<div class="text-sm text-ink-500">{fmtCompact(overview.topRuntime.movesPerSec)} moves/s · {overview.topRuntime.suite}</div>
-				{:else}<div class="mt-1 text-sm text-ink-500">No verified runs submitted yet — <a class="underline" href="/runtimes">see baseline</a>.</div>{/if}
+				{:else}<div class="mt-1 text-sm text-ink-500">No verified runs submitted yet. <a class="underline" href="/runtimes">see baseline</a>.</div>{/if}
 			</div>
 			<div class="card p-4" style="background: var(--surface-chart)">
 				<div class="label mb-2">Games per day · last 30 days</div>
@@ -317,7 +317,7 @@
 				['Unique players', fmtInt(players.uniquePlayers)],
 				['New (30 days)', fmtInt(players.newPlayers30d)],
 				['Returning player-days (30d)', fmtInt(players.returningPlayerDays30d)],
-				['Games per player', players.gamesPerPlayer?.toFixed(1) ?? '—'],
+				['Games per player', players.gamesPerPlayer?.toFixed(1) ?? '-'],
 				['Avg session length', ms(players.avgSessionMs)],
 				['Avg score per player', fmtInt(players.avgScorePerPlayer)],
 				['Avg best per player', fmtInt(players.avgHighestScorePerPlayer)],
@@ -332,7 +332,7 @@
 				{#each [['D1', players.retention.d1], ['D7', players.retention.d7], ['D30', players.retention.d30]] as [l, r] (l)}
 					<div class="rounded-xl bg-ink-900/[0.04] p-3 dark:bg-white/5">
 						<div class="label">{l} retention</div>
-						<div class="mt-1 text-2xl font-bold tabular-nums">{r.rate === null ? '—' : pct(r.rate, 1)}</div>
+						<div class="mt-1 text-2xl font-bold tabular-nums">{r.rate === null ? '-' : pct(r.rate, 1)}</div>
 						<div class="text-xs text-ink-500">{r.rate === null ? `not enough data (${r.cohortPlayers} players in eligible cohorts)` : `${fmtInt(r.cohortPlayers)} players in cohorts`}</div>
 					</div>
 				{/each}
@@ -367,7 +367,7 @@
 		<div class="mt-3 grid gap-4 lg:grid-cols-2">
 			<div class="card p-5" style="background: var(--surface-chart)">
 				<h3 class="mb-3 font-semibold">Score distribution <span class="font-normal text-ink-500">log-scale bins</span></h3>
-				<Columns title="Score histogram" data={scores.histogram.map((b: Any) => ({ label: fmtCompact(b.from), value: b.n, note: `${fmtInt(b.from)}–${fmtInt(b.to)}: ${b.n} games` }))} />
+				<Columns title="Score histogram" data={scores.histogram.map((b: Any) => ({ label: fmtCompact(b.from), value: b.n, note: `${fmtInt(b.from)}-${fmtInt(b.to)}: ${b.n} games` }))} />
 			</div>
 			<div class="card p-5" style="background: var(--surface-chart)">
 				<h3 class="mb-3 font-semibold">Score over time</h3>
@@ -431,7 +431,7 @@
 			</div>
 			<div class="card p-5" style="background: var(--surface-chart)">
 				<h3 class="mb-3 font-semibold">Game length distribution</h3>
-				<Columns title="Moves per game histogram" data={m.histogram.map((b: Any) => ({ label: fmtCompact(b.from), value: b.n, note: `${fmtInt(b.from)}–${fmtInt(b.to)} moves: ${b.n} games` }))} />
+				<Columns title="Moves per game histogram" data={m.histogram.map((b: Any) => ({ label: fmtCompact(b.from), value: b.n, note: `${fmtInt(b.from)}-${fmtInt(b.to)} moves: ${b.n} games` }))} />
 			</div>
 		</div>
 	{/if}
@@ -453,7 +453,7 @@
 					<DataTable
 						caption="Agent comparison"
 						columns={[{ key: 'n', label: 'Agent' }, { key: 'g', label: 'Games', align: 'right' }, { key: 'avg', label: 'Avg', align: 'right' }, { key: 'med', label: 'Median', align: 'right' }, { key: 'p90', label: 'P90', align: 'right' }, { key: 'p99', label: 'P99', align: 'right' }, { key: 'max', label: 'Max', align: 'right' }, { key: 't', label: 'Top tile', align: 'right' }, { key: 'dt', label: 'Decision', align: 'right' }, { key: 'd', label: 'Depth', align: 'right' }, { key: 'c', label: 'Completed', align: 'right' }]}
-						rows={agents.agents.map((a: Any) => ({ n: a.name, g: fmtInt(a.games), avg: fmtInt(a.avgScore), med: fmtInt(a.medianScore), p90: fmtInt(a.p90Score), p99: fmtInt(a.p99Score), max: fmtInt(a.maxScore), t: fmtInt(a.highestTile), dt: fmtUs(a.avgDecisionUs), d: a.avgDepth ? a.avgDepth.toFixed(1) : '—', c: fmtInt(a.completed) }))}
+						rows={agents.agents.map((a: Any) => ({ n: a.name, g: fmtInt(a.games), avg: fmtInt(a.avgScore), med: fmtInt(a.medianScore), p90: fmtInt(a.p90Score), p99: fmtInt(a.p99Score), max: fmtInt(a.maxScore), t: fmtInt(a.highestTile), dt: fmtUs(a.avgDecisionUs), d: a.avgDepth ? a.avgDepth.toFixed(1) : '-', c: fmtInt(a.completed) }))}
 					/>
 				</div>
 			</div>
@@ -492,7 +492,7 @@
 				<DataTable
 					caption="LLM usage by model"
 					columns={[{ key: 'm', label: 'Model' }, { key: 'p', label: 'Provider' }, { key: 'g', label: 'Games', align: 'right' }, { key: 'c', label: 'Calls', align: 'right' }, { key: 'tok', label: 'Tokens', align: 'right' }, { key: 'cost', label: 'Cost', align: 'right' }, { key: 'cpg', label: 'Cost / game', align: 'right' }, { key: 'tpm', label: 'Tokens / move', align: 'right' }, { key: 's', label: 'Avg score', align: 'right' }, { key: 'ppd', label: 'Points / $', align: 'right' }]}
-					rows={llm.models.map((m: Any) => ({ m: m.model, p: m.provider ?? '—', g: fmtInt(m.games), c: fmtInt(m.calls), tok: fmtCompact(m.tokens.total), cost: `${usd(m.costUsd)}${m.estimatedGames ? ' ≈' : ''}`, cpg: usd(m.costPerGameUsd), tpm: fmtCompact(m.tokensPerMove), s: fmtInt(m.avgScore), ppd: m.pointsPerDollar ? fmtCompact(m.pointsPerDollar) : m.costUsd === 0 ? '∞ (free)' : '—' }))}
+					rows={llm.models.map((m: Any) => ({ m: m.model, p: m.provider ?? '-', g: fmtInt(m.games), c: fmtInt(m.calls), tok: fmtCompact(m.tokens.total), cost: `${usd(m.costUsd)}${m.estimatedGames ? ' ≈' : ''}`, cpg: usd(m.costPerGameUsd), tpm: fmtCompact(m.tokensPerMove), s: fmtInt(m.avgScore), ppd: m.pointsPerDollar ? fmtCompact(m.pointsPerDollar) : m.costUsd === 0 ? '∞ (free)' : '-' }))}
 				/>
 			</div>
 			<div class="card mt-3 overflow-hidden">
@@ -535,10 +535,10 @@
 			<div class="card p-4">
 				<h3 class="text-sm font-semibold">Agent leaderboard</h3>
 				<dl class="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-					<dt class="text-ink-500">Best average</dt><dd>{boards.agents.bestAverage[0] ? `${boards.agents.bestAverage[0].name} · ${fmtInt(boards.agents.bestAverage[0].avgScore)}` : '—'}</dd>
-					<dt class="text-ink-500">Best P99</dt><dd>{boards.agents.bestP99[0] ? `${boards.agents.bestP99[0].name} · ≈${fmtInt(boards.agents.bestP99[0].p99Score)}` : '— (needs 10 games)'}</dd>
-					<dt class="text-ink-500">Highest tile</dt><dd>{boards.agents.highestTile[0] ? `${boards.agents.highestTile[0].name} · ${fmtInt(boards.agents.highestTile[0].highestTile)}` : '—'}</dd>
-					<dt class="text-ink-500">Fastest decisions</dt><dd>{boards.agents.fastestDecision[0] ? `${boards.agents.fastestDecision[0].name} · ${fmtUs(boards.agents.fastestDecision[0].avgDecisionUs)}` : '—'}</dd>
+					<dt class="text-ink-500">Best average</dt><dd>{boards.agents.bestAverage[0] ? `${boards.agents.bestAverage[0].name} · ${fmtInt(boards.agents.bestAverage[0].avgScore)}` : '-'}</dd>
+					<dt class="text-ink-500">Best P99</dt><dd>{boards.agents.bestP99[0] ? `${boards.agents.bestP99[0].name} · ≈${fmtInt(boards.agents.bestP99[0].p99Score)}` : '- (needs 10 games)'}</dd>
+					<dt class="text-ink-500">Highest tile</dt><dd>{boards.agents.highestTile[0] ? `${boards.agents.highestTile[0].name} · ${fmtInt(boards.agents.highestTile[0].highestTile)}` : '-'}</dd>
+					<dt class="text-ink-500">Fastest decisions</dt><dd>{boards.agents.fastestDecision[0] ? `${boards.agents.fastestDecision[0].name} · ${fmtUs(boards.agents.fastestDecision[0].avgDecisionUs)}` : '-'}</dd>
 				</dl>
 			</div>
 			<div class="card p-4">

@@ -6,6 +6,12 @@
 	import CopyField from '$lib/components/CopyField.svelte';
 	import Stat from '$lib/components/Stat.svelte';
 	import Timeline from '$lib/components/Timeline.svelte';
+	import SkipBackIcon from 'phosphor-svelte/lib/SkipBackIcon';
+	import SkipForwardIcon from 'phosphor-svelte/lib/SkipForwardIcon';
+	import CaretLeftIcon from 'phosphor-svelte/lib/CaretLeftIcon';
+	import CaretRightIcon from 'phosphor-svelte/lib/CaretRightIcon';
+	import PlayIcon from 'phosphor-svelte/lib/PlayIcon';
+	import PauseIcon from 'phosphor-svelte/lib/PauseIcon';
 	import Skeleton from '$lib/components/Skeleton.svelte';
 	import { type ResolvedReplay, resolveReplay } from '$lib/replays';
 	import { fmtInt, fmtUs } from '$lib/format';
@@ -109,11 +115,11 @@
 				<label class="sr-only" for="scrub">Move position</label>
 				<input id="scrub" type="range" class="w-full accent-accent-500" min="0" max={frames.length - 1} value={idx} oninput={(e) => go(Number(e.currentTarget.value))} />
 				<div class="mt-2 flex flex-wrap items-center gap-2">
-					<button class="btn-ghost px-3" onclick={() => go(0)} aria-label="First move">⏮</button>
-					<button class="btn-ghost px-3" onclick={() => go(idx - 1)} aria-label="Previous move">◀</button>
-					<button class="btn-primary w-24" onclick={toggle}>{playing ? 'Pause' : 'Play'}</button>
-					<button class="btn-ghost px-3" onclick={() => go(idx + 1, true)} aria-label="Next move">▶</button>
-					<button class="btn-ghost px-3" onclick={() => go(frames.length - 1)} aria-label="Last move">⏭</button>
+					<button class="btn-ghost px-3" onclick={() => go(0)} aria-label="First move"><SkipBackIcon size={16} weight="fill" /></button>
+					<button class="btn-ghost px-3" onclick={() => go(idx - 1)} aria-label="Previous move"><CaretLeftIcon size={16} weight="bold" /></button>
+					<button class="btn-primary w-28" onclick={toggle}>{#if playing}<PauseIcon size={15} weight="fill" /> Pause{:else}<PlayIcon size={15} weight="fill" /> Play{/if}</button>
+					<button class="btn-ghost px-3" onclick={() => go(idx + 1, true)} aria-label="Next move"><CaretRightIcon size={16} weight="bold" /></button>
+					<button class="btn-ghost px-3" onclick={() => go(frames.length - 1)} aria-label="Last move"><SkipForwardIcon size={16} weight="fill" /></button>
 					<label class="ml-auto flex items-center gap-2 text-sm"><span class="text-ink-500">Speed</span>
 						<select class="input w-auto py-1.5" bind:value={speed}>
 							{#each [1, 2, 4, 8, 16, 32, 64, 128] as s (s)}<option value={s}>{s} moves/s</option>{/each}
@@ -134,7 +140,7 @@
 				<div class="flex items-center justify-between">
 					<h1 class="text-lg font-bold">{replay.agent?.name ?? (replay.playerKind === 'agent' ? 'Agent' : 'Human')} game</h1>
 					{#if replay.status === 'live'}
-						<a class="rounded-full bg-red-500/15 px-2.5 py-1 text-xs font-semibold text-red-600 dark:text-red-400" href="/watch/{replay.replayCode}">● Live — watch</a>
+						<a class="rounded-full bg-red-500/15 px-2.5 py-1 text-xs font-semibold text-red-600 dark:text-red-400" href="/watch/{replay.replayCode}">Live: watch</a>
 					{:else if verified}
 						<span class="rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400" title="Reconstructed locally from seed + moves; matches the stored final state">✓ Verified replay</span>
 					{/if}
@@ -152,12 +158,12 @@
 			<section class="card p-4 text-sm">
 				<h2 class="mb-2 font-semibold">This move</h2>
 				{#if idx === 0}
-					<p class="text-ink-500">Initial position — two spawned tiles.</p>
+					<p class="text-ink-500">Initial position: two spawned tiles.</p>
 				{:else}
 					<dl class="grid grid-cols-2 gap-y-1">
 						<dt class="text-ink-500">Direction</dt><dd class="font-semibold">{DIRECTION_NAMES[frame.dir ?? 0]}</dd>
 						<dt class="text-ink-500">Points gained</dt><dd class="tabular-nums">{fmtInt(frame.gained)}</dd>
-						<dt class="text-ink-500">Spawned</dt><dd>{frame.spawn ? `${2 ** frame.spawn.exponent} at row ${Math.floor(frame.spawn.index / 4) + 1}, col ${(frame.spawn.index % 4) + 1}` : '—'}</dd>
+						<dt class="text-ink-500">Spawned</dt><dd>{frame.spawn ? `${2 ** frame.spawn.exponent} at row ${Math.floor(frame.spawn.index / 4) + 1}, col ${(frame.spawn.index % 4) + 1}` : '-'}</dd>
 						{#if timing}<dt class="text-ink-500">Decision time</dt><dd class="tabular-nums">{fmtUs(timing)}</dd>{/if}
 					</dl>
 				{/if}

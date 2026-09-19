@@ -34,7 +34,7 @@
 		{/each}
 	</div>
 </div>
-{#if offline}<p class="mt-2 text-sm text-ink-500">Offline — showing the last copy you loaded.</p>{/if}
+{#if offline}<p class="mt-2 text-sm text-ink-500">Offline. Showing the last copy you loaded.</p>{/if}
 <p class="mt-1 text-sm text-ink-500">Every score is verified by re-simulating the game on the server. Click a row to watch the replay.</p>
 
 <div class="mt-6 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
@@ -43,7 +43,7 @@
 		{#if !data}
 			<Skeleton rows={6} class="p-4" />
 		{:else if data.topScores.length === 0}
-			<p class="p-4 text-sm text-ink-500">No games yet — <a class="underline" href="/play">be the first</a>.</p>
+			<p class="p-4 text-sm text-ink-500">No games yet. <a class="underline" href="/play">be the first</a>.</p>
 		{:else}
 			<ol class="mt-2">
 				{#each data.topScores as g (g.replayCode)}

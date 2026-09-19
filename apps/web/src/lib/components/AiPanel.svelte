@@ -34,7 +34,7 @@
 			</div>
 		{/if}
 		<dl class="grid grid-cols-4 gap-2 text-center">
-			<div><dt class="label">Depth</dt><dd class="font-semibold tabular-nums">{metrics.depth ?? '—'}</dd></div>
+			<div><dt class="label">Depth</dt><dd class="font-semibold tabular-nums">{metrics.depth ?? '-'}</dd></div>
 			<div><dt class="label">Nodes</dt><dd class="font-semibold tabular-nums">{fmtCompact(metrics.nodes)}</dd></div>
 			<div><dt class="label">TT hits</dt><dd class="font-semibold tabular-nums">{fmtCompact(metrics.ttHits)}</dd></div>
 			<div><dt class="label">TT size</dt><dd class="font-semibold tabular-nums">{fmtCompact(metrics.ttSize)}</dd></div>

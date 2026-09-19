@@ -10,32 +10,32 @@ export const IMPACT_ASSUMPTIONS = {
   cpuWattsPerCore: {
     value: 15,
     unit: 'W per busy CPU core',
-    note: 'Typical laptop/server core under load incl. share of memory & board (range ~5–30 W).',
+    note: 'Typical laptop/server core under load incl. share of memory & board (range ~5-30 W).',
   },
   pue: {
     value: 1.2,
     unit: 'power usage effectiveness',
-    note: 'Data-centre overhead for cooling & power delivery (hyperscale ~1.1–1.4). Applied to all energy.',
+    note: 'Data-centre overhead for cooling & power delivery (hyperscale ~1.1-1.4). Applied to all energy.',
   },
   computeUsdPerCoreHour: {
     value: 0.04,
     unit: 'USD per vCPU-hour',
-    note: 'On-demand general-purpose cloud vCPU list price (range ~$0.02–0.10).',
+    note: 'On-demand general-purpose cloud vCPU list price (range ~$0.02-0.10).',
   },
   llmWhPer1kTokens: {
     value: 0.5,
     unit: 'Wh per 1,000 tokens',
-    note: 'Inference energy for a large hosted model; published estimates span ~0.1–3 Wh per 1k tokens. Free models still use energy.',
+    note: 'Inference energy for a large hosted model; published estimates span ~0.1-3 Wh per 1k tokens. Free models still use energy.',
   },
   waterLitresPerKwh: {
     value: 1.8,
     unit: 'L water per kWh',
-    note: 'On-site cooling plus power-generation water (WUE + source; range ~0.5–5 L/kWh).',
+    note: 'On-site cooling plus power-generation water (WUE + source; range ~0.5-5 L/kWh).',
   },
   carbonKgPerKwh: {
     value: 0.45,
     unit: 'kg CO₂e per kWh',
-    note: 'Approximate global-average grid intensity (range ~0.05–0.9 depending on region).',
+    note: 'Approximate global-average grid intensity (range ~0.05-0.9 depending on region).',
   },
   phoneChargeKwh: { value: 0.015, unit: 'kWh per smartphone full charge', note: '~15 Wh battery incl. charger losses.' },
   laptopHourKwh: { value: 0.05, unit: 'kWh per laptop-hour', note: '~50 W average draw while in use.' },

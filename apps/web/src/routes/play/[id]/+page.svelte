@@ -171,7 +171,7 @@
 
 	const shareUrl = $derived(record ? `${location.origin}/replay/${record.replayCode}` : '');
 	const syncLabel = $derived(
-		!record ? '' : record.sync === 'synced' ? 'Replay saved — anyone with the code can watch it' : record.sync === 'pending' ? 'Offline — will upload when you reconnect' : record.sync === 'skipped' ? 'Short game — kept on this device only' : record.finishedAt ? 'Saving…' : 'Replay is shareable once the game ends'
+		!record ? '' : record.sync === 'synced' ? 'Replay saved. Anyone with the code can watch it' : record.sync === 'pending' ? 'Offline. It will upload when you reconnect' : record.sync === 'skipped' ? 'Short game, kept on this device only' : record.finishedAt ? 'Saving…' : 'Replay is shareable once the game ends'
 	);
 </script>
 
@@ -249,7 +249,7 @@
 					</label>
 					<label class="text-xs"><span class="label">Depth</span>
 						<select class="input mt-1 py-1.5" bind:value={aiDepth} disabled={aiAgent !== 'expectimax'}>
-							<option value="auto">Auto (2–4)</option><option value={1}>1</option><option value={2}>2</option><option value={3}>3</option>
+							<option value="auto">Auto (2-4)</option><option value={1}>1</option><option value={2}>2</option><option value={3}>3</option>
 						</select>
 					</label>
 					<label class="text-xs"><span class="label">Delay {aiDelay} ms</span>
