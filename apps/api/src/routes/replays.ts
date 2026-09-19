@@ -19,6 +19,7 @@ import { isClientId } from '../lib/analytics.ts';
 import { ApiError } from '../lib/errors.ts';
 import { type AppEnv, body, edgeCached, optInt, optObj, optStr, rateLimit, rpc } from '../lib/http.ts';
 import type { LiveReplay } from '../do/game-session.ts';
+import { type UsageRow, usageOut } from '../lib/usage.ts';
 import { gameStub } from './games.ts';
 
 export const replays = new Hono<AppEnv>();
@@ -135,8 +136,11 @@ replays.get('/:ref', async (c) => {
       { 'cache-control': 'no-store' },
     );
   }
-  // Finished replays are immutable: cache them at the edge for a year.
-  return edgeCached(c, 31_536_000, async () => rowToReplay(row));
+  // Finished replays are immutable (usage is usually reported before the game ends), so cache for a day.
+  return edgeCached(c, 86_400, async () => {
+    const u = await c.env.DB.prepare('SELECT * FROM llm_usage WHERE game_id = ?1').bind(row.id).first<UsageRow>();
+    return { ...rowToReplay(row), llmUsage: u ? usageOut(u, { score: row.score, moveNumber: row.move_count, maxTile: row.max_tile, status: row.status }) : undefined };
+  });
 });
 
 /** Spectate a live game over WebSocket, addressed by its public replay code. */

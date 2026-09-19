@@ -73,6 +73,22 @@ console.log('pull-mode game played to completion (random agent, batched moves)')
   check(st.status === 200 && st.json.status === 'over', 'GET finished game state');
 }
 
+console.log('LLM usage reporting');
+{
+  const g = (await call('POST', '/v1/games', { seed: 4242, agent: { name: 'smoke-llm' } })).json;
+  const free = await call('POST', `/v1/games/${g.gameId}/usage`, { model: 'deepseek/deepseek-v4-flash-0731:free', provider: 'openrouter', inputTokens: 5000, outputTokens: 700, calls: 3 });
+  check(free.status === 200 && free.json.costUsd === 0 && free.json.tokens.total === 5700, 'free model → $0');
+  const exact = await call('POST', `/v1/games/${g.gameId}/usage`, { model: 'some/paid-model', provider: 'openrouter', inputTokens: 9000, outputTokens: 900, costUsd: 0.0123 });
+  check(exact.json.costUsd === 0.0123 && exact.json.costEstimated === false, 'client-reported cost kept (re-report replaces)');
+  const unknown = await call('POST', `/v1/games/${g.gameId}/usage`, { model: 'mystery-model', inputTokens: 10, outputTokens: 10 });
+  check(unknown.json.costUsd === null, 'unknown model without cost → cost unknown, not guessed');
+  const nf = await call('POST', '/v1/games/01ARZ3NDEKTSV4RRFFQ69G5FAV/usage', { model: 'x', inputTokens: 1, outputTokens: 1 });
+  check(nf.status === 404 && nf.json.code === 'GAME_NOT_FOUND', 'usage for unknown game → GAME_NOT_FOUND');
+  const bad = await call('POST', `/v1/games/${g.gameId}/usage`, { inputTokens: 1 });
+  check(bad.status === 400 && bad.json.code === 'BAD_REQUEST', 'usage without model → BAD_REQUEST');
+  await call('POST', `/v1/games/${g.gameId}/resign`);
+}
+
 console.log('errors');
 {
   const nf = await call('GET', '/v1/games/01ARZ3NDEKTSV4RRFFQ69G5FAV');

@@ -21,8 +21,9 @@
 		lowerIsBetter = false,
 		/** mark the best entity (comparisons); off for distributions */
 		markBest = true,
-		tickCount = 4
-	}: { items: Item[]; format: (v: number) => string; title: string; unit?: string; lowerIsBetter?: boolean; markBest?: boolean; tickCount?: number } = $props();
+		tickCount = 4,
+		emptyLabel = 'no run yet'
+	}: { items: Item[]; format: (v: number) => string; title: string; unit?: string; lowerIsBetter?: boolean; markBest?: boolean; tickCount?: number; emptyLabel?: string } = $props();
 
 	const max = $derived(Math.max(0, ...items.map((i) => i.value ?? 0)));
 	const ticks = $derived(niceTicks(max, tickCount));
@@ -60,7 +61,7 @@
 								{#if markBest && best === it.key && items.filter((i) => i.value !== null).length > 1}<span class="ml-1 text-[11px] font-medium text-[var(--viz-muted)]">{lowerIsBetter ? 'lowest' : 'best'}</span>{/if}
 							</span>
 						{:else}
-							<span class="text-xs text-[var(--viz-muted)]">no run yet</span>
+							<span class="text-xs text-[var(--viz-muted)]">{emptyLabel}</span>
 						{/if}
 					</div>
 				</div>

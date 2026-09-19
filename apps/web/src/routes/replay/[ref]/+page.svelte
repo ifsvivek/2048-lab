@@ -156,6 +156,19 @@
 					</dl>
 				{/if}
 			</section>
+			{#if (replay as any).llmUsage}
+				{@const u = (replay as any).llmUsage}
+				<section class="card p-4 text-sm">
+					<h2 class="mb-2 font-semibold">LLM burn <span class="font-normal text-ink-500">self-reported</span></h2>
+					<dl class="grid grid-cols-2 gap-y-1">
+						<dt class="text-ink-500">Model</dt><dd class="font-medium">{u.model}</dd>
+						<dt class="text-ink-500">Tokens</dt><dd class="tabular-nums">{fmtInt(u.tokens.total)} <span class="text-ink-500">({fmtInt(u.tokens.input)} in · {fmtInt(u.tokens.output)} out)</span></dd>
+						<dt class="text-ink-500">Cost</dt><dd class="tabular-nums">{u.costUsd === null ? 'unknown' : `$${u.costUsd.toFixed(u.costUsd < 1 ? 4 : 2)}`}{u.costEstimated ? ' (estimated)' : ''}</dd>
+						<dt class="text-ink-500">Model calls</dt><dd class="tabular-nums">{fmtInt(u.calls)}</dd>
+						{#if u.efficiency?.tokensPerMove}<dt class="text-ink-500">Tokens / move</dt><dd class="tabular-nums">{fmtInt(u.efficiency.tokensPerMove)}</dd>{/if}
+					</dl>
+				</section>
+			{/if}
 			{#if replay.runtime || replay.agent?.config}
 				<section class="card p-4 text-sm">
 					<h2 class="mb-2 font-semibold">Runtime</h2>

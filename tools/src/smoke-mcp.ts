@@ -18,7 +18,7 @@ check(info?.name === 'g2048', `initialize → ${info?.name} ${info?.version}`);
 
 const { tools } = await client.listTools();
 const names = tools.map((t) => t.name);
-for (const t of ['create_game', 'get_game', 'make_move', 'get_replay', 'list_leaderboard', 'get_agent_stats', 'run_benchmark']) check(names.includes(t), `tool ${t} listed`);
+for (const t of ['create_game', 'get_game', 'make_move', 'get_replay', 'list_leaderboard', 'get_agent_stats', 'run_benchmark', 'report_usage']) check(names.includes(t), `tool ${t} listed`);
 check((await client.listPrompts()).prompts.some((p) => p.name === 'play_2048'), 'prompt play_2048 listed');
 check((await client.listResources()).resources.some((r) => r.uri === 'g2048://rules'), 'resource g2048://rules listed');
 
@@ -46,8 +46,16 @@ check(inv.isError && inv.data.code === 'GAME_OVER' && inv.data.error === true, '
 const nf = await call('get_game', { gameId: '01ARZ3NDEKTSV4RRFFQ69G5FAV' });
 check(nf.isError && nf.data.code === 'GAME_NOT_FOUND', 'unknown game → GAME_NOT_FOUND');
 
+// Report this session's (synthetic) token burn and check the estimate: claude-opus-5 = $5 / $25 per 1M.
+const burn = await call('report_usage', { gameId: s.gameId, model: 'claude-opus-5', provider: 'anthropic', inputTokens: 200_000, outputTokens: 40_000, calls: calls });
+check(!burn.isError && Math.abs(burn.data.costUsd - 2.0) < 1e-9 && burn.data.costEstimated === true, `report_usage → ${burn.data.tokens?.total} tokens, $${burn.data.costUsd} (estimated)`);
+check(burn.data.efficiency?.tokensPerMove > 0 && burn.data.game?.score === s.score, 'report_usage returns efficiency for the finished game');
+const llmA = await call('get_analytics', { report: 'llm' });
+check(!llmA.isError && llmA.data.models.some((m: any) => m.model === 'claude-opus-5'), 'get_analytics llm lists the reported model');
+
 const rep = await call('get_replay', { replayCode: s.replayCode });
 check(!rep.isError && rep.data.moves.length === s.moveNumber && rep.data.final.score === s.score, 'get_replay returns full move history');
+check(rep.data.llmUsage?.model === 'claude-opus-5', 'replay carries the LLM burn');
 const lb = await call('list_leaderboard', { kind: 'agent' });
 check(!lb.isError && Array.isArray(lb.data.topScores), 'list_leaderboard');
 const st = await call('get_agent_stats', { agent: 'builtin/greedy' });

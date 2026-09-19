@@ -7,6 +7,7 @@ import { type Hist, REACH, binHigh, binLow, clampTo, histPercentile, isClientId,
 import { ApiError } from '../lib/errors.ts';
 import { type AppEnv, type Ctx, body, edgeCached, rateLimit } from '../lib/http.ts';
 import { log } from '../lib/log.ts';
+import { type UsageRow, usageOut } from '../lib/usage.ts';
 
 export const analytics = new Hono<AppEnv>();
 
@@ -522,6 +523,68 @@ analytics.get('/leaderboards', (c) =>
         fastestSearch: bestPer('expectimax-d2-10', (r) => r.moves_per_sec),
         mostEfficient: bestPer('expectimax-d2-10', (r) => (r.moves_per_sec && r.peak_memory ? r.moves_per_sec / (r.peak_memory / 1048576) : null)),
       },
+    };
+  }),
+);
+
+// ------------------------------------------------------------ LLM usage
+
+analytics.get('/llm', (c) =>
+  edgeCached(c, 120, async () => {
+    const [byModel, recent, daily] = await c.env.DB.batch([
+      c.env.DB.prepare(
+        `SELECT u.model, u.provider, COUNT(*) AS games, SUM(u.calls) AS calls, SUM(u.input_tokens) AS input, SUM(u.output_tokens) AS output,
+                SUM(u.cache_read_tokens) AS cache_read, SUM(u.reasoning_tokens) AS reasoning, SUM(u.cost_usd) AS cost,
+                SUM(u.cost_usd IS NULL) AS unpriced, SUM(u.cost_estimated) AS estimated,
+                AVG(g.score) AS avg_score, MAX(g.score) AS best_score, MAX(g.max_tile) AS best_tile, SUM(g.move_count) AS moves, SUM(g.score) AS points
+         FROM llm_usage u LEFT JOIN games g ON g.id = u.game_id GROUP BY u.model, u.provider ORDER BY games DESC LIMIT 50`,
+      ),
+      c.env.DB.prepare(
+        `SELECT u.*, g.replay_code, g.score, g.move_count, g.max_tile, g.status FROM llm_usage u LEFT JOIN games g ON g.id = u.game_id
+         ORDER BY u.reported_at DESC LIMIT 20`,
+      ),
+      c.env.DB.prepare(
+        'SELECT day, COUNT(*) AS games, SUM(input_tokens + output_tokens + cache_read_tokens) AS tokens, SUM(cost_usd) AS cost FROM llm_usage WHERE day >= ?1 GROUP BY day ORDER BY day',
+      ).bind(daysAgo(29)),
+    ]);
+    const models = (byModel.results as Record<string, number & string>[]).map((m) => {
+      const tokens = (m.input ?? 0) + (m.output ?? 0) + (m.cache_read ?? 0);
+      return {
+        model: m.model,
+        provider: m.provider,
+        games: m.games,
+        calls: m.calls,
+        tokens: { input: m.input, output: m.output, cacheRead: m.cache_read, reasoning: m.reasoning, total: tokens },
+        costUsd: m.cost,
+        unpricedGames: m.unpriced,
+        estimatedGames: m.estimated,
+        avgScore: m.avg_score,
+        bestScore: m.best_score,
+        bestTile: m.best_tile,
+        tokensPerMove: m.moves ? tokens / m.moves : null,
+        costPerGameUsd: m.cost !== null && m.games ? m.cost / m.games : null,
+        pointsPer1kTokens: tokens ? (m.points / tokens) * 1000 : null,
+        pointsPerDollar: m.cost ? m.points / m.cost : null,
+      };
+    });
+    const sum = (f: (m: (typeof models)[number]) => number | null) => models.reduce((a, m) => a + (f(m) ?? 0), 0);
+    return {
+      totals: {
+        games: sum((m) => m.games),
+        calls: sum((m) => m.calls),
+        tokens: sum((m) => m.tokens.total),
+        inputTokens: sum((m) => m.tokens.input),
+        outputTokens: sum((m) => m.tokens.output),
+        costUsd: sum((m) => m.costUsd),
+        unpricedGames: sum((m) => m.unpricedGames),
+      },
+      models,
+      recent: (recent.results as Record<string, any>[]).map((r) => ({
+        ...usageOut(r as unknown as UsageRow, { score: r.score ?? 0, moveNumber: r.move_count ?? 0, maxTile: r.max_tile ?? 0, status: r.status ?? 'unknown' }),
+        replayCode: r.replay_code,
+      })),
+      daily: daily.results,
+      note: 'Token counts are self-reported by LLM agents; costs are client-reported or estimated from list prices (free models = $0).',
     };
   }),
 );

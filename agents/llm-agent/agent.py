@@ -110,7 +110,9 @@ class OpenRouterAgent:
         if not self.key:
             raise SystemExit("set OPENROUTER_API_KEY (https://openrouter.ai/keys)")
         self.model = model
-        self.calls = self.input_tokens = self.output_tokens = 0
+        self.provider = "openrouter"
+        self.calls = self.input_tokens = self.output_tokens = self.cache_read_tokens = self.reasoning_tokens = 0
+        self.cost_usd: float | None = 0.0
 
     def decide(self, board: list[list[int]], score: int, move_number: int, valid_moves: list[str]) -> tuple[str, dict]:
         if len(valid_moves) == 1:  # nothing to decide — don't spend a call
@@ -122,6 +124,7 @@ class OpenRouterAgent:
             "response_format": {"type": "json_schema", "json_schema": {"name": "move", "strict": True, "schema": schema_for(valid_moves)["schema"]}},
             # Only route to providers that honour response_format, so the enum is enforced.
             "provider": {"require_parameters": True},
+            "usage": {"include": True},  # OpenRouter returns exact cost per call
             "max_tokens": 2000,
         }
         t0 = time.perf_counter()
@@ -131,6 +134,12 @@ class OpenRouterAgent:
         usage = data.get("usage") or {}
         self.input_tokens += usage.get("prompt_tokens", 0)
         self.output_tokens += usage.get("completion_tokens", 0)
+        self.cache_read_tokens += (usage.get("prompt_tokens_details") or {}).get("cached_tokens", 0) or 0
+        self.reasoning_tokens += (usage.get("completion_tokens_details") or {}).get("reasoning_tokens", 0) or 0
+        if isinstance(usage.get("cost"), (int, float)) and self.cost_usd is not None:
+            self.cost_usd += usage["cost"]
+        else:
+            self.cost_usd = None  # unknown → let the platform estimate
         text = ((data.get("choices") or [{}])[0].get("message") or {}).get("content") or ""
         move, reason = parse_move(text, valid_moves)
         return move, {"timeUs": elapsed_us, "reason": reason, "model": data.get("model", self.model)}
@@ -167,7 +176,9 @@ class ClaudeAgent:
         self.client = anthropic.Anthropic()
         self.effort = effort
         self.model = CLAUDE_MODEL
-        self.calls = self.input_tokens = self.output_tokens = 0
+        self.provider = "anthropic"
+        self.calls = self.input_tokens = self.output_tokens = self.cache_read_tokens = self.reasoning_tokens = 0
+        self.cost_usd: float | None = None  # estimated server-side from list prices
 
     def decide(self, board: list[list[int]], score: int, move_number: int, valid_moves: list[str]) -> tuple[str, dict]:
         if len(valid_moves) == 1:
@@ -187,6 +198,7 @@ class ClaudeAgent:
         self.calls += 1
         self.input_tokens += response.usage.input_tokens
         self.output_tokens += response.usage.output_tokens
+        self.cache_read_tokens += response.usage.cache_read_input_tokens or 0
         if response.stop_reason == "refusal":
             return valid_moves[0], {"timeUs": elapsed_us, "reason": "refusal"}
         text = next((b.text for b in response.content if b.type == "text"), "")
@@ -216,7 +228,14 @@ def play(args: argparse.Namespace) -> None:
             state = api.move(state["gameId"], move, time_us=info["timeUs"], metrics={"timeUs": info["timeUs"]})
             print(f"  #{state['moveNumber']:4d} {move:<5} score {state['score']:6d}  {info['reason']}", flush=True)
     finally:
-        # Never leave a game dangling as "live" (move cap, provider error, Ctrl-C).
+        # Report the burn first (while the game is live), then never leave it dangling.
+        if agent.calls:
+            burn = api.report_usage(state["gameId"], agent.model, agent.input_tokens, agent.output_tokens, provider=agent.provider,
+                                    cache_read_tokens=agent.cache_read_tokens, reasoning_tokens=agent.reasoning_tokens,
+                                    calls=agent.calls, cost_usd=agent.cost_usd)
+            cost = burn.get("costUsd")
+            print(f"burn: {burn['tokens']['total']} tokens over {agent.calls} calls, "
+                  f"cost {'unknown' if cost is None else f'${cost:.6f}'}{' (estimated)' if burn.get('costEstimated') else ''}")
         if state["status"] == "active":
             state = api.resign(state["gameId"])
     print(f"final score {state['score']}, max tile {state['maxTile']}, {state['moveNumber']} moves; "

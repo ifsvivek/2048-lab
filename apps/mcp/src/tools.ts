@@ -86,7 +86,7 @@ export function buildServer(api: ApiClient): McpServer {
   const server = new McpServer(SERVER_INFO, {
     jsonSchemaValidator: new CfWorkerJsonSchemaValidator(),
     instructions:
-      'Play and analyse deterministic 2048 games. Typical loop: create_game → repeat make_move with the returned gameId (choose from validMoves) until status is "over" → get_replay with the replayCode. Every response contains the full state needed for the next decision. Errors are JSON objects {error:true, code, message}.',
+      'Play and analyse deterministic 2048 games. Typical loop: create_game → repeat make_move with the returned gameId (choose from validMoves) until status is "over" → report_usage with your model name and the tokens you consumed (and cost if you know it) → get_replay with the replayCode. Every response contains the full state needed for the next decision. Errors are JSON objects {error:true, code, message}.',
   });
 
   // ------------------------------------------------------------ gameplay
@@ -145,6 +145,28 @@ export function buildServer(api: ApiClient): McpServer {
       annotations: { destructiveHint: false, idempotentHint: false, openWorldHint: false },
     },
     ({ gameId, moves }) => run(async () => agentState(await api.call('POST', `/v1/games/${encodeURIComponent(gameId)}/moves`, { moves }))),
+  );
+
+  server.registerTool(
+    'report_usage',
+    {
+      title: 'Report LLM token / cost usage',
+      description:
+        "Record how many tokens (and dollars) you, the LLM playing this game, have burnt. Call it when the game ends (or when you stop), with cumulative totals for the whole session — calling again replaces the previous report. If costUsd is omitted it is estimated from the model's list price (free models count as $0). Returns the burn plus efficiency (tokens per move, points per 1k tokens, cost per 1k points). Appears in the platform's analytics under 'LLM usage'.",
+      inputSchema: {
+        gameId: z.string(),
+        model: z.string().max(100).describe('Your model id, e.g. "claude-opus-5", "gpt-5", "deepseek/deepseek-v4-flash-0731:free".'),
+        provider: z.enum(['anthropic', 'openrouter', 'openai', 'google', 'other']).optional(),
+        inputTokens: z.number().int().min(0).describe('Total input (prompt) tokens used for this game so far.'),
+        outputTokens: z.number().int().min(0).describe('Total output (completion) tokens, including reasoning.'),
+        cacheReadTokens: z.number().int().min(0).optional().describe('Input tokens served from a prompt cache, if known.'),
+        reasoningTokens: z.number().int().min(0).optional().describe('Portion of output tokens spent on reasoning/thinking, if known.'),
+        calls: z.number().int().min(0).optional().describe('Number of model calls / turns spent on the game.'),
+        costUsd: z.number().min(0).optional().describe('Exact cost in USD if your client knows it.'),
+      },
+      annotations: { destructiveHint: false, idempotentHint: true, openWorldHint: false },
+    },
+    ({ gameId, ...usage }) => run(() => api.call('POST', `/v1/games/${encodeURIComponent(gameId)}/usage`, { ...usage, source: 'mcp' })),
   );
 
   server.registerTool(
@@ -306,9 +328,9 @@ export function buildServer(api: ApiClient): McpServer {
     {
       title: 'Platform analytics',
       description:
-        'Analytics & insights. report: overview (executive KPIs), platform (growth trends; granularity day|week|month), players (unique/new/returning, retention), scores (distribution, percentiles P50–P99.9, trend; kind all|human|agent), tiles (achievement rates), moves (length, direction frequency, latency), agents (per-agent median/P90/P99, decision time, depth), leaderboards (scores/tiles/longest runs, agents, runtimes), devices (aggregated audience).',
+        'Analytics & insights. report: llm (token/cost burn of LLM players by model), overview (executive KPIs), platform (growth trends; granularity day|week|month), players (unique/new/returning, retention), scores (distribution, percentiles P50–P99.9, trend; kind all|human|agent), tiles (achievement rates), moves (length, direction frequency, latency), agents (per-agent median/P90/P99, decision time, depth), leaderboards (scores/tiles/longest runs, agents, runtimes), devices (aggregated audience).',
       inputSchema: {
-        report: z.enum(['overview', 'platform', 'players', 'scores', 'tiles', 'moves', 'agents', 'leaderboards', 'devices']),
+        report: z.enum(['llm', 'overview', 'platform', 'players', 'scores', 'tiles', 'moves', 'agents', 'leaderboards', 'devices']),
         kind: z.enum(['all', 'human', 'agent']).optional(),
         granularity: z.enum(['day', 'week', 'month']).optional(),
       },
@@ -354,7 +376,8 @@ export function buildServer(api: ApiClient): McpServer {
           role: 'user',
           content: {
             type: 'text',
-            text: `Play one complete game of 2048 using the g2048 tools.\n1. Call create_game.\n2. Look at board and validMoves; choose a move${strategy ? ` using the "${strategy}" strategy` : ' (keep the largest tile in a corner, keep rows monotonic, maximise empty cells)'}.\n3. Call make_move with the gameId and the move. Repeat step 2–3 with the returned state until status is "over".\n4. Report the final score, max tile and replayCode.\n\n${RULES}`,
+            text: `Play one complete game of 2048 using the g2048 tools.\n1. Call create_game.\n2. Look at board and validMoves; choose a move${strategy ? ` using the "${strategy}" strategy` : ' (keep the largest tile in a corner, keep rows monotonic, maximise empty cells)'}.\n3. Call make_move with the gameId and the move. Repeat step 2–3 with the returned state until status is "over".\n4. Call report_usage with your model id and the input/output tokens you used for this game (estimate if you can't measure exactly; include costUsd if known).
+5. Report the final score, max tile, replayCode and the token/cost burn returned by report_usage.\n\n${RULES}`,
           },
         },
       ],

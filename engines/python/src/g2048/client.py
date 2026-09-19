@@ -98,6 +98,15 @@ class PlatformClient:
     def resign(self, game_id: str) -> dict:
         return self.request("POST", f"/v1/games/{game_id}/resign")
 
+    def report_usage(self, game_id: str, model: str, input_tokens: int, output_tokens: int, *, provider: str = "other",
+                     cache_read_tokens: int = 0, reasoning_tokens: int = 0, calls: int = 0, cost_usd: float | None = None) -> dict:
+        """Record an LLM's cumulative token/cost burn for a game (re-reporting replaces)."""
+        body: dict[str, Any] = {"model": model, "provider": provider, "inputTokens": input_tokens, "outputTokens": output_tokens,
+                                "cacheReadTokens": cache_read_tokens, "reasoningTokens": reasoning_tokens, "calls": calls}
+        if cost_usd is not None:
+            body["costUsd"] = cost_usd
+        return self.request("POST", f"/v1/games/{game_id}/usage", body)
+
     # --------------------------------------------------------------- replays
     def replay(self, ref: str) -> dict:
         return self.request("GET", f"/v1/replays/{ref}")

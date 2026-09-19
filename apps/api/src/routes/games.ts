@@ -6,7 +6,9 @@ import { agentByKey, getGameRow } from '../lib/db.ts';
 import { type DriverSpec, sanitizeBuiltinConfig } from '../lib/driver.ts';
 import { ApiError } from '../lib/errors.ts';
 import { type AppEnv, type Ctx, bearer, body, edgeCached, optInt, optObj, optStr, rateLimit, rpc } from '../lib/http.ts';
+import { estimateCostUsd, normalizeModel } from '../lib/pricing.ts';
 import { type PlayerInfo, stateFromRow } from '../lib/state.ts';
+import { type UsageRow, usageOut } from '../lib/usage.ts';
 
 export const games = new Hono<AppEnv>();
 
@@ -149,4 +151,55 @@ games.post('/:id/resign', async (c) => {
   const stub = gameStub(c, id);
   if (!(await rpc(stub.getState()))) throw new ApiError('GAME_NOT_FOUND', 'The supplied gameId does not exist or is already finished.');
   return c.json(await rpc(stub.resign()));
+});
+
+const PROVIDERS = new Set(['anthropic', 'openrouter', 'openai', 'google', 'other']);
+const nonNeg = (v: unknown, name: string) => optInt(v, name, 0, 1e12) ?? 0;
+
+/**
+ * Record an LLM's token / cost burn for a game (cumulative totals; re-reporting
+ * replaces). Self-reported by the client — the platform cannot observe tokens.
+ * If `costUsd` is omitted it is estimated from the model's price table.
+ */
+games.post('/:id/usage', async (c) => {
+  await rateLimit(c, 'WRITE_LIMITER');
+  const id = c.req.param('id').toUpperCase();
+  if (!isUlid(id)) throw new ApiError('GAME_NOT_FOUND', 'The supplied gameId does not exist.');
+  const b = await body(c);
+  const model = optStr(b.model, 'model', 100);
+  if (!model) throw new ApiError('BAD_REQUEST', 'model is required (e.g. "claude-opus-5" or "deepseek/deepseek-v4-flash-0731:free")');
+  const provider = (optStr(b.provider, 'provider', 20) ?? 'other').toLowerCase();
+  if (!PROVIDERS.has(provider)) throw new ApiError('BAD_REQUEST', `provider must be one of ${[...PROVIDERS].join(', ')}`);
+  const t = { input: nonNeg(b.inputTokens, 'inputTokens'), output: nonNeg(b.outputTokens, 'outputTokens'), cacheRead: nonNeg(b.cacheReadTokens, 'cacheReadTokens') };
+  const reasoning = nonNeg(b.reasoningTokens, 'reasoningTokens');
+  const calls = nonNeg(b.calls, 'calls');
+  let cost: number | null = null;
+  let estimated = false;
+  if (b.costUsd !== undefined && b.costUsd !== null) {
+    if (typeof b.costUsd !== 'number' || !Number.isFinite(b.costUsd) || b.costUsd < 0 || b.costUsd > 100_000) throw new ApiError('BAD_REQUEST', 'costUsd must be a non-negative number');
+    cost = b.costUsd;
+  } else {
+    cost = estimateCostUsd(model, t);
+    estimated = cost !== null;
+  }
+
+  // The game must exist; live games answer from their Durable Object, finished ones from D1.
+  const live = await rpc(gameStub(c, id).getState());
+  const row = live ? null : await getGameRow(c.env.DB, id);
+  if (!live && !row) throw new ApiError('GAME_NOT_FOUND', 'The supplied gameId does not exist.');
+  const st = live ?? stateFromRow(row!);
+  const now = Date.now();
+  await c.env.DB.prepare(
+    `INSERT INTO llm_usage (game_id, day, provider, model, agent_name, source, calls, input_tokens, output_tokens, cache_read_tokens,
+       reasoning_tokens, cost_usd, cost_estimated, reported_at)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)
+     ON CONFLICT(game_id) DO UPDATE SET day = excluded.day, provider = excluded.provider, model = excluded.model,
+       agent_name = excluded.agent_name, source = excluded.source, calls = excluded.calls, input_tokens = excluded.input_tokens,
+       output_tokens = excluded.output_tokens, cache_read_tokens = excluded.cache_read_tokens, reasoning_tokens = excluded.reasoning_tokens,
+       cost_usd = excluded.cost_usd, cost_estimated = excluded.cost_estimated, reported_at = excluded.reported_at`,
+  )
+    .bind(id, new Date(now).toISOString().slice(0, 10), provider, normalizeModel(model), st.player.name ?? null, optStr(b.source, 'source', 10) === 'mcp' ? 'mcp' : 'api', calls, t.input, t.output, t.cacheRead, reasoning, cost, estimated ? 1 : 0, now)
+    .run();
+  const saved = await c.env.DB.prepare('SELECT * FROM llm_usage WHERE game_id = ?1').bind(id).first<UsageRow>();
+  return c.json(usageOut(saved!, { score: st.score, moveNumber: st.moveNumber, maxTile: st.maxTile, status: st.status }));
 });

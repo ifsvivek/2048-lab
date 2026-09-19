@@ -18,6 +18,7 @@
 	let agents = $state<Any | null>(null);
 	let boards = $state<Any | null>(null);
 	let devices = $state<Any | null>(null);
+	let llm = $state<Any | null>(null);
 	let offline = $state(false);
 	let granularity = $state<'day' | 'week' | 'month'>('day');
 	let scoreKind = $state<'all' | 'human' | 'agent'>('all');
@@ -45,9 +46,10 @@
 			load<Any>('/v1/analytics/moves'),
 			load<Any>('/v1/analytics/agents'),
 			load<Any>('/v1/analytics/leaderboards'),
-			load<Any>('/v1/analytics/devices')
+			load<Any>('/v1/analytics/devices'),
+			load<Any>('/v1/analytics/llm')
 		]);
-		[overview, platform, players, scores, tiles, moves, agents, boards, devices] = r;
+		[overview, platform, players, scores, tiles, moves, agents, boards, devices, llm] = r;
 	});
 
 	async function setGranularity(g: typeof granularity) {
@@ -78,7 +80,8 @@
 			{ title: 'Longest runs', rows: b.scores.longestRuns, value: (g) => `${fmtInt(g.moves)} moves` }
 		];
 	}
-	const SECTIONS = ['overview', 'platform', 'players', 'scores', 'tiles', 'moves', 'agents', 'leaderboards', 'devices'];
+	const SECTIONS = ['overview', 'platform', 'players', 'scores', 'tiles', 'moves', 'agents', 'llm', 'leaderboards', 'devices'];
+	const usd = (v: number | null | undefined) => (v === null || v === undefined ? '—' : v === 0 ? '$0' : v < 0.01 ? `$${v.toFixed(5)}` : v < 1 ? `$${v.toFixed(4)}` : `$${v.toFixed(2)}`);
 </script>
 
 <svelte:head><title>Analytics · 2048 Lab</title></svelte:head>
@@ -92,7 +95,7 @@
 </div>
 
 <nav aria-label="Analytics sections" class="sticky top-14 z-20 -mx-4 mt-4 flex gap-1 overflow-x-auto bg-ink-50/90 px-4 py-2 backdrop-blur dark:bg-ink-950/90 [scrollbar-width:none]">
-	{#each SECTIONS as s (s)}<a href="#{s}" class="rounded-lg px-2.5 py-1 text-sm whitespace-nowrap text-ink-600 capitalize hover:bg-ink-900/5 dark:text-ink-300 dark:hover:bg-white/5">{s}</a>{/each}
+	{#each SECTIONS as s (s)}<a href="#{s}" class="rounded-lg px-2.5 py-1 text-sm whitespace-nowrap text-ink-600 {s === 'llm' ? '' : 'capitalize'} hover:bg-ink-900/5 dark:text-ink-300 dark:hover:bg-white/5">{s === 'llm' ? 'LLM usage' : s}</a>{/each}
 </nav>
 
 <!-- ============================================================ executive -->
@@ -331,6 +334,60 @@
 					/>
 				</div>
 			</div>
+		{/if}
+	{/if}
+</section>
+
+<!-- =========================================================== llm usage -->
+<section id="llm" class="scroll-mt-28 pt-12">
+	<h2 class="text-xl font-bold">LLM usage <span class="text-base font-normal text-ink-500">tokens &amp; money burnt by LLM players</span></h2>
+	{#if llm}
+		{#if llm.totals.games === 0}
+			<p class="mt-3 text-sm text-ink-500">No LLM has reported usage yet. MCP clients call <code class="mono">report_usage</code> at the end of a game; REST agents POST to <code class="mono">/v1/games/&#123;id&#125;/usage</code>.</p>
+		{:else}
+			<div class="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
+				{#each [
+					['Money burnt', usd(llm.totals.costUsd), llm.totals.unpricedGames ? `+ ${llm.totals.unpricedGames} ${llm.totals.unpricedGames === 1 ? 'game' : 'games'} with unknown pricing` : 'all games priced'],
+					['Tokens burnt', fmtCompact(llm.totals.tokens), `${fmtCompact(llm.totals.inputTokens)} in · ${fmtCompact(llm.totals.outputTokens)} out`],
+					['LLM games', fmtInt(llm.totals.games), `${fmtInt(llm.totals.calls)} model calls`],
+					['Models', fmtInt(llm.models.length), 'self-reported usage']
+				] as [l, v, sub] (l)}
+					<div class="card p-4"><div class="label">{l}</div><div class="mt-1 text-3xl font-extrabold tracking-tight tabular-nums">{v}</div><div class="mt-0.5 text-xs text-ink-500">{sub}</div></div>
+				{/each}
+			</div>
+			<div class="mt-3 grid gap-4 lg:grid-cols-2">
+				<div class="card p-5" style="background: var(--surface-chart)">
+					<h3 class="mb-3 font-semibold">Tokens per move <span class="font-normal text-ink-500">lower is cheaper</span></h3>
+					<BarList title="Tokens per move by model" lowerIsBetter emptyLabel="no moves recorded" items={llm.models.slice(0, 8).map((m: Any) => ({ key: m.model, label: m.model.replace(/^.*\//, ''), value: m.tokensPerMove, color: 'var(--seq-400)', detail: `${m.model}\n${fmtInt(m.games)} games · ${fmtCompact(m.tokens.total)} tokens` }))} format={fmtCompact} />
+				</div>
+				<div class="card p-5" style="background: var(--surface-chart)">
+					<h3 class="mb-3 font-semibold">Points per 1k tokens <span class="font-normal text-ink-500">efficiency</span></h3>
+					<BarList title="Points per 1k tokens by model" items={llm.models.slice(0, 8).map((m: Any) => ({ key: m.model, label: m.model.replace(/^.*\//, ''), value: m.pointsPer1kTokens, color: 'var(--seq-400)', detail: `avg score ${fmtInt(m.avgScore)} · best tile ${fmtInt(m.bestTile)}` }))} format={(v) => v.toFixed(v < 10 ? 1 : 0)} />
+				</div>
+			</div>
+			<div class="card mt-3 p-5">
+				<DataTable
+					caption="LLM usage by model"
+					columns={[{ key: 'm', label: 'Model' }, { key: 'p', label: 'Provider' }, { key: 'g', label: 'Games', align: 'right' }, { key: 'c', label: 'Calls', align: 'right' }, { key: 'tok', label: 'Tokens', align: 'right' }, { key: 'cost', label: 'Cost', align: 'right' }, { key: 'cpg', label: 'Cost / game', align: 'right' }, { key: 'tpm', label: 'Tokens / move', align: 'right' }, { key: 's', label: 'Avg score', align: 'right' }, { key: 'ppd', label: 'Points / $', align: 'right' }]}
+					rows={llm.models.map((m: Any) => ({ m: m.model, p: m.provider ?? '—', g: fmtInt(m.games), c: fmtInt(m.calls), tok: fmtCompact(m.tokens.total), cost: `${usd(m.costUsd)}${m.estimatedGames ? ' ≈' : ''}`, cpg: usd(m.costPerGameUsd), tpm: fmtCompact(m.tokensPerMove), s: fmtInt(m.avgScore), ppd: m.pointsPerDollar ? fmtCompact(m.pointsPerDollar) : m.costUsd === 0 ? '∞ (free)' : '—' }))}
+				/>
+			</div>
+			<div class="card mt-3 overflow-hidden">
+				<h3 class="px-4 pt-3 text-sm font-semibold">Recent LLM games</h3>
+				<ul class="mt-1">
+					{#each llm.recent as r (r.gameId)}
+						<li>
+							<a href={r.replayCode ? `/replay/${r.replayCode}` : undefined} class="flex flex-wrap items-center gap-x-3 gap-y-0.5 border-t border-ink-200/60 px-4 py-2 text-sm hover:bg-ink-900/[0.03] dark:border-white/5">
+								<span class="font-medium">{r.model}</span>
+								<span class="text-ink-500">{r.agentName ?? ''}</span>
+								<span class="text-ink-500 tabular-nums">score {fmtInt(r.game?.score)} · {fmtInt(r.game?.moveNumber)} moves</span>
+								<span class="ml-auto tabular-nums">{fmtCompact(r.tokens.total)} tokens · <b>{usd(r.costUsd)}</b>{r.costEstimated ? ' ≈' : ''}</span>
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+			<p class="mt-2 text-xs text-ink-500">{llm.note} ≈ marks estimated cost.</p>
 		{/if}
 	{/if}
 </section>

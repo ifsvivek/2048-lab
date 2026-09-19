@@ -1,0 +1,10 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ executablePath: '/usr/sbin/google-chrome-stable' });
+const p = await (await b.newContext({ viewport: { width: 1360, height: 900 }, colorScheme: 'dark' })).newPage();
+const errs: string[] = [];
+p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:5173/analytics?fresh=' + Date.now(), { waitUntil: 'networkidle' });
+await p.waitForTimeout(1200);
+await p.locator('#llm').screenshot({ path: '/tmp/shots/llm-section.png' });
+console.log(errs.length ? errs : 'no page errors');
+await b.close();
