@@ -5,7 +5,7 @@ The decision logic is the Python port's canonical expectimax — it runs on your
 machine; the platform only validates and records moves. Run from the repo:
 
     cd engines/python
-    uv run python ../../agents/python-api-agent/play.py --api https://g2048-api.ifsvivek.workers.dev --depth 2
+    uv run python ../../agents/python-api-agent/play.py --api https://2048api.ifsvivek.in --depth 2
 """
 
 import argparse
@@ -20,7 +20,7 @@ DIRS = ["up", "down", "left", "right"]
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--api", default="https://g2048-api.ifsvivek.workers.dev")
+    ap.add_argument("--api", default="https://2048api.ifsvivek.in")
     ap.add_argument("--seed", type=int)
     ap.add_argument("--depth", type=int, default=2)
     ap.add_argument("--api-key", help="attribute games to a registered agent")

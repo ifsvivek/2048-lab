@@ -2,10 +2,13 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "g2048-mcp",
   "main": "src/index.ts",
+  // Custom domain (Cloudflare manages DNS + certificate); workers.dev kept for existing links.
+  "routes": [{ "pattern": "2048mcp.ifsvivek.in", "custom_domain": true }],
+  "workers_dev": true,
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
   // Service binding: calls the API worker directly (no public hop).
   "services": [{ "binding": "API", "service": "g2048-api" }],
-  "vars": { "API_URL": "https://g2048-api.ifsvivek.workers.dev" }
+  "vars": { "API_URL": "https://2048api.ifsvivek.in" }
 }

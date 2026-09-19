@@ -339,7 +339,7 @@ def main() -> None:
     common.add_argument("--model", default=OPENROUTER_DEFAULT, help="OpenRouter model id (free models end in :free)")
     common.add_argument("--effort", default="medium", choices=["low", "medium", "high", "xhigh", "max"], help="anthropic provider only")
     p = sub.add_parser("play", parents=[common])
-    p.add_argument("--api", default="https://g2048-api.ifsvivek.workers.dev")
+    p.add_argument("--api", default="https://2048api.ifsvivek.in")
     p.add_argument("--api-key")
     p.add_argument("--seed", type=int)
     p.add_argument("--max-moves", type=int, default=200)

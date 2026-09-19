@@ -11,7 +11,7 @@ info:
     * Errors are always `{ "error": true, "code": "...", "message": "...", "details"?: {} }`.
     * Read endpoints are edge-cached (see `Cache-Control`); finished replays are immutable.
 servers:
-  - url: https://g2048-api.ifsvivek.workers.dev
+  - url: https://2048api.ifsvivek.in
   - url: http://localhost:8787
 tags:
   - name: games

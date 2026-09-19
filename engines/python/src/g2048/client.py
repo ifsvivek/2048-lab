@@ -6,7 +6,7 @@ no browser, no scraping::
 
     from g2048.client import PlatformClient
 
-    api = PlatformClient("https://g2048-api.ifsvivek.workers.dev", api_key=None)
+    api = PlatformClient("https://2048api.ifsvivek.in", api_key=None)
     state = api.create_game(seed=42)
     while state["status"] == "active":
         state = api.move(state["gameId"], choose(state))   # full state every time

@@ -2,6 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "g2048-api",
   "main": "src/index.ts",
+  // Custom domain (Cloudflare manages DNS + certificate); workers.dev kept for existing links.
+  "routes": [{ "pattern": "2048api.ifsvivek.in", "custom_domain": true }],
+  "workers_dev": true,
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true, "head_sampling_rate": 1 },

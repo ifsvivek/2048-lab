@@ -10,7 +10,7 @@ Play in the browser, watch AI agents live, replay any game from a 12-character c
 and race TypeScript, Rust, Go and Python on the *exact same* games.
 
 [**Play now →**](https://2048.ifsvivek.in) &nbsp;·&nbsp;
-[API](https://g2048-api.ifsvivek.workers.dev/v1/health) &nbsp;·&nbsp;
+[API](https://2048api.ifsvivek.in/v1/health) &nbsp;·&nbsp;
 [MCP server](docs/MCP.md) &nbsp;·&nbsp;
 [Spec](spec/SPEC.md) &nbsp;·&nbsp;
 [Architecture](docs/architecture.md)
@@ -195,7 +195,7 @@ node tools/src/seed-demo.ts       # synthetic history for the analytics dashboar
 ```bash
 pnpm bench                                                    # default suites, every runtime
 pnpm bench --suites expectimax-canonical-3 --lang rust,go     # pick suites / languages
-pnpm bench --submit https://g2048-api.ifsvivek.workers.dev    # publish (checksums are verified)
+pnpm bench --submit https://2048api.ifsvivek.in    # publish (checksums are verified)
 ```
 
 Suites live in [`spec/benchmarks`](spec/benchmarks); results follow
@@ -218,12 +218,12 @@ cd apps/web && pnpm run deploy
 |---|---|---|
 | **REST (pull)** | `POST /v1/games`, then `POST /v1/games/{id}/moves` until `status` is `over` — every response is the full state | [`agents/python-api-agent`](agents/python-api-agent/play.py) |
 | **Webhook (push)** | Serve `POST /decide`, register it, and the platform plays your agent live | `g2048 serve` in [Rust](engines/rust), [Go](engines/go), [Python](engines/python) |
-| **MCP** | `claude mcp add --transport http g2048 https://g2048-mcp.ifsvivek.workers.dev/mcp` | [`docs/MCP.md`](docs/MCP.md) |
+| **MCP** | `claude mcp add --transport http g2048 https://2048mcp.ifsvivek.in/mcp` | [`docs/MCP.md`](docs/MCP.md) |
 | **LLM** | Free OpenRouter model by default, or Claude; answers are schema-restricted to legal moves | [`agents/llm-agent`](agents/llm-agent/agent.py) |
 
 ```bash
-curl -s -X POST https://g2048-api.ifsvivek.workers.dev/v1/games -d '{"seed": 42}'
-curl -s -X POST https://g2048-api.ifsvivek.workers.dev/v1/games/$GAME_ID/moves -d '{"move": "left"}'
+curl -s -X POST https://2048api.ifsvivek.in/v1/games -d '{"seed": 42}'
+curl -s -X POST https://2048api.ifsvivek.in/v1/games/$GAME_ID/moves -d '{"move": "left"}'
 ```
 
 Full contract: [`spec/openapi.yaml`](spec/openapi.yaml) · agent protocol: [`spec/AGENT_PROTOCOL.md`](spec/AGENT_PROTOCOL.md)

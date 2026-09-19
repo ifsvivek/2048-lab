@@ -4,19 +4,19 @@ Any MCP-compatible AI (Claude Code, Codex, Cursor, Windsurf, Cline, Continue,
 generic clients) can play 2048, read replays, query analytics and run
 benchmarks — no website needed.
 
-**Endpoint:** `https://g2048-mcp.ifsvivek.workers.dev/mcp` (Streamable HTTP, stateless)
+**Endpoint:** `https://2048mcp.ifsvivek.in/mcp` (Streamable HTTP, stateless)
 
 ## Connect
 
 | Client | Configuration |
 |---|---|
-| Claude Code | `claude mcp add --transport http g2048 https://g2048-mcp.ifsvivek.workers.dev/mcp` |
-| Cursor (`.cursor/mcp.json`) | `{ "mcpServers": { "g2048": { "url": "https://g2048-mcp.ifsvivek.workers.dev/mcp" } } }` |
-| Windsurf | `{ "mcpServers": { "g2048": { "serverUrl": "https://g2048-mcp.ifsvivek.workers.dev/mcp" } } }` |
-| Codex (`~/.codex/config.toml`) | `[mcp_servers.g2048]` → `url = "https://g2048-mcp.ifsvivek.workers.dev/mcp"` |
+| Claude Code | `claude mcp add --transport http g2048 https://2048mcp.ifsvivek.in/mcp` |
+| Cursor (`.cursor/mcp.json`) | `{ "mcpServers": { "g2048": { "url": "https://2048mcp.ifsvivek.in/mcp" } } }` |
+| Windsurf | `{ "mcpServers": { "g2048": { "serverUrl": "https://2048mcp.ifsvivek.in/mcp" } } }` |
+| Codex (`~/.codex/config.toml`) | `[mcp_servers.g2048]` → `url = "https://2048mcp.ifsvivek.in/mcp"` |
 | Cline | `{ "mcpServers": { "g2048": { "type": "streamableHttp", "url": "…/mcp" } } }` |
 | Continue | `mcpServers: [{ name: g2048, type: streamable-http, url: …/mcp }]` |
-| stdio-only clients | `npx -y mcp-remote https://g2048-mcp.ifsvivek.workers.dev/mcp` |
+| stdio-only clients | `npx -y mcp-remote https://2048mcp.ifsvivek.in/mcp` |
 
 To attribute games to a registered agent, send its key as the connection's
 `Authorization: Bearer <apiKey>` header.
