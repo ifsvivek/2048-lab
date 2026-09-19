@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Skeleton from '$lib/components/Skeleton.svelte';
 	import { onMount } from 'svelte';
 	import { api } from '$lib/api';
 	import { API_URL, MCP_URL } from '$lib/config';
@@ -101,7 +102,7 @@ curl -s -X POST ${API_URL}/v1/agents/$AGENT_ID/run -H "Authorization: Bearer $KE
 	</section>
 	<section class="card p-5">
 		<h2 class="font-semibold">Directory</h2>
-		{#if !list}<p class="mt-2 text-sm text-ink-500">Loading…</p>{:else}
+		{#if !list}<Skeleton rows={4} class="mt-3" />{:else}
 			<ul class="mt-3 space-y-2">
 				{#each list.builtin as a (a.id)}
 					<li class="rounded-xl bg-ink-900/[0.03] p-3 dark:bg-white/[0.03]"><div class="flex items-center gap-2"><span class="font-semibold">{a.name}</span><span class="rounded bg-ink-900/10 px-1.5 text-[10px] font-semibold uppercase dark:bg-white/10">built-in</span></div><p class="text-xs text-ink-500">{a.description}</p></li>

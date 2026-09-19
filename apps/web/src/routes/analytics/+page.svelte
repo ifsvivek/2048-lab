@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { reveal } from '$lib/motion';
 	import { ApiUnavailable, api } from '$lib/api';
 	import { getMeta, setMeta } from '$lib/store';
 	import BarList from '$lib/charts/BarList.svelte';
@@ -7,6 +8,10 @@
 	import LineChart from '$lib/charts/LineChart.svelte';
 	import DataTable from '$lib/charts/DataTable.svelte';
 	import { LANG_LABEL, fmtCompact, fmtInt, fmtUs } from '$lib/format';
+	import { langColor } from '$lib/charts/series';
+	import { fmtCarbon, fmtDuration, fmtEnergy, fmtUsd, fmtWater } from '$lib/impact-format';
+	import EmptyState from '$lib/components/EmptyState.svelte';
+	import Skeleton from '$lib/components/Skeleton.svelte';
 
 	type Any = Record<string, any>;
 	let overview = $state<Any | null>(null);
@@ -19,6 +24,7 @@
 	let boards = $state<Any | null>(null);
 	let devices = $state<Any | null>(null);
 	let llm = $state<Any | null>(null);
+	let impact = $state<Any | null>(null);
 	let offline = $state(false);
 	let granularity = $state<'day' | 'week' | 'month'>('day');
 	let scoreKind = $state<'all' | 'human' | 'agent'>('all');
@@ -47,9 +53,10 @@
 			load<Any>('/v1/analytics/agents'),
 			load<Any>('/v1/analytics/leaderboards'),
 			load<Any>('/v1/analytics/devices'),
-			load<Any>('/v1/analytics/llm')
+			load<Any>('/v1/analytics/llm'),
+			load<Any>('/v1/analytics/impact')
 		]);
-		[overview, platform, players, scores, tiles, moves, agents, boards, devices, llm] = r;
+		[overview, platform, players, scores, tiles, moves, agents, boards, devices, llm, impact] = r;
 	});
 
 	async function setGranularity(g: typeof granularity) {
@@ -80,7 +87,8 @@
 			{ title: 'Longest runs', rows: b.scores.longestRuns, value: (g) => `${fmtInt(g.moves)} moves` }
 		];
 	}
-	const SECTIONS = ['overview', 'platform', 'players', 'scores', 'tiles', 'moves', 'agents', 'llm', 'leaderboards', 'devices'];
+	const SECTIONS = ['overview', 'impact', 'platform', 'players', 'scores', 'tiles', 'moves', 'agents', 'llm', 'leaderboards', 'devices'];
+	const SECTION_LABEL: Record<string, string> = { llm: 'LLM usage', impact: 'Cost & impact' };
 	const usd = (v: number | null | undefined) => (v === null || v === undefined ? '—' : v === 0 ? '$0' : v < 0.01 ? `$${v.toFixed(5)}` : v < 1 ? `$${v.toFixed(4)}` : `$${v.toFixed(2)}`);
 </script>
 
@@ -95,13 +103,13 @@
 </div>
 
 <nav aria-label="Analytics sections" class="sticky top-14 z-20 -mx-4 mt-4 flex gap-1 overflow-x-auto bg-ink-50/90 px-4 py-2 backdrop-blur dark:bg-ink-950/90 [scrollbar-width:none]">
-	{#each SECTIONS as s (s)}<a href="#{s}" class="rounded-lg px-2.5 py-1 text-sm whitespace-nowrap text-ink-600 {s === 'llm' ? '' : 'capitalize'} hover:bg-ink-900/5 dark:text-ink-300 dark:hover:bg-white/5">{s === 'llm' ? 'LLM usage' : s}</a>{/each}
+	{#each SECTIONS as s (s)}<a href="#{s}" class="rounded-lg px-2.5 py-1 text-sm whitespace-nowrap text-ink-600 {SECTION_LABEL[s] ? '' : 'capitalize'} hover:bg-ink-900/5 dark:text-ink-300 dark:hover:bg-white/5">{SECTION_LABEL[s] ?? s}</a>{/each}
 </nav>
 
 <!-- ============================================================ executive -->
 <section id="overview" class="scroll-mt-28 pt-4">
 	{#if !overview}
-		<p class="py-10 text-center text-ink-500">Loading…</p>
+		<div class="grid grid-cols-2 gap-3 md:grid-cols-4">{#each Array(8) as _, i (i)}<div class="card p-4"><div class="skeleton h-3 w-20"></div><div class="skeleton mt-3 h-7 w-24"></div></div>{/each}</div>
 	{:else}
 		{@const t = overview.totals}
 		<div class="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -142,6 +150,121 @@
 				<Columns title="Games per day" data={overview.sparkline.map((d: Any) => ({ label: d.day.slice(8), value: d.games, note: `${d.day}: ${d.games} games` }))} format={(v) => (v ? fmtCompact(v) : '')} />
 			</div>
 		</div>
+	{/if}
+</section>
+
+<!-- ====================================================== cost & impact -->
+<section id="impact" class="scroll-mt-28 pt-14">
+	<div class="flex flex-wrap items-end justify-between gap-3">
+		<div>
+			<p class="eyebrow">Estimates, not measurements</p>
+			<h2 class="mt-2 text-2xl font-semibold">AI cost &amp; resource impact</h2>
+			<p class="mt-1 max-w-2xl text-sm text-ink-500 dark:text-ink-400">Recorded compute time and LLM tokens converted into money, electricity, water and carbon using the published-range assumptions listed below.</p>
+		</div>
+	</div>
+	{#if !impact}
+		<div class="card mt-4 p-6"><Skeleton rows={4} /></div>
+	{:else}
+		{@const f = impact.footprint}
+		{@const native = impact.byRuntime.filter((r: Any) => r.runtime !== 'browser' && r.runtime !== 'workerd')}
+		{@const t = impact.totals}
+		{@const A = impact.assumptions}
+		{@const search = impact.byAlgorithm.filter((a: Any) => String(a.algorithm).startsWith('expectimax') && a.energyPerMillionMovesWh).sort((a: Any, b: Any) => b.energyPerMillionMovesWh - a.energyPerMillionMovesWh)[0]}
+		{@const llmWhPerMove = t.avgTokensPerLlmMove ? (t.avgTokensPerLlmMove / 1000) * A.llmWhPer1kTokens.value * A.pue.value : null}
+		{@const searchWhPerMove = search ? search.energyPerMillionMovesWh / 1e6 : null}
+		<div class="mt-5 grid gap-3 md:grid-cols-4">
+			{#each [
+				['Estimated total cost', fmtUsd(t.estimatedCostUsd), `${fmtUsd(t.computeCostUsd)} compute + ${fmtUsd(t.llmCostUsd)} LLM`],
+				['Electricity', fmtEnergy(f.energyKwh), `≈ ${f.phoneCharges.toFixed(f.phoneCharges < 10 ? 1 : 0)} phone charges`],
+				['Water', fmtWater(f.waterLitres), 'cooling + generation'],
+				['Carbon', fmtCarbon(f.carbonKg), `≈ ${f.laptopHours.toFixed(f.laptopHours < 10 ? 1 : 0)} laptop-hours of energy`]
+			] as [l, v, sub], i (l)}
+				<div class="card p-5" use:reveal={i}>
+					<div class="label">{l}</div>
+					<div class="mt-2 text-3xl font-semibold tracking-tight tabular-nums">{v}</div>
+					<div class="mt-1 text-xs text-ink-500">{sub}</div>
+				</div>
+			{/each}
+		</div>
+
+		{#if llmWhPerMove && searchWhPerMove}
+			<div class="card mt-3 grid gap-6 p-6 md:grid-cols-[1fr_auto_1fr] md:items-center" use:reveal={0}>
+				<div>
+					<div class="label">Expectimax (search), per move</div>
+					<div class="mt-1 text-2xl font-semibold tabular-nums">{fmtEnergy(searchWhPerMove / 1000)}</div>
+				</div>
+				<div class="text-center">
+					<div class="text-4xl font-semibold tracking-tight text-accent-600 tabular-nums dark:text-accent-400">{fmtCompact(llmWhPerMove / searchWhPerMove)}×</div>
+					<div class="text-xs text-ink-500">more energy for an LLM move</div>
+				</div>
+				<div class="md:text-right">
+					<div class="label">LLM agent, per move ({fmtInt(t.avgTokensPerLlmMove)} tokens)</div>
+					<div class="mt-1 text-2xl font-semibold tabular-nums">{fmtEnergy(llmWhPerMove / 1000)}</div>
+				</div>
+			</div>
+		{/if}
+
+		<dl class="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
+			{#each [
+				['Inference requests', fmtCompact(t.inferenceRequests)],
+				['Tokens consumed', fmtCompact(t.llmTokens)],
+				['Avg tokens / LLM game', fmtCompact(t.avgTokensPerLlmGame)],
+				['Avg tokens / LLM move', fmtCompact(t.avgTokensPerLlmMove)],
+				['Total agent runtime', fmtDuration(t.agentRuntimeSeconds)],
+				['Benchmark compute', fmtDuration(t.benchmarkComputeSeconds)],
+				['Cost per agent game', fmtUsd(t.costPerAgentGameUsd)],
+				['Benchmark compute cost', fmtUsd(t.benchmarkComputeCostUsd)]
+			] as [l, v] (l)}
+				<div class="well px-4 py-3"><dt class="label">{l}</dt><dd class="mt-0.5 text-lg font-semibold tabular-nums">{v}</dd></div>
+			{/each}
+		</dl>
+
+		<div class="mt-4 grid gap-4 lg:grid-cols-2">
+			<div class="card p-5" style="background: var(--surface-chart)">
+				<h3 class="font-semibold">Energy per 1M moves, by runtime <span class="font-normal text-ink-500">lower is better</span></h3>
+				<p class="mb-4 text-xs text-ink-500">Same games in every language; the difference is pure efficiency.</p>
+				{#if native.length}
+					<BarList title="Energy per million moves by runtime" lowerIsBetter items={native.map((r: Any) => ({ key: `${r.language}/${r.runtime}`, label: LANG_LABEL[r.language] ?? r.language, value: r.energyPerMillionMovesWh, color: langColor(r.language), detail: `${r.runtime} · ${fmtInt(r.runs)} runs\n${fmtDuration(r.computeSeconds)} compute · ${fmtUsd(r.computeCostUsd)}` }))} format={(v) => fmtEnergy(v / 1000)} />
+				{:else}<EmptyState title="No native runtime results yet">Run <code class="mono">pnpm bench --submit</code> to compare languages.</EmptyState>{/if}
+			</div>
+			<div class="card p-5" style="background: var(--surface-chart)">
+				<h3 class="font-semibold">Energy per 1M moves, by algorithm</h3>
+				<p class="mb-4 text-xs text-ink-500">Deeper search buys score with compute.</p>
+				<BarList title="Energy per million moves by algorithm" markBest={false} items={impact.byAlgorithm.filter((a: Any) => a.energyPerMillionMovesWh).map((a: Any) => ({ key: a.algorithm, label: String(a.algorithm).replace(/^expectimax \(depth (\w+)\)$/, 'Search d$1').replace('Search dauto', 'Search auto').replace(/^(\w)/, (c: string) => c.toUpperCase()), value: a.energyPerMillionMovesWh, color: 'var(--seq-400)', detail: `${fmtInt(a.runs)} runs · ${fmtCompact(a.moves)} moves` }))} format={(v) => fmtEnergy(v / 1000)} />
+			</div>
+			<div class="card p-5" style="background: var(--surface-chart)">
+				<h3 class="mb-4 font-semibold">Estimated cost by agent</h3>
+				{#if impact.byAgent.length}
+					<BarList title="Estimated cost by agent" items={impact.byAgent.slice(0, 7).map((a: Any) => ({ key: a.key, label: a.name, value: a.totalCostUsd, color: 'var(--seq-400)', detail: `${a.kind ?? 'agent'} · ${fmtInt(a.games)} games\n${fmtEnergy(a.energyKwh)} · ${fmtUsd(a.costPerGameUsd)} per game` }))} format={fmtUsd} />
+				{:else}<EmptyState title="No agent games yet" />{/if}
+			</div>
+			<div class="card p-5" style="background: var(--surface-chart)">
+				<h3 class="mb-3 font-semibold">Estimated energy, last 30 days</h3>
+				<LineChart title="Estimated daily energy" height={180} series={[{ key: 'e', label: 'Energy (Wh)', color: 'var(--series-3)', points: impact.trend.map((d: Any, i: number) => ({ x: i, y: d.energyWh })) }]} formatY={(v) => (v >= 10 ? Math.round(v) + ' Wh' : v.toFixed(2) + ' Wh')} formatX={(i) => impact?.trend[i]?.day?.slice(5) ?? ''} />
+			</div>
+		</div>
+
+		<div class="card mt-4 p-5">
+			<h3 class="mb-3 font-semibold">Cost by benchmark run</h3>
+			<DataTable
+				caption="Estimated cost of recent benchmark runs"
+				columns={[{ key: 's', label: 'Suite' }, { key: 'l', label: 'Runtime' }, { key: 'c', label: 'Compute', align: 'right' }, { key: 'e', label: 'Energy', align: 'right' }, { key: 'co', label: 'Carbon', align: 'right' }, { key: 'u', label: 'Cost', align: 'right' }]}
+				rows={impact.benchmarkRuns.map((r: Any) => ({ s: r.suiteId, l: `${LANG_LABEL[r.language] ?? r.language} · ${r.runtime}`, c: fmtDuration(r.computeSeconds), e: fmtEnergy(r.energyKwh), co: fmtCarbon(r.carbonKg), u: fmtUsd(r.computeCostUsd) }))}
+			/>
+		</div>
+
+		<details class="card mt-4 p-5 text-sm">
+			<summary class="cursor-pointer font-medium">How these estimates are made</summary>
+			<p class="mt-2 text-ink-500 dark:text-ink-400">{impact.disclaimer}</p>
+			<dl class="mt-4 grid gap-x-6 gap-y-3 md:grid-cols-2">
+				{#each Object.values(impact.assumptions) as a, i (i)}
+					<div class="well p-3">
+						<dt class="font-mono text-sm font-medium">{(a as Any).value} <span class="font-sans font-normal text-ink-500">{(a as Any).unit}</span></dt>
+						<dd class="mt-0.5 text-xs text-ink-500">{(a as Any).note}</dd>
+					</div>
+				{/each}
+			</dl>
+		</details>
 	{/if}
 </section>
 

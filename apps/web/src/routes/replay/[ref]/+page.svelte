@@ -5,6 +5,8 @@
 	import Board, { type BoardStep } from '$lib/components/Board.svelte';
 	import CopyField from '$lib/components/CopyField.svelte';
 	import Stat from '$lib/components/Stat.svelte';
+	import Timeline from '$lib/components/Timeline.svelte';
+	import Skeleton from '$lib/components/Skeleton.svelte';
 	import { type ResolvedReplay, resolveReplay } from '$lib/replays';
 	import { fmtInt, fmtUs } from '$lib/format';
 
@@ -88,7 +90,10 @@
 		<a class="btn-ghost mt-6" href="/replay">Try another code</a>
 	</div>
 {:else if !replay || !frame}
-	<p class="py-20 text-center text-ink-500">Loading replay…</p>
+	<div class="grid gap-6 lg:grid-cols-[minmax(0,34rem)_1fr]" aria-busy="true">
+		<div class="skeleton aspect-square w-full rounded-[22px]"></div>
+		<div class="card p-5"><Skeleton rows={6} /></div>
+	</div>
 {:else}
 	<div class="grid gap-6 lg:grid-cols-[minmax(0,34rem)_1fr]">
 		<div>
@@ -100,6 +105,7 @@
 			<Board board={frame.board} {step} label="Replay board at move {idx}" />
 
 			<div class="card mt-4 p-3">
+				<div class="mb-2 px-1 pt-5"><Timeline {frames} {idx} onseek={(i) => go(i)} /></div>
 				<label class="sr-only" for="scrub">Move position</label>
 				<input id="scrub" type="range" class="w-full accent-accent-500" min="0" max={frames.length - 1} value={idx} oninput={(e) => go(Number(e.currentTarget.value))} />
 				<div class="mt-2 flex flex-wrap items-center gap-2">

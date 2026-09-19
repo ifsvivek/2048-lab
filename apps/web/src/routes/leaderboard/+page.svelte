@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Skeleton from '$lib/components/Skeleton.svelte';
 	import { onMount } from 'svelte';
 	import { ApiUnavailable, api } from '$lib/api';
 	import { getMeta, setMeta } from '$lib/store';
@@ -40,7 +41,7 @@
 	<section class="card overflow-hidden">
 		<h2 class="px-4 pt-4 font-semibold">Top scores</h2>
 		{#if !data}
-			<p class="p-4 text-sm text-ink-500">Loading…</p>
+			<Skeleton rows={6} class="p-4" />
 		{:else if data.topScores.length === 0}
 			<p class="p-4 text-sm text-ink-500">No games yet — <a class="underline" href="/play">be the first</a>.</p>
 		{:else}

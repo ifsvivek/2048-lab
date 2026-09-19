@@ -8,6 +8,7 @@ import { ApiError } from '../lib/errors.ts';
 import { type AppEnv, type Ctx, body, edgeCached, rateLimit } from '../lib/http.ts';
 import { log } from '../lib/log.ts';
 import { type UsageRow, usageOut } from '../lib/usage.ts';
+import { IMPACT_ASSUMPTIONS, equivalents, footprint, sumFootprints } from '../lib/impact.ts';
 
 export const analytics = new Hono<AppEnv>();
 
@@ -585,6 +586,132 @@ analytics.get('/llm', (c) =>
       })),
       daily: daily.results,
       note: 'Token counts are self-reported by LLM agents; costs are client-reported or estimated from list prices (free models = $0).',
+    };
+  }),
+);
+
+// ------------------------------------------------ AI cost & resource impact
+
+/**
+ * Estimated cost and environmental footprint of the AI work on the platform.
+ * Inputs are recorded quantities (agent decision time, benchmark CPU time, LLM
+ * tokens); outputs are estimates using IMPACT_ASSUMPTIONS (returned verbatim).
+ */
+analytics.get('/impact', (c) =>
+  edgeCached(c, 300, async () => {
+    const [agentDays, agentsQ, llmByAgent, llmTotals, benchLang, benchAlgo, benchRecent, llmDaily, benchDaily] = await c.env.DB.batch([
+      c.env.DB.prepare("SELECT day, games, timed_moves, total_time_us, total_moves FROM stats_daily WHERE player_kind = 'agent'"),
+      c.env.DB.prepare('SELECT agent_key, name, kind, games, total_moves, timed_moves, total_time_us, total_score FROM agent_stats ORDER BY games DESC LIMIT 200'),
+      c.env.DB.prepare('SELECT agent_name, SUM(input_tokens + output_tokens + cache_read_tokens) AS tokens, SUM(cost_usd) AS cost, SUM(calls) AS calls FROM llm_usage GROUP BY agent_name'),
+      c.env.DB.prepare(
+        `SELECT COUNT(*) AS games, SUM(u.calls) AS calls, SUM(u.input_tokens + u.output_tokens + u.cache_read_tokens) AS tokens, SUM(u.cost_usd) AS cost,
+                SUM(g.move_count) AS moves FROM llm_usage u LEFT JOIN games g ON g.id = u.game_id`,
+      ),
+      c.env.DB.prepare(
+        `SELECT language, runtime, COUNT(*) AS runs, SUM(COALESCE(cpu_ms, wall_ms)) AS cpu_ms, SUM(total_moves) AS moves, SUM(games) AS games
+         FROM benchmark_runs WHERE status = 'complete' GROUP BY language, runtime`,
+      ),
+      c.env.DB.prepare(
+        `SELECT agent_id, COALESCE(json_extract(agent_config, '$.depth'), 'auto') AS depth, COUNT(*) AS runs,
+                SUM(COALESCE(cpu_ms, wall_ms)) AS cpu_ms, SUM(total_moves) AS moves
+         FROM benchmark_runs WHERE status = 'complete' GROUP BY agent_id, depth`,
+      ),
+      c.env.DB.prepare(
+        `SELECT id, suite_id, language, runtime, source, COALESCE(cpu_ms, wall_ms) AS cpu_ms, total_moves, games, verified, created_at
+         FROM benchmark_runs WHERE status = 'complete' ORDER BY created_at DESC LIMIT 15`,
+      ),
+      c.env.DB.prepare('SELECT day, SUM(input_tokens + output_tokens + cache_read_tokens) AS tokens, SUM(cost_usd) AS cost FROM llm_usage WHERE day >= ?1 GROUP BY day').bind(daysAgo(29)),
+      c.env.DB.prepare("SELECT date(created_at / 1000, 'unixepoch') AS day, SUM(COALESCE(cpu_ms, wall_ms)) AS cpu_ms FROM benchmark_runs WHERE created_at >= ?1 GROUP BY day").bind(Date.parse(daysAgo(29))),
+    ]);
+    type R = Record<string, any>;
+    const llmAgents = new Map((llmByAgent.results as R[]).map((r) => [r.agent_name, r]));
+
+    // Per agent: LLM agents are costed by tokens (their decision time is waiting on a
+    // remote model, not local CPU); search agents by their measured decision time.
+    const perAgent = (agentsQ.results as R[]).map((a) => {
+      const llm = llmAgents.get(a.name);
+      const seconds = llm ? 0 : (a.total_time_us ?? 0) / 1e6;
+      const fp = footprint(seconds, llm?.tokens ?? 0);
+      const llmCost = llm?.cost ?? 0;
+      return {
+        key: a.agent_key,
+        name: a.name,
+        kind: llm ? 'llm' : a.kind,
+        games: a.games,
+        moves: a.total_moves,
+        inferenceRequests: llm?.calls ?? a.timed_moves ?? 0,
+        runtimeSeconds: (a.total_time_us ?? 0) / 1e6,
+        ...fp,
+        llmCostUsd: llmCost,
+        totalCostUsd: fp.computeCostUsd + llmCost,
+        costPerGameUsd: a.games ? (fp.computeCostUsd + llmCost) / a.games : null,
+        energyPerGameWh: a.games ? (fp.energyKwh * 1000) / a.games : null,
+      };
+    });
+
+    const byRuntime = (benchLang.results as R[]).map((r) => {
+      const fp = footprint((r.cpu_ms ?? 0) / 1000);
+      return { language: r.language, runtime: r.runtime, runs: r.runs, games: r.games, moves: r.moves, ...fp, energyPerMillionMovesWh: r.moves ? (fp.energyKwh * 1000 * 1e6) / r.moves : null };
+    });
+    const byAlgorithm = (benchAlgo.results as R[]).map((r) => {
+      const fp = footprint((r.cpu_ms ?? 0) / 1000);
+      const algo = r.agent_id === 'expectimax' ? `expectimax (depth ${r.depth})` : r.agent_id;
+      return { algorithm: algo, runs: r.runs, moves: r.moves, ...fp, energyPerMillionMovesWh: r.moves ? (fp.energyKwh * 1000 * 1e6) / r.moves : null };
+    });
+    const benchRuns = (benchRecent.results as R[]).map((r) => ({
+      id: r.id,
+      suiteId: r.suite_id,
+      language: r.language,
+      runtime: r.runtime,
+      verified: !!r.verified,
+      createdAt: r.created_at,
+      ...footprint((r.cpu_ms ?? 0) / 1000),
+    }));
+
+    const agentGames = (agentDays.results as R[]).reduce((a, d) => a + d.games, 0);
+    const agentRuntimeSeconds = (agentDays.results as R[]).reduce((a, d) => a + (d.total_time_us ?? 0), 0) / 1e6;
+    const lt = llmTotals.results[0] as R;
+    const agentsFp = sumFootprints(perAgent.map((a) => footprint(a.computeSeconds, a.llmTokens)));
+    const benchFp = sumFootprints(byRuntime.map((r) => footprint(r.computeSeconds)));
+    const total = sumFootprints([agentsFp, benchFp]);
+    const llmCost = lt?.cost ?? 0;
+    const totalCost = total.computeCostUsd + llmCost;
+
+    // 30-day trend of estimated energy (Wh): agent decisions + LLM tokens + benchmarks.
+    const trend = Array.from({ length: 30 }, (_, i) => {
+      const day = daysAgo(29 - i);
+      const ag = (agentDays.results as R[]).find((d) => d.day === day);
+      const ll = (llmDaily.results as R[]).find((d) => d.day === day);
+      const bd = (benchDaily.results as R[]).find((d) => d.day === day);
+      const fp = footprint((ag?.total_time_us ?? 0) / 1e6 + (bd?.cpu_ms ?? 0) / 1000, ll?.tokens ?? 0);
+      return { day, energyWh: fp.energyKwh * 1000, costUsd: fp.computeCostUsd + (ll?.cost ?? 0) };
+    });
+
+    return {
+      totals: {
+        estimatedCostUsd: totalCost,
+        computeCostUsd: total.computeCostUsd,
+        llmCostUsd: llmCost,
+        benchmarkComputeCostUsd: benchFp.computeCostUsd,
+        agentGames,
+        costPerAgentGameUsd: agentGames ? (agentsFp.computeCostUsd + llmCost) / agentGames : null,
+        costPerAgentUsd: perAgent.length ? (agentsFp.computeCostUsd + llmCost) / perAgent.length : null,
+        inferenceRequests: perAgent.reduce((a, x) => a + x.inferenceRequests, 0),
+        llmTokens: lt?.tokens ?? 0,
+        avgTokensPerLlmGame: lt?.games ? (lt.tokens ?? 0) / lt.games : null,
+        avgTokensPerLlmMove: lt?.moves ? (lt.tokens ?? 0) / lt.moves : null,
+        agentRuntimeSeconds,
+        benchmarkComputeSeconds: benchFp.computeSeconds,
+      },
+      footprint: { ...total, ...equivalents(total.energyKwh) },
+      byAgent: perAgent.sort((a, b) => b.totalCostUsd - a.totalCostUsd),
+      byRuntime: byRuntime.sort((a, b) => (a.energyPerMillionMovesWh ?? Infinity) - (b.energyPerMillionMovesWh ?? Infinity)),
+      byAlgorithm,
+      benchmarkRuns: benchRuns,
+      trend,
+      assumptions: IMPACT_ASSUMPTIONS,
+      disclaimer:
+        'Estimates for education, not measurements: recorded compute time and tokens × the stated assumptions. Real values vary with hardware, region, model and data centre.',
     };
   }),
 );

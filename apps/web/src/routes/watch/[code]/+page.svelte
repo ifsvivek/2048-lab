@@ -102,7 +102,7 @@
 	<div class="space-y-4">
 		<section class="card p-4">
 			<div class="flex items-center gap-2">
-				{#if status === 'live' && !endStatus}<span class="h-2.5 w-2.5 animate-pulse rounded-full bg-red-500"></span><span class="text-sm font-semibold">Live</span>
+				{#if status === 'live' && !endStatus}<span class="h-2.5 w-2.5 rounded-full bg-red-500" aria-hidden="true"></span><span class="text-sm font-semibold">Live</span>
 				{:else if status === 'connecting'}<span class="text-sm text-ink-500">Connecting…</span>
 				{:else}<span class="text-sm font-semibold">Finished{endStatus ? ` (${endStatus})` : ''}</span>{/if}
 				<span class="ml-auto text-xs text-ink-500">{spectators} watching</span>

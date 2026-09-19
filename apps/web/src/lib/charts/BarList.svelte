@@ -4,6 +4,7 @@
   with secondary facts. Zero baseline, 4px rounded data end, 2px gap.
 -->
 <script lang="ts">
+	import { onVisible } from '$lib/motion';
 	import { niceTicks } from './series';
 
 	interface Item {
@@ -34,11 +35,13 @@
 		return vals.reduce((a, b) => ((lowerIsBetter ? b.value! < a.value! : b.value! > a.value!) ? b : a)).key;
 	});
 	let hover = $state<string | null>(null);
+	// Bars grow from the baseline the first time the chart scrolls into view.
+	let grown = $state(false);
 </script>
 
-<figure class="w-full" aria-label={title}>
+<figure class="w-full" aria-label={title} use:onVisible={() => (grown = true)}>
 	<div class="space-y-2">
-		{#each items as it (it.key)}
+		{#each items as it, i (it.key)}
 			<div
 				class="group relative grid grid-cols-[6.5rem_1fr] items-center gap-3"
 				role="img"
@@ -48,22 +51,27 @@
 			>
 				<span class="truncate text-sm text-[var(--viz-text-2)]">{it.label}</span>
 				<div class="relative h-7">
-					<div class="absolute inset-y-0 left-0 flex w-full items-center">
-						{#if it.value !== null}
-							<div
-								class="h-5 rounded-r-[4px] transition-[width] duration-500"
-								style:width="{Math.max(0.4, (it.value / top) * 100)}%"
-								style:background={it.color}
-								style:opacity={hover && hover !== it.key ? 0.45 : 1}
-							></div>
-							<span class="ml-2 text-sm font-semibold whitespace-nowrap text-[var(--viz-text)] tabular-nums">
-								{format(it.value)}{unit}
-								{#if markBest && best === it.key && items.filter((i) => i.value !== null).length > 1}<span class="ml-1 text-[11px] font-medium text-[var(--viz-muted)]">{lowerIsBetter ? 'lowest' : 'best'}</span>{/if}
-							</span>
-						{:else}
-							<span class="text-xs text-[var(--viz-muted)]">{emptyLabel}</span>
-						{/if}
-					</div>
+					{#if it.value !== null}
+						{@const pct = Math.max(0.4, (it.value / top) * 80)}
+						<div
+							class="absolute top-1 left-0 h-5 w-full origin-left rounded-r-[4px] transition-[transform,opacity] duration-[900ms] ease-(--ease-out-expo)"
+							style:transform="scaleX({grown ? pct / 100 : 0})"
+							style:transition-delay="{i * 70}ms"
+							style:background={it.color}
+							style:opacity={hover && hover !== it.key ? 0.45 : 1}
+						></div>
+						<span
+							class="absolute top-1/2 -translate-y-1/2 pl-2 text-sm font-semibold whitespace-nowrap text-[var(--viz-text)] tabular-nums transition-opacity duration-500"
+							style:left="{pct}%"
+							style:opacity={grown ? 1 : 0}
+							style:transition-delay="{300 + i * 70}ms"
+						>
+							{format(it.value)}{unit}
+							{#if markBest && best === it.key && items.filter((x) => x.value !== null).length > 1}<span class="ml-1 text-[11px] font-medium text-[var(--viz-muted)]">{lowerIsBetter ? 'lowest' : 'best'}</span>{/if}
+						</span>
+					{:else}
+						<span class="absolute top-1/2 -translate-y-1/2 text-xs text-[var(--viz-muted)]">{emptyLabel}</span>
+					{/if}
 				</div>
 				{#if hover === it.key && it.detail}
 					<div class="pointer-events-none absolute top-full left-28 z-10 mt-1 rounded-lg bg-ink-900 px-3 py-2 text-xs whitespace-pre text-white shadow-lg dark:bg-ink-100 dark:text-ink-900">{it.detail}</div>
@@ -75,7 +83,7 @@
 		<span></span>
 		<div class="relative h-4 border-t border-[var(--viz-grid)]">
 			{#each ticks as t (t)}
-				<span class="absolute pt-0.5 text-[10px] whitespace-nowrap text-[var(--viz-muted)] tabular-nums {t === 0 ? '' : t === top ? '-translate-x-full' : '-translate-x-1/2'}" style:left="{(t / top) * 100}%">{t === 0 ? '0' : format(t)}</span>
+				<span class="absolute pt-0.5 text-[10px] whitespace-nowrap text-[var(--viz-muted)] tabular-nums {t === 0 ? '' : '-translate-x-1/2'}" style:left="{(t / top) * 80}%">{t === 0 ? '0' : format(t)}</span>
 			{/each}
 		</div>
 	</div>

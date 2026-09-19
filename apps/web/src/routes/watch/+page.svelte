@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Skeleton from '$lib/components/Skeleton.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { ApiUnavailable, api } from '$lib/api';
@@ -76,7 +77,7 @@
 {#if offline}
 	<p class="mt-3 text-sm text-ink-500">You're offline — live games need the network. The in-browser AI still works.</p>
 {:else if live === null}
-	<p class="mt-3 text-sm text-ink-500">Loading…</p>
+	<Skeleton rows={3} class="mt-3" />
 {:else if live.length === 0}
 	<p class="mt-3 text-sm text-ink-500">No live games right now. Start one above, or connect an agent from the <a class="underline" href="/agents">Agents</a> page.</p>
 {:else}
@@ -84,7 +85,7 @@
 		{#each live as g (g.replayCode)}
 			<li>
 				<a href="/watch/{g.replayCode}" class="card flex items-center gap-3 p-3 hover:bg-white dark:hover:bg-white/[0.06]">
-					<span class="h-2 w-2 animate-pulse rounded-full bg-red-500" aria-hidden="true"></span>
+					<span class="h-2 w-2 rounded-full bg-red-500" aria-hidden="true"></span>
 					<div class="min-w-0">
 						<div class="truncate font-semibold">{g.player.name ?? (g.player.kind === 'human' ? 'Human (API)' : 'Agent')}</div>
 						<div class="mono text-xs text-ink-500">{g.replayCode} · via {g.source} · {fmtAgo(g.startedAt)}</div>
