@@ -137,10 +137,10 @@
 					Final {fmtInt(replay.final.score)} · {replay.moves.length} moves · {replay.status ?? ''}
 					{#if replay.origin !== 'api'}· <span title="Served without the network">{replay.origin === 'local' ? 'from this device' : 'cached offline'}</span>{/if}
 				</p>
-				<div class="mt-4 grid grid-cols-2 gap-3">
+				<div class="mt-4 grid grid-cols-1 min-[440px]:grid-cols-2 gap-3">
 					{#if replay.replayCode}<CopyField label="Replay code" value={replay.replayCode} href="{location.origin}/replay/{replay.replayCode}" />{/if}
 					<CopyField label="Seed" value={String(replay.seed)} />
-					{#if replay.gameId}<div class="col-span-2"><CopyField label="Game ID" value={replay.gameId} /></div>{/if}
+					{#if replay.gameId}<div class="min-[440px]:col-span-2"><CopyField label="Game ID" value={replay.gameId} /></div>{/if}
 				</div>
 			</section>
 			<section class="card p-4 text-sm">

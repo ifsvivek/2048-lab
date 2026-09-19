@@ -1,0 +1,10 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ executablePath: '/usr/sbin/google-chrome-stable', args: ['--allow-file-access-from-files'] });
+const p = await (await b.newContext({ viewport: { width: 1100, height: 900 } })).newPage();
+await p.goto('file:///tmp/readme.html', { waitUntil: 'networkidle' });
+await p.waitForTimeout(1500);
+await p.screenshot({ path: '/tmp/readme-top.png', clip: { x: 0, y: 0, width: 1100, height: 2200 } });
+const h = await p.evaluate(() => document.body.scrollHeight);
+await p.screenshot({ path: '/tmp/readme-bottom.png', fullPage: true, clip: { x: 0, y: 2200, width: 1100, height: Math.min(2600, h - 2200) } });
+console.log('height', h);
+await b.close();

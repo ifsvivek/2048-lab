@@ -228,10 +228,10 @@
 		<div class="space-y-4">
 			<section class="card p-4" aria-labelledby="ids-h">
 				<h2 id="ids-h" class="mb-3 text-sm font-semibold">Share this game</h2>
-				<div class="grid grid-cols-2 gap-3">
+				<div class="grid grid-cols-1 min-[440px]:grid-cols-2 gap-3">
 					<CopyField label="Replay code" value={record.replayCode} href={shareUrl} />
 					<CopyField label="Seed" value={String(record.seed)} />
-					<div class="col-span-2"><CopyField label="Game ID" value={record.id} /></div>
+					<div class="min-[440px]:col-span-2"><CopyField label="Game ID" value={record.id} /></div>
 				</div>
 				<p class="mt-3 text-xs text-ink-500 dark:text-ink-400">{syncLabel}. The seed alone lets anyone replay the exact same tile sequence (<a class="underline" href="/play?seed={record.seed}">play seed {record.seed}</a>).</p>
 			</section>
