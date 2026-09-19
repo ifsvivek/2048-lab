@@ -211,6 +211,7 @@ node tools/src/seed-demo.ts       # synthetic history for the analytics dashboar
 pnpm bench                                                    # default suites, every runtime
 pnpm bench --suites expectimax-canonical-3 --lang rust,go     # pick suites / languages
 pnpm bench --submit https://2048api.ifsvivek.in    # publish (checksums are verified)
+pnpm bench --suites engine-random-1k,engine-random-10k,expectimax-d2-10,expectimax-d3-opening,expectimax-canonical-3 --submit https://2048api.ifsvivek.in --all  # all suites × all runtimes + publish (includes slow Python canonical)
 ```
 
 Suites live in [`spec/benchmarks`](spec/benchmarks); results follow
