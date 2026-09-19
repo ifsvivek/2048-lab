@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://2048.dev/schemas/benchmark-suite.json",
+  "title": "BenchmarkSuite",
+  "description": "A reproducible workload shared by every implementation (spec/benchmarks/*.json). Running the same suite in any language on any machine plays exactly the same games.",
+  "type": "object",
+  "required": ["id", "name", "specVersion", "agent", "seeds", "maxMoves", "timeDecisions"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "specVersion": { "type": "integer", "minimum": 1 },
+    "agent": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "enum": ["random", "greedy", "expectimax"] },
+        "config": {
+          "type": "object",
+          "description": "Expectimax config (spec/AI.md): depth (int | \"auto\"), minDepth, maxDepth, fourPruneEmpties, weights. timeBudgetMs makes a suite non-deterministic and is not allowed in shared suites."
+        }
+      }
+    },
+    "seeds": {
+      "type": "object",
+      "required": ["start", "count"],
+      "properties": { "start": { "type": "integer", "minimum": 0 }, "count": { "type": "integer", "minimum": 1 } },
+      "description": "Games use seeds start, start+1, …, start+count-1 (uint32 wrap-around)."
+    },
+    "maxMoves": { "type": "integer", "minimum": 0, "description": "0 = play each game to completion" },
+    "timeDecisions": { "type": "boolean", "description": "record per-decision latency (disable for engine-throughput suites)" },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  }
+}

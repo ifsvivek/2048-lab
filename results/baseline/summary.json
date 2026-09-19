@@ -1,0 +1,734 @@
+[
+  {
+    "suite": "engine-random-1k",
+    "language": "typescript",
+    "checksum": "3d653498",
+    "s": {
+      "games": 1000,
+      "avgScore": 1107.672,
+      "medianScore": 1068,
+      "minScore": 216,
+      "maxScore": 3740,
+      "maxTile": 256,
+      "totalMoves": 119111,
+      "wallMs": 125.90357399999999,
+      "cpuMs": 203.12100000000004,
+      "gamesPerSec": 7942.586284325814,
+      "movesPerSec": 946049.394912332,
+      "decisionsPerSec": 946049.394912332,
+      "nodes": 0,
+      "nodesPerSec": 0,
+      "peakMemoryBytes": 104271872,
+      "avgDecisionUs": null,
+      "p50DecisionUs": null,
+      "p99DecisionUs": null,
+      "tileDistribution": {
+        "16": 1,
+        "32": 61,
+        "64": 369,
+        "128": 487,
+        "256": 82
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "engine-random-1k",
+    "language": "rust",
+    "checksum": "3d653498",
+    "s": {
+      "games": 1000,
+      "avgScore": 1107.672,
+      "medianScore": 1068,
+      "minScore": 216,
+      "maxScore": 3740,
+      "maxTile": 256,
+      "totalMoves": 119111,
+      "wallMs": 28.075009,
+      "cpuMs": 20,
+      "gamesPerSec": 35618.866587006254,
+      "movesPerSec": 4242598.818044902,
+      "decisionsPerSec": 4242598.818044902,
+      "nodes": 0,
+      "nodesPerSec": 0,
+      "peakMemoryBytes": 2936832,
+      "avgDecisionUs": null,
+      "p50DecisionUs": null,
+      "p99DecisionUs": null,
+      "tileDistribution": {
+        "16": 1,
+        "32": 61,
+        "64": 369,
+        "128": 487,
+        "256": 82
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "engine-random-1k",
+    "language": "go",
+    "checksum": "3d653498",
+    "s": {
+      "games": 1000,
+      "avgScore": 1107.672,
+      "medianScore": 1068,
+      "minScore": 216,
+      "maxScore": 3740,
+      "maxTile": 256,
+      "totalMoves": 119111,
+      "wallMs": 40.878381,
+      "cpuMs": 40.802,
+      "gamesPerSec": 24462.808348500886,
+      "movesPerSec": 2913789.565198289,
+      "decisionsPerSec": 2913789.565198289,
+      "nodes": 0,
+      "nodesPerSec": 0,
+      "peakMemoryBytes": 12926976,
+      "avgDecisionUs": null,
+      "p50DecisionUs": null,
+      "p99DecisionUs": null,
+      "tileDistribution": {
+        "16": 1,
+        "32": 61,
+        "64": 369,
+        "128": 487,
+        "256": 82
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "engine-random-1k",
+    "language": "python",
+    "checksum": "3d653498",
+    "s": {
+      "games": 1000,
+      "avgScore": 1107.672,
+      "medianScore": 1068,
+      "minScore": 216,
+      "maxScore": 3740,
+      "maxTile": 256,
+      "totalMoves": 119111,
+      "wallMs": 1369.9822499997936,
+      "cpuMs": 1365.201191,
+      "gamesPerSec": 729.9364645053982,
+      "movesPerSec": 86943.46222370249,
+      "decisionsPerSec": 86943.46222370249,
+      "nodes": 0,
+      "nodesPerSec": 0,
+      "peakMemoryBytes": 96219136,
+      "avgDecisionUs": null,
+      "p50DecisionUs": null,
+      "p99DecisionUs": null,
+      "tileDistribution": {
+        "16": 1,
+        "32": 61,
+        "64": 369,
+        "128": 487,
+        "256": 82
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "engine-random-10k",
+    "language": "typescript",
+    "checksum": "9ab1d25b",
+    "s": {
+      "games": 10000,
+      "avgScore": 1099.0912,
+      "medianScore": 1048,
+      "minScore": 92,
+      "maxScore": 4832,
+      "maxTile": 512,
+      "totalMoves": 1186375,
+      "wallMs": 1101.4762300000002,
+      "cpuMs": 1210.861,
+      "gamesPerSec": 9078.725194097015,
+      "movesPerSec": 1077077.2602146845,
+      "decisionsPerSec": 1077077.2602146845,
+      "nodes": 0,
+      "nodesPerSec": 0,
+      "peakMemoryBytes": 112930816,
+      "avgDecisionUs": null,
+      "p50DecisionUs": null,
+      "p99DecisionUs": null,
+      "tileDistribution": {
+        "16": 27,
+        "32": 640,
+        "64": 3764,
+        "128": 4772,
+        "256": 794,
+        "512": 3
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "engine-random-10k",
+    "language": "rust",
+    "checksum": "9ab1d25b",
+    "s": {
+      "games": 10000,
+      "avgScore": 1099.0912,
+      "medianScore": 1048,
+      "minScore": 92,
+      "maxScore": 4832,
+      "maxTile": 512,
+      "totalMoves": 1186375,
+      "wallMs": 278.99402899999995,
+      "cpuMs": 270,
+      "gamesPerSec": 35843.06099970333,
+      "movesPerSec": 4252331.149352305,
+      "decisionsPerSec": 4252331.149352305,
+      "nodes": 0,
+      "nodesPerSec": 0,
+      "peakMemoryBytes": 3964928,
+      "avgDecisionUs": null,
+      "p50DecisionUs": null,
+      "p99DecisionUs": null,
+      "tileDistribution": {
+        "16": 27,
+        "32": 640,
+        "64": 3764,
+        "128": 4772,
+        "256": 794,
+        "512": 3
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "engine-random-10k",
+    "language": "go",
+    "checksum": "9ab1d25b",
+    "s": {
+      "games": 10000,
+      "avgScore": 1099.0912,
+      "medianScore": 1048,
+      "minScore": 92,
+      "maxScore": 4832,
+      "maxTile": 512,
+      "totalMoves": 1186375,
+      "wallMs": 407.093961,
+      "cpuMs": 408.183,
+      "gamesPerSec": 24564.353584208537,
+      "movesPerSec": 2914253.49834654,
+      "decisionsPerSec": 2914253.49834654,
+      "nodes": 0,
+      "nodesPerSec": 0,
+      "peakMemoryBytes": 17383424,
+      "avgDecisionUs": null,
+      "p50DecisionUs": null,
+      "p99DecisionUs": null,
+      "tileDistribution": {
+        "16": 27,
+        "32": 640,
+        "64": 3764,
+        "128": 4772,
+        "256": 794,
+        "512": 3
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "engine-random-10k",
+    "language": "python",
+    "checksum": "9ab1d25b",
+    "s": {
+      "games": 10000,
+      "avgScore": 1099.0912,
+      "medianScore": 1048,
+      "minScore": 92,
+      "maxScore": 4832,
+      "maxTile": 512,
+      "totalMoves": 1186375,
+      "wallMs": 13348.93472099975,
+      "cpuMs": 13305.523029,
+      "gamesPerSec": 749.1234476012977,
+      "movesPerSec": 88874.13301479895,
+      "decisionsPerSec": 88874.13301479895,
+      "nodes": 0,
+      "nodesPerSec": 0,
+      "peakMemoryBytes": 99766272,
+      "avgDecisionUs": null,
+      "p50DecisionUs": null,
+      "p99DecisionUs": null,
+      "tileDistribution": {
+        "16": 27,
+        "32": 640,
+        "64": 3764,
+        "128": 4772,
+        "256": 794,
+        "512": 3
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-d2-10",
+    "language": "typescript",
+    "checksum": "33601a3a",
+    "s": {
+      "games": 10,
+      "avgScore": 30834,
+      "medianScore": 35940,
+      "minScore": 7192,
+      "maxScore": 60880,
+      "maxTile": 4096,
+      "totalMoves": 16067,
+      "wallMs": 459.968325,
+      "cpuMs": 548.9259999999999,
+      "gamesPerSec": 21.740627466032578,
+      "movesPerSec": 34930.666149674544,
+      "decisionsPerSec": 34930.666149674544,
+      "nodes": 11723911,
+      "nodesPerSec": 25488518.149592146,
+      "peakMemoryBytes": 120385536,
+      "avgDecisionUs": 24.333167361672995,
+      "p50DecisionUs": 22,
+      "p99DecisionUs": 61,
+      "tileDistribution": {
+        "512": 1,
+        "1024": 2,
+        "2048": 6,
+        "4096": 1
+      },
+      "reachRates": {
+        "2048": 0.7,
+        "4096": 0.1,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-d2-10",
+    "language": "rust",
+    "checksum": "33601a3a",
+    "s": {
+      "games": 10,
+      "avgScore": 30834,
+      "medianScore": 35940,
+      "minScore": 7192,
+      "maxScore": 60880,
+      "maxTile": 4096,
+      "totalMoves": 16067,
+      "wallMs": 207.03454,
+      "cpuMs": 200,
+      "gamesPerSec": 48.30111922387444,
+      "movesPerSec": 77605.40825699906,
+      "decisionsPerSec": 77605.40825699906,
+      "nodes": 11723911,
+      "nodesPerSec": 56627802.29810929,
+      "peakMemoryBytes": 29089792,
+      "avgDecisionUs": 12.513412584801145,
+      "p50DecisionUs": 12,
+      "p99DecisionUs": 28,
+      "tileDistribution": {
+        "512": 1,
+        "1024": 2,
+        "2048": 6,
+        "4096": 1
+      },
+      "reachRates": {
+        "2048": 0.7,
+        "4096": 0.1,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-d2-10",
+    "language": "go",
+    "checksum": "33601a3a",
+    "s": {
+      "games": 10,
+      "avgScore": 30834,
+      "medianScore": 35940,
+      "minScore": 7192,
+      "maxScore": 60880,
+      "maxTile": 4096,
+      "totalMoves": 16067,
+      "wallMs": 192.283217,
+      "cpuMs": 192.97400000000002,
+      "gamesPerSec": 52.00661896560634,
+      "movesPerSec": 83559.03469203971,
+      "decisionsPerSec": 83559.03469203971,
+      "nodes": 11723911,
+      "nodesPerSec": 60972097.21636808,
+      "peakMemoryBytes": 36958208,
+      "avgDecisionUs": 11.086823924814837,
+      "p50DecisionUs": 10,
+      "p99DecisionUs": 26,
+      "tileDistribution": {
+        "512": 1,
+        "1024": 2,
+        "2048": 6,
+        "4096": 1
+      },
+      "reachRates": {
+        "2048": 0.7,
+        "4096": 0.1,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-d2-10",
+    "language": "python",
+    "checksum": "33601a3a",
+    "s": {
+      "games": 10,
+      "avgScore": 30834,
+      "medianScore": 35940,
+      "minScore": 7192,
+      "maxScore": 60880,
+      "maxTile": 4096,
+      "totalMoves": 16067,
+      "wallMs": 5305.417256000055,
+      "cpuMs": 5286.131557,
+      "gamesPerSec": 1.8848658865974586,
+      "movesPerSec": 3028.4140199961366,
+      "decisionsPerSec": 3028.4140199961366,
+      "nodes": 11732961,
+      "nodesPerSec": 2211505.7937678406,
+      "peakMemoryBytes": 240459776,
+      "avgDecisionUs": 305.6752349536317,
+      "p50DecisionUs": 286,
+      "p99DecisionUs": 684,
+      "tileDistribution": {
+        "512": 1,
+        "1024": 2,
+        "2048": 6,
+        "4096": 1
+      },
+      "reachRates": {
+        "2048": 0.7,
+        "4096": 0.1,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-d3-opening",
+    "language": "typescript",
+    "checksum": "dcc2b8ef",
+    "s": {
+      "games": 5,
+      "avgScore": 4565.6,
+      "medianScore": 4528,
+      "minScore": 4448,
+      "maxScore": 4776,
+      "maxTile": 512,
+      "totalMoves": 1500,
+      "wallMs": 952.068543,
+      "cpuMs": 1017.011,
+      "gamesPerSec": 5.251722721816679,
+      "movesPerSec": 1575.5168165450038,
+      "decisionsPerSec": 1575.5168165450038,
+      "nodes": 33515071,
+      "nodesPerSec": 35202371.97879985,
+      "peakMemoryBytes": 119123968,
+      "avgDecisionUs": 624.2846666666667,
+      "p50DecisionUs": 599,
+      "p99DecisionUs": 1203,
+      "tileDistribution": {
+        "512": 5
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-d3-opening",
+    "language": "rust",
+    "checksum": "dcc2b8ef",
+    "s": {
+      "games": 5,
+      "avgScore": 4565.6,
+      "medianScore": 4528,
+      "minScore": 4448,
+      "maxScore": 4776,
+      "maxTile": 512,
+      "totalMoves": 1500,
+      "wallMs": 467.489296,
+      "cpuMs": 470,
+      "gamesPerSec": 10.695432051132995,
+      "movesPerSec": 3208.6296153398985,
+      "decisionsPerSec": 3208.6296153398985,
+      "nodes": 33515071,
+      "nodesPerSec": 71691632.91387959,
+      "peakMemoryBytes": 28901376,
+      "avgDecisionUs": 311.092,
+      "p50DecisionUs": 300,
+      "p99DecisionUs": 565,
+      "tileDistribution": {
+        "512": 5
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-d3-opening",
+    "language": "go",
+    "checksum": "dcc2b8ef",
+    "s": {
+      "games": 5,
+      "avgScore": 4565.6,
+      "medianScore": 4528,
+      "minScore": 4448,
+      "maxScore": 4776,
+      "maxTile": 512,
+      "totalMoves": 1500,
+      "wallMs": 442.906188,
+      "cpuMs": 442.962,
+      "gamesPerSec": 11.289072348657275,
+      "movesPerSec": 3386.7217045971825,
+      "decisionsPerSec": 3386.7217045971825,
+      "nodes": 33515071,
+      "nodesPerSec": 75670812.25787707,
+      "peakMemoryBytes": 34791424,
+      "avgDecisionUs": 294.05533333333335,
+      "p50DecisionUs": 284,
+      "p99DecisionUs": 548,
+      "tileDistribution": {
+        "512": 5
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-d3-opening",
+    "language": "python",
+    "checksum": "dcc2b8ef",
+    "s": {
+      "games": 5,
+      "avgScore": 4565.6,
+      "medianScore": 4528,
+      "minScore": 4448,
+      "maxScore": 4776,
+      "maxTile": 512,
+      "totalMoves": 1500,
+      "wallMs": 12066.728456999954,
+      "cpuMs": 12021.154457999999,
+      "gamesPerSec": 0.4143625190388271,
+      "movesPerSec": 124.30875571164813,
+      "decisionsPerSec": 124.30875571164813,
+      "nodes": 33646181,
+      "nodesPerSec": 2788343.2630392644,
+      "peakMemoryBytes": 261115904,
+      "avgDecisionUs": 8009.003333333333,
+      "p50DecisionUs": 7772,
+      "p99DecisionUs": 14951,
+      "tileDistribution": {
+        "512": 5
+      },
+      "reachRates": {
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-canonical-3",
+    "language": "typescript",
+    "checksum": "74c35bae",
+    "s": {
+      "games": 3,
+      "avgScore": 168737.33333333334,
+      "medianScore": 175736,
+      "minScore": 152492,
+      "maxScore": 177984,
+      "maxTile": 8192,
+      "totalMoves": 21202,
+      "wallMs": 79555.517062,
+      "cpuMs": 79531.02,
+      "gamesPerSec": 0.03770951545273737,
+      "movesPerSec": 266.5057155429792,
+      "decisionsPerSec": 266.5057155429792,
+      "nodes": 2077883234,
+      "nodesPerSec": 26118656.6405023,
+      "peakMemoryBytes": 124137472,
+      "avgDecisionUs": 3743.2113008206775,
+      "p50DecisionUs": 2997,
+      "p99DecisionUs": 12742,
+      "tileDistribution": {
+        "8192": 3
+      },
+      "reachRates": {
+        "2048": 1,
+        "4096": 1,
+        "8192": 1,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-canonical-3",
+    "language": "rust",
+    "checksum": "74c35bae",
+    "s": {
+      "games": 3,
+      "avgScore": 168737.33333333334,
+      "medianScore": 175736,
+      "minScore": 152492,
+      "maxScore": 177984,
+      "maxTile": 8192,
+      "totalMoves": 21202,
+      "wallMs": 37870.781053,
+      "cpuMs": 37710,
+      "gamesPerSec": 0.07921674485143342,
+      "movesPerSec": 559.851141446697,
+      "decisionsPerSec": 559.851141446697,
+      "nodes": 2077883234,
+      "nodesPerSec": 54867715.326283105,
+      "peakMemoryBytes": 29073408,
+      "avgDecisionUs": 1785.5243373266674,
+      "p50DecisionUs": 1461,
+      "p99DecisionUs": 5879,
+      "tileDistribution": {
+        "8192": 3
+      },
+      "reachRates": {
+        "2048": 1,
+        "4096": 1,
+        "8192": 1,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  },
+  {
+    "suite": "expectimax-canonical-3",
+    "language": "go",
+    "checksum": "74c35bae",
+    "s": {
+      "games": 3,
+      "avgScore": 168737.33333333334,
+      "medianScore": 175736,
+      "minScore": 152492,
+      "maxScore": 177984,
+      "maxTile": 8192,
+      "totalMoves": 21202,
+      "wallMs": 37579.110168,
+      "cpuMs": 37481.409999999996,
+      "gamesPerSec": 0.07983158692657419,
+      "movesPerSec": 564.1964353390754,
+      "decisionsPerSec": 564.1964353390754,
+      "nodes": 2077883234,
+      "nodesPerSec": 55293572.006114036,
+      "peakMemoryBytes": 39100416,
+      "avgDecisionUs": 1770.7458258654844,
+      "p50DecisionUs": 1407,
+      "p99DecisionUs": 6106,
+      "tileDistribution": {
+        "8192": 3
+      },
+      "reachRates": {
+        "2048": 1,
+        "4096": 1,
+        "8192": 1,
+        "16384": 0,
+        "32768": 0,
+        "65536": 0
+      }
+    }
+  }
+]

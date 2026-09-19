@@ -13,3 +13,8 @@ results/local/
 *.log
 .DS_Store
 results/*/*/
+
+# secrets
+.env
+.env.local
+engines/go/bin/

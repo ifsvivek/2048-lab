@@ -1,0 +1,345 @@
+openapi: 3.1.0
+info:
+  title: 2048 Platform API
+  version: 1.0.0
+  description: |
+    Public API for deterministic 2048 games, replays, agents, benchmarks and analytics.
+
+    * Every game is reproducible from `(seed, moves)` — see spec/SPEC.md.
+    * While a server game is live, `gameId` is its private **control handle**; `replayCode` is the
+      public handle for spectating and sharing. Live listings never expose game IDs.
+    * Errors are always `{ "error": true, "code": "...", "message": "...", "details"?: {} }`.
+    * Read endpoints are edge-cached (see `Cache-Control`); finished replays are immutable.
+servers:
+  - url: https://g2048-api.ifsvivek.workers.dev
+  - url: http://localhost:8787
+tags:
+  - name: games
+  - name: replays
+  - name: agents
+  - name: benchmarks
+  - name: analytics
+  - name: stats
+paths:
+  /v1/health:
+    get:
+      summary: Liveness
+      responses: { '200': { description: OK } }
+
+  /v1/games:
+    post:
+      tags: [games]
+      summary: Create a live game
+      description: |
+        With `Authorization: Bearer <agent apiKey>` the game is attributed to a registered agent.
+        With `builtin` the platform itself plays (random | greedy | expectimax ≤ depth 2) — watch it live.
+      security: [{}, { agentKey: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                seed: { type: integer, minimum: 0, maximum: 4294967295 }
+                source: { enum: [api, mcp, web, runner] }
+                agent: { type: object, properties: { name: { type: string }, version: { type: string }, config: { type: object } } }
+                runtime: { type: object }
+                builtin: { enum: [random, greedy, expectimax] }
+                config: { type: object }
+                delayMs: { type: integer, minimum: 0, maximum: 5000 }
+                maxMoves: { type: integer }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/GameState' } } } }
+        '429': { $ref: '#/components/responses/Error' }
+    get:
+      tags: [games]
+      summary: Live games (for spectating; replay codes only)
+      parameters: [{ name: limit, in: query, schema: { type: integer, maximum: 100 } }]
+      responses: { '200': { description: OK } }
+
+  /v1/games/{gameId}:
+    get:
+      tags: [games]
+      summary: Current state of a live or finished game
+      parameters: [{ $ref: '#/components/parameters/gameId' }]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/GameState' } } } }
+        '404': { $ref: '#/components/responses/Error' }
+
+  /v1/games/{gameId}/moves:
+    post:
+      tags: [games]
+      summary: Submit one or more moves
+      description: |
+        Moves are applied in order; the batch stops at the first invalid move (`rejected`).
+        If no move applied, responds 422 INVALID_MOVE with the unchanged state in `details.state`.
+        Each request is persisted before the response is sent (one storage row per request).
+      parameters: [{ $ref: '#/components/parameters/gameId' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                move: { $ref: '#/components/schemas/Move' }
+                moves:
+                  oneOf:
+                    - { type: array, items: { $ref: '#/components/schemas/Move' }, maxItems: 1000 }
+                    - { type: string, pattern: '^[UDLR]{1,1000}$' }
+                timing: { type: array, items: { type: integer }, description: decision time per move, µs }
+                metrics: { type: object, description: 'e.g. { depth, nodes, timeUs } — shown to spectators, aggregated into agent analytics' }
+      responses:
+        '200':
+          description: Full state after the batch
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/GameState'
+                  - type: object
+                    properties:
+                      applied: { type: integer }
+                      rejected: { type: [object, 'null'], properties: { index: { type: integer }, move: { type: string }, reason: { enum: [INVALID_MOVE, GAME_OVER] } } }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /v1/games/{gameId}/resign:
+    post:
+      tags: [games]
+      summary: End a live game now
+      parameters: [{ $ref: '#/components/parameters/gameId' }]
+      responses: { '200': { description: Final state } }
+
+  /v1/replays:
+    post:
+      tags: [replays]
+      summary: Upload a finished locally played game
+      description: The server re-simulates `(seed, moves)`; client-reported results are never trusted. Idempotent on `gameId`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [seed, moves]
+              properties:
+                specVersion: { type: integer, const: 1 }
+                gameId: { type: string, description: ULID }
+                replayCode: { type: string, description: client-generated code; replaced if already taken }
+                seed: { type: integer }
+                moves: { type: string, pattern: '^[UDLR]*$' }
+                timing: { type: array, items: { type: integer } }
+                playerKind: { enum: [human, agent] }
+                agent: { type: object }
+                runtime: { type: object }
+                startedAt: { type: integer }
+                finishedAt: { type: integer }
+                playerId: { type: string, description: anonymous random client token (analytics) }
+                sessionId: { type: string }
+                stats: { type: object, properties: { depthSum: { type: integer }, depthSamples: { type: integer } } }
+                final: { type: object, description: optional claimed outcome; mismatches are rejected }
+      responses:
+        '201': { description: Stored, content: { application/json: { schema: { $ref: '#/components/schemas/Replay' } } } }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /v1/replays/{ref}:
+    get:
+      tags: [replays]
+      summary: Replay by replay code or game ID
+      parameters: [{ name: ref, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Replay (finished replays are immutable and cached for a year), content: { application/json: { schema: { $ref: '#/components/schemas/Replay' } } } }
+        '404': { $ref: '#/components/responses/Error' }
+
+  /v1/replays/{code}/live:
+    get:
+      tags: [replays]
+      summary: Spectate a live game (WebSocket)
+      description: |
+        Messages: `hello` {state, seed, moves}, `moves` {from, moves, score, moveNumber, metrics},
+        `end` {status, state}. Spectators rebuild the board locally from seed + move letters.
+      parameters: [{ name: code, in: path, required: true, schema: { type: string } }]
+      responses: { '101': { description: Switching protocols } }
+
+  /v1/agents:
+    post:
+      tags: [agents]
+      summary: Register an agent (returns the API key once)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string }
+                kind: { enum: [remote, worker, llm, search, rl, mcp, other] }
+                language: { type: string }
+                version: { type: string }
+                description: { type: string }
+                endpoint: { type: string, format: uri, description: 'https POST /decide endpoint (spec/AGENT_PROTOCOL.md)' }
+      responses: { '201': { description: '{ agent, apiKey }' } }
+    get:
+      tags: [agents]
+      summary: Built-in and registered agents
+      responses: { '200': { description: OK } }
+
+  /v1/agents/{ref}:
+    get:
+      tags: [agents]
+      summary: Agent profile and stats (ID, name, or builtin/<name>)
+      parameters: [{ name: ref, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK }, '404': { $ref: '#/components/responses/Error' } }
+
+  /v1/agents/{ref}/run:
+    post:
+      tags: [agents]
+      summary: Platform plays a game with your push agent
+      security: [{ agentKey: [] }]
+      parameters: [{ name: ref, in: path, required: true, schema: { type: string } }]
+      responses: { '201': { description: Live game state } }
+
+  /v1/benchmarks/suites:
+    get: { tags: [benchmarks], summary: Shared suites + expected checksums, responses: { '200': { description: OK } } }
+  /v1/benchmarks/runs:
+    post:
+      tags: [benchmarks]
+      summary: Submit a BenchmarkResult (spec/schemas/benchmark-result.schema.json)
+      description: Marked `verified` when the checksum reproduces the reference outcome. `games` may be truncated to 1000 entries.
+      responses: { '201': { description: '{ id, verified, expectedChecksum }' } }
+    get:
+      tags: [benchmarks]
+      parameters:
+        - { name: suite, in: query, schema: { type: string } }
+        - { name: language, in: query, schema: { type: string } }
+      responses: { '200': { description: OK } }
+  /v1/benchmarks/runs/{id}:
+    get: { tags: [benchmarks], parameters: [{ name: id, in: path, required: true, schema: { type: string } }], responses: { '200': { description: OK } } }
+  /v1/benchmarks/compare:
+    get:
+      tags: [benchmarks]
+      summary: Best / latest / history per language+runtime for one suite
+      parameters: [{ name: suite, in: query, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+  /v1/benchmarks/sessions:
+    post:
+      tags: [benchmarks]
+      summary: Server-run benchmark session (Durable Object)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                agent: { type: string, description: 'builtin/greedy | builtin/expectimax | registered agent (needs its key)' }
+                games: { type: integer, maximum: 20 }
+                seedStart: { type: integer }
+                maxMoves: { type: integer }
+                config: { type: object }
+      responses: { '201': { description: Session status } }
+  /v1/benchmarks/sessions/{id}:
+    get: { tags: [benchmarks], parameters: [{ name: id, in: path, required: true, schema: { type: string } }], responses: { '200': { description: Status + results } } }
+  /v1/benchmarks/sessions/{id}/live:
+    get: { tags: [benchmarks], summary: Progress over WebSocket, parameters: [{ name: id, in: path, required: true, schema: { type: string } }], responses: { '101': { description: Switching protocols } } }
+
+  /v1/leaderboard:
+    get:
+      tags: [stats]
+      parameters: [{ name: kind, in: query, schema: { enum: [all, human, agent] } }]
+      responses: { '200': { description: Top scores and agents } }
+  /v1/stats:
+    get: { tags: [stats], responses: { '200': { description: Totals and daily series } } }
+
+  /v1/analytics/{report}:
+    get:
+      tags: [analytics]
+      summary: Analytics reports (aggregate tables only)
+      parameters:
+        - name: report
+          in: path
+          required: true
+          schema: { enum: [overview, platform, players, scores, tiles, moves, agents, leaderboards, benchmarks, devices] }
+        - { name: kind, in: query, schema: { enum: [all, human, agent] } }
+        - { name: granularity, in: query, schema: { enum: [day, week, month] } }
+        - { name: days, in: query, schema: { type: integer } }
+      responses: { '200': { description: Report } }
+  /v1/analytics/agents/{key}:
+    get: { tags: [analytics], parameters: [{ name: key, in: path, required: true, schema: { type: string } }], responses: { '200': { description: Agent analytics + score histogram } } }
+  /v1/analytics/events:
+    post:
+      tags: [analytics]
+      summary: Session beacon (aggregated counters; device/country derived server-side, never stored per user)
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: object
+              required: [sessionId]
+              properties:
+                sessionId: { type: string }
+                first: { type: boolean }
+                counters: { type: object, additionalProperties: { type: integer } }
+      responses: { '204': { description: Accepted } }
+
+components:
+  securitySchemes:
+    agentKey: { type: http, scheme: bearer, description: 'Agent API key from POST /v1/agents' }
+  parameters:
+    gameId: { name: gameId, in: path, required: true, schema: { type: string, pattern: '^[0-9A-HJKMNP-TV-Z]{26}$' } }
+  responses:
+    Error:
+      description: Machine-readable error
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+  schemas:
+    Move: { enum: [up, down, left, right, U, D, L, R] }
+    Error:
+      type: object
+      required: [error, code, message]
+      properties:
+        error: { const: true }
+        code:
+          enum: [BAD_REQUEST, INVALID_MOVE, GAME_OVER, CONFLICT, REPLAY_INVALID, NOT_WORTH_STORING, UNAUTHORIZED, GAME_NOT_FOUND, REPLAY_NOT_FOUND, AGENT_NOT_FOUND, BENCHMARK_NOT_FOUND, NOT_FOUND, RATE_LIMITED, AGENT_UNREACHABLE, INTERNAL]
+        message: { type: string }
+        details: { type: object, description: 'INVALID_MOVE / GAME_OVER include the current `state`' }
+    GameState:
+      type: object
+      required: [gameId, replayCode, seed, status, board, boardHex, score, moveNumber, maxTile, validMoves]
+      properties:
+        gameId: { type: string }
+        replayCode: { type: string, examples: [A7KF-29LM-XQ4P] }
+        seed: { type: integer }
+        specVersion: { type: integer }
+        status: { enum: [active, over, abandoned] }
+        board: { type: array, items: { type: array, items: { type: integer } }, description: 'board[row][col] tile values, 0 = empty' }
+        boardHex: { type: string, description: 'SPEC §1 exponent encoding' }
+        score: { type: integer }
+        moveNumber: { type: integer }
+        maxTile: { type: integer }
+        validMoves: { type: array, items: { enum: [up, down, left, right] } }
+        lastMove:
+          type: [object, 'null']
+          properties:
+            move: { type: string }
+            gained: { type: integer }
+            spawn: { type: [object, 'null'], properties: { row: { type: integer }, col: { type: integer }, value: { type: integer } } }
+        historyHash: { type: string }
+        player: { type: object }
+        startedAt: { type: integer }
+        finishedAt: { type: [integer, 'null'] }
+        links: { type: object }
+    Replay:
+      type: object
+      description: SPEC §8
+      properties:
+        specVersion: { type: integer }
+        gameId: { type: [string, 'null'] }
+        replayCode: { type: string }
+        status: { enum: [live, over, abandoned] }
+        seed: { type: integer }
+        moves: { type: string }
+        final: { type: object }
+        timing: { type: array, items: { type: integer } }
+        playerKind: { enum: [human, agent] }
+        agent: { type: object }
+        runtime: { type: object }

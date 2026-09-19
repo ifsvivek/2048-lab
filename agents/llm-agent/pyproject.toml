@@ -1,9 +1,12 @@
 [project]
 name = "g2048-llm-agent"
 version = "1.0.0"
-description = "A Claude-backed 2048 agent: plays through the platform API (pull) or serves the push protocol."
+description = "LLM-backed 2048 agent (OpenRouter free models by default, or Claude): pull or push mode."
 requires-python = ">=3.11"
-dependencies = ["anthropic>=1.0", "g2048"]
+dependencies = ["g2048"]
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=1.0"]
 
 [tool.uv.sources]
 g2048 = { path = "../../engines/python", editable = true }

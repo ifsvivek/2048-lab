@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  typescript:
+    name: TypeScript (engine, API, MCP, web)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: Fixtures are up to date (regenerating must not change them)
+        run: pnpm fixtures && git diff --exit-code spec/fixtures
+
+  rust:
+    name: Rust port
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: engines/rust } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with: { workspaces: engines/rust }
+      - run: cargo build --release
+      - run: cargo test --release
+      - run: ./target/release/g2048 validate
+
+  go:
+    name: Go port
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: engines/go } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: stable, cache-dependency-path: engines/go/go.mod }
+      - run: go vet ./...
+      - run: go test ./...
+
+  python:
+    name: Python port
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: engines/python } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv run pytest -q
+
+  cross-language:
+    name: Cross-language determinism
+    needs: [typescript, rust, go, python]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: pnpm }
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-go@v5
+        with: { go-version: stable }
+      - uses: astral-sh/setup-uv@v6
+      - run: pnpm install --frozen-lockfile
+      # Builds all four implementations, runs every fixture, and requires
+      # bit-identical benchmark checksums across languages.
+      - run: pnpm validate
