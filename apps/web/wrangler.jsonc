@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "g2048-web",
+  "account_id": "REDACTED_CF_ACCOUNT_ID",
+  "main": ".svelte-kit/cloudflare/_worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "binding": "ASSETS", "directory": ".svelte-kit/cloudflare" },
+  "observability": { "enabled": true }
+}

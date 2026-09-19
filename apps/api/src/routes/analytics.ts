@@ -3,7 +3,7 @@
  * except index-ordered LIMIT queries for leaderboards) and is edge-cached.
  */
 import { Hono } from 'hono';
-import { type Hist, REACH, binHigh, binLow, histPercentile, isClientId, percentiles } from '../lib/analytics.ts';
+import { type Hist, REACH, binHigh, binLow, clampTo, histPercentile, isClientId, percentiles } from '../lib/analytics.ts';
 import { ApiError } from '../lib/errors.ts';
 import { type AppEnv, type Ctx, body, edgeCached, rateLimit } from '../lib/http.ts';
 import { log } from '../lib/log.ts';
@@ -173,7 +173,7 @@ analytics.get('/overview', (c) =>
         avgMovesPerGame: all.avgMoves,
         avgScore: all.avgScore,
         highestScore: all.maxScore,
-        p99Score: histPercentile(scoreHist, 0.99),
+        p99Score: clampTo(histPercentile(scoreHist, 0.99), all.minScore, all.maxScore),
         replayViews: counters.replay_views ?? 0,
         benchmarkRuns: runs?.n ?? 0,
         registeredAgents: agentsCount?.n ?? 0,
@@ -301,11 +301,11 @@ analytics.get('/scores', (c) =>
     for (const r of rows) if (r.day >= since) (statsByDay.get(r.day) ?? statsByDay.set(r.day, []).get(r.day)!).push(r);
     const trend = [...byDay.keys()].sort().map((day) => {
       const f = fold(statsByDay.get(day) ?? []);
-      return { day, games: f.games, avg: f.avgScore, max: f.maxScore, ...percentiles(byDay.get(day)!) };
+      return { day, games: f.games, avg: f.avgScore, max: f.maxScore, ...percentiles(byDay.get(day)!, f.minScore, f.maxScore) };
     });
     return {
       kind,
-      summary: { games: all.games, avg: all.avgScore, median: histPercentile(hist, 0.5), max: all.maxScore, min: all.minScore, stdDev: all.stdDev, ...percentiles(hist) },
+      summary: { games: all.games, avg: all.avgScore, median: clampTo(histPercentile(hist, 0.5), all.minScore, all.maxScore), max: all.maxScore, min: all.minScore, stdDev: all.stdDev, ...percentiles(hist, all.minScore, all.maxScore) },
       histogram: histOut(hist),
       trend,
       note: 'Mean, min, max and std-dev are exact; percentiles come from log-scale histograms (±9% bin resolution).',
@@ -348,7 +348,7 @@ analytics.get('/moves', (c) =>
       out[kind] = {
         games: f.games,
         avgMoves: f.avgMoves,
-        medianMoves: histPercentile(hist, 0.5),
+        medianMoves: clampTo(histPercentile(hist, 0.5), f.shortestGame, f.longestGame),
         longestGame: f.longestGame,
         shortestGame: f.shortestGame,
         frequency: f.moveFrequency,
@@ -390,9 +390,9 @@ function agentOut(a: AgentStatRow, hist: Hist[]) {
     completed: a.completed,
     avgScore: a.games ? a.total_score / a.games : null,
     maxScore: a.best_score,
-    medianScore: histPercentile(hist, 0.5),
-    p90Score: histPercentile(hist, 0.9),
-    p99Score: histPercentile(hist, 0.99),
+    medianScore: clampTo(histPercentile(hist, 0.5), null, a.best_score),
+    p90Score: clampTo(histPercentile(hist, 0.9), null, a.best_score),
+    p99Score: clampTo(histPercentile(hist, 0.99), null, a.best_score),
     highestTile: a.best_tile,
     avgMoves: a.games ? a.total_moves / a.games : null,
     avgDecisionUs: a.timed_moves ? a.total_time_us / a.timed_moves : null,

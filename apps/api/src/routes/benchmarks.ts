@@ -38,6 +38,7 @@ benchmarks.post('/runs', async (c) => {
   }
   const language = String(impl.language).toLowerCase();
   if (!LANGUAGES.has(language)) throw new ApiError('BAD_REQUEST', `implementation.language must be one of ${[...LANGUAGES].join(', ')}`);
+  // Runners may truncate `games` (only 1,000 compact rows are stored); summary and checksum cover all games.
   if (r.games.length === 0 || r.games.length > 20000) throw new ApiError('BAD_REQUEST', 'games must have 1..20000 entries');
   const suite = SUITES.find((x) => x.id === r.suiteId);
   const expected = EXPECTED[r.suiteId];
@@ -66,7 +67,7 @@ benchmarks.post('/runs', async (c) => {
       r.deterministic ? 1 : 0,
       verified ? 1 : 0,
       String(r.checksum ?? '').slice(0, 8),
-      r.games.length,
+      typeof s.games === 'number' ? s.games : r.games.length,
       num(s.avgScore),
       num(s.maxScore),
       num(s.maxTile),

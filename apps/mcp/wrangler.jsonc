@@ -8,5 +8,5 @@
   "observability": { "enabled": true },
   // Service binding: calls the API worker directly (no public hop).
   "services": [{ "binding": "API", "service": "g2048-api" }],
-  "vars": { "API_URL": "https://g2048-api.workers.dev" }
+  "vars": { "API_URL": "https://g2048-api.ifsvivek.workers.dev" }
 }

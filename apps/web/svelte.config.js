@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-cloudflare';
 
 /** @type {import('@sveltejs/kit').Config} */
 export default {
@@ -6,9 +6,9 @@ export default {
 		runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
 	},
 	kit: {
-		// Static SPA on Cloudflare Pages: zero Functions invocations, fully cacheable,
-		// and the service worker can serve the whole app offline.
-		adapter: adapter({ fallback: 'index.html', precompress: false, strict: false }),
+		// Deployed as a Cloudflare Worker with static assets. Asset requests are served
+		// directly from the assets binding; the Worker handles app routes.
+		adapter: adapter(),
 		serviceWorker: { register: true }
 	}
 };

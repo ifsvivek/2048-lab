@@ -21,7 +21,7 @@ export interface Hist {
   n: number;
 }
 
-/** Percentile from a histogram, interpolating geometrically inside the bin. */
+/** Percentile from a histogram, interpolating linearly inside the containing bin. */
 export function histPercentile(h: Hist[], p: number): number | null {
   const bins = [...h].sort((a, b) => a.bin - b.bin);
   const total = bins.reduce((a, b) => a + b.n, 0);
@@ -31,9 +31,7 @@ export function histPercentile(h: Hist[], p: number): number | null {
   for (const { bin, n } of bins) {
     if (acc + n >= target) {
       const frac = n ? (target - acc) / n : 0;
-      const lo = Math.log2(binLow(bin) + 1);
-      const hi = Math.log2(binHigh(bin) + 1);
-      return Math.round(2 ** (lo + frac * (hi - lo)) - 1);
+      return Math.round(binLow(bin) + frac * (binHigh(bin) - binLow(bin)));
     }
     acc += n;
   }
@@ -43,8 +41,16 @@ export function histPercentile(h: Hist[], p: number): number | null {
 export const PERCENTILES = [0.5, 0.75, 0.9, 0.95, 0.99, 0.999] as const;
 export const percentileKey = (p: number) => `p${String(p * 100).replace('.', '_')}`;
 
-export function percentiles(h: Hist[]): Record<string, number | null> {
-  return Object.fromEntries(PERCENTILES.map((p) => [percentileKey(p), histPercentile(h, p)]));
+/** Clamp an approximate percentile into the exact observed [min, max] range. */
+export function clampTo(v: number | null, min: number | null | undefined, max: number | null | undefined): number | null {
+  if (v === null) return null;
+  if (typeof max === 'number' && v > max) v = max;
+  if (typeof min === 'number' && v < min) v = min;
+  return v;
+}
+
+export function percentiles(h: Hist[], min?: number | null, max?: number | null): Record<string, number | null> {
+  return Object.fromEntries(PERCENTILES.map((p) => [percentileKey(p), clampTo(histPercentile(h, p), min, max)]));
 }
 
 /** Extra per-game facts collected alongside a GameRecord. */

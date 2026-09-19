@@ -20,6 +20,9 @@ const submit = opt('submit');
 // CPython takes hours on the canonical suite; skip it unless explicitly requested.
 const heavySkip = new Set(argv.includes('--all') ? [] : ['python:expectimax-canonical-3']);
 
+/** The API stores ≤1000 per-game rows; checksum + summary already cover every game. */
+const forUpload = (r: { games: unknown[] }) => (r.games.length > 1000 ? { ...r, games: r.games.slice(0, 1000) } : r);
+
 type Row = { suite: string; language: string; checksum: string; s: any };
 const rows: Row[] = [];
 for (const r of runtimes) build(r);
@@ -43,7 +46,7 @@ for (const suite of suites) {
     rows.push({ suite, language: r.language, checksum: result.checksum, s: result.summary });
     console.log(`[${r.language}] ${suite}: done in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
     if (submit) {
-      const resp = await fetch(`${submit.replace(/\/$/, '')}/v1/benchmarks/runs`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(result) });
+      const resp = await fetch(`${submit.replace(/\/$/, '')}/v1/benchmarks/runs`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(forUpload(result)) });
       const j = (await resp.json()) as { id?: string; verified?: boolean; message?: string };
       console.log(`    submitted → ${resp.status} ${j.id ?? j.message} verified=${j.verified}`);
     }
