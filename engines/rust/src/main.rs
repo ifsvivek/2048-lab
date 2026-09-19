@@ -5,7 +5,7 @@ use std::process;
 
 use serde_json::{json, Map, Value};
 
-use g2048::ai::agents::{create_agent, Agent};
+use g2048::ai::agents::create_agent;
 use g2048::bench::{play_game, run_suite_with, BenchmarkSuite, GameResult};
 use g2048::fixtures::validate_all;
 use g2048::game::SPEC_VERSION;
