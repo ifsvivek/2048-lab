@@ -1,5 +1,5 @@
 import { chromium, type Page } from 'playwright-core';
-const BASE = 'https://g2048-web.ifsvivek.workers.dev';
+const BASE = 'https://2048.ifsvivek.in';
 const OUT = '/home/ifsvivek/Projects/2048/docs/images';
 const b = await chromium.launch({ executablePath: '/usr/sbin/google-chrome-stable' });
 async function shot(name: string, path: string, o: { dark?: boolean; mobile?: boolean; act?: (p: Page) => Promise<void>; clip?: boolean } = {}) {

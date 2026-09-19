@@ -1,0 +1,11 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ executablePath: '/usr/sbin/google-chrome-stable' });
+const p = await (await b.newContext({ viewport: { width: 1360, height: 900 }, colorScheme: 'dark' })).newPage();
+const errs: string[] = [];
+p.on('pageerror', (e) => errs.push(e.message));
+p.on('console', (m) => m.type() === 'error' && errs.push(m.text()));
+await p.goto('https://2048.ifsvivek.in/', { waitUntil: 'networkidle' });
+await p.waitForTimeout(2500);
+await p.screenshot({ path: '/tmp/shots/domain.png' });
+console.log(p.url(), await p.title(), errs.length ? errs : 'no errors');
+await b.close();

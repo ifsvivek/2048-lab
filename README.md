@@ -9,7 +9,7 @@
 Play in the browser, watch AI agents live, replay any game from a 12-character code,<br/>
 and race TypeScript, Rust, Go and Python on the *exact same* games.
 
-[**Play now →**](https://g2048-web.ifsvivek.workers.dev) &nbsp;·&nbsp;
+[**Play now →**](https://2048.ifsvivek.in) &nbsp;·&nbsp;
 [API](https://g2048-api.ifsvivek.workers.dev/v1/health) &nbsp;·&nbsp;
 [MCP server](docs/MCP.md) &nbsp;·&nbsp;
 [Spec](spec/SPEC.md) &nbsp;·&nbsp;
@@ -102,7 +102,7 @@ nothing else**. Every row below has the same checksum in all four languages.
 | Canonical AI (auto depth 2–4), avg score over 3 games | 168,737 | 168,737 | 168,737 | 168,737 |
 | Canonical AI — time per decision | 3.7 ms | 1.8 ms | **1.8 ms** | 43 ms |
 
-<sub>AMD Ryzen 7 5800H · reproduce with <code>pnpm bench</code> · live numbers on the <a href="https://g2048-web.ifsvivek.workers.dev/runtimes">runtime dashboard</a></sub>
+<sub>AMD Ryzen 7 5800H · reproduce with <code>pnpm bench</code> · live numbers on the <a href="https://2048.ifsvivek.in/runtimes">runtime dashboard</a></sub>
 
 ```text
 $ pnpm validate

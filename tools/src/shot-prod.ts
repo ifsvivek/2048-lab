@@ -1,5 +1,5 @@
 import { chromium } from 'playwright-core';
-const BASE = 'https://g2048-web.ifsvivek.workers.dev';
+const BASE = 'https://2048.ifsvivek.in';
 const b = await chromium.launch({ executablePath: '/usr/sbin/google-chrome-stable' });
 const errs: string[] = [];
 for (const [name, path, dark] of [['prod-home', '/', true], ['prod-replay', '/replay/DPDU-VUTK-7ABC', false], ['prod-runtimes', '/runtimes', false], ['prod-analytics', '/analytics', true]] as const) {

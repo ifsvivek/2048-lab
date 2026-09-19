@@ -1,5 +1,5 @@
 import { chromium } from 'playwright-core';
-const BASE = 'https://g2048-web.ifsvivek.workers.dev';
+const BASE = 'https://2048.ifsvivek.in';
 const b = await chromium.launch({ executablePath: '/usr/sbin/google-chrome-stable' });
 const errs: string[] = [];
 const ctx = await b.newContext({ viewport: { width: 1360, height: 900 }, colorScheme: 'light' });

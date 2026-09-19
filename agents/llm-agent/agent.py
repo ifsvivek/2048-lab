@@ -203,7 +203,7 @@ class OpenRouterAgent:
         headers = {
             "authorization": f"Bearer {self.key}",
             "content-type": "application/json",
-            "http-referer": "https://g2048-web.ifsvivek.workers.dev",
+            "http-referer": "https://2048.ifsvivek.in",
             "x-title": "2048 Lab LLM agent",
         }
         for attempt in range(6):
