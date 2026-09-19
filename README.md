@@ -107,10 +107,10 @@ nothing else**. Every language below produces the same checksum on every suite.
 | Java | OpenJDK 26 | 2.85 M | 13.5 µs | 67.4 M | 96 MB | **1.5 ms** |
 | C# | .NET 9 | 2.84 M | 14.2 µs | 55.7 M | 67 MB | 1.6 ms |
 | TypeScript | Node 26 | 1.08 M | 24.3 µs | 35.2 M | 114 MB | 3.7 ms |
-| Lua | Lua 5.5 | 276 K | 111 µs | 7.4 M | 39 MB | — |
+| Lua | Lua 5.5 | 276 K | 111 µs | 7.4 M | 39 MB | 16 ms |
 | Python | CPython 3.14 | 89 K | 306 µs | 2.8 M | 229 MB | 43 ms |
 
-Every language scores the same on the canonical suite (auto depth 2–4, 3 games): an average of **168,737**. Lua skips that suite by default because it takes over an hour in an interpreter.
+Every language scores the same on the canonical suite (auto depth 2–4, 3 games): an average of **168,737**.
 
 <sub>AMD Ryzen 7 5800H · reproduce with <code>pnpm bench</code> · live numbers on the <a href="https://2048.ifsvivek.in/runtimes">runtime dashboard</a></sub>
 

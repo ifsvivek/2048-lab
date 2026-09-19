@@ -63,3 +63,7 @@ Three consecutive failures abort the run with status `agent_error`.
 | Rust       | `engines/rust` → `g2048 serve`             |
 | TypeScript | `apps/api` built-in agents                 |
 | LLM        | `agents/llm-agent` (Python, Claude API)    |
+
+The C, C++, C#, Java and Lua ports (`engines/{c,cpp,csharp,java,lua}`) ship
+`validate` / `bench` / `play` only; wrap their agents in any HTTP server to
+serve `POST /decide`.

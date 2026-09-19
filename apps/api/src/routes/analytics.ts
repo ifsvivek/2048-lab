@@ -597,9 +597,12 @@ analytics.get('/llm', (c) =>
  * Inputs are recorded quantities (agent decision time, benchmark CPU time, LLM
  * tokens); outputs are estimates using IMPACT_ASSUMPTIONS (returned verbatim).
  */
+/** Shared suite for per-language energy efficiency (every port runs it; AI-heavy, so CPU time is meaningful). */
+const EFFICIENCY_SUITE = 'expectimax-d2-10';
+
 analytics.get('/impact', (c) =>
   edgeCached(c, 300, async () => {
-    const [agentDays, agentsQ, llmByAgent, llmTotals, benchLang, benchAlgo, benchRecent, llmDaily, benchDaily] = await c.env.DB.batch([
+    const [agentDays, agentsQ, llmByAgent, llmTotals, benchLang, benchAlgo, benchRecent, llmDaily, benchDaily, benchEff] = await c.env.DB.batch([
       c.env.DB.prepare("SELECT day, games, timed_moves, total_time_us, total_moves FROM stats_daily WHERE player_kind = 'agent'"),
       c.env.DB.prepare('SELECT agent_key, name, kind, games, total_moves, timed_moves, total_time_us, total_score FROM agent_stats ORDER BY games DESC LIMIT 200'),
       c.env.DB.prepare('SELECT agent_name, SUM(input_tokens + output_tokens + cache_read_tokens) AS tokens, SUM(cost_usd) AS cost, SUM(calls) AS calls FROM llm_usage GROUP BY agent_name'),
@@ -622,6 +625,11 @@ analytics.get('/impact', (c) =>
       ),
       c.env.DB.prepare('SELECT day, SUM(input_tokens + output_tokens + cache_read_tokens) AS tokens, SUM(cost_usd) AS cost FROM llm_usage WHERE day >= ?1 GROUP BY day').bind(daysAgo(29)),
       c.env.DB.prepare("SELECT date(created_at / 1000, 'unixepoch') AS day, SUM(COALESCE(cpu_ms, wall_ms)) AS cpu_ms FROM benchmark_runs WHERE created_at >= ?1 GROUP BY day").bind(Date.parse(daysAgo(29))),
+      // Efficiency is compared on ONE shared suite so every language does identical work.
+      c.env.DB.prepare(
+        `SELECT language, runtime, SUM(COALESCE(cpu_ms, wall_ms)) AS cpu_ms, SUM(total_moves) AS moves
+         FROM benchmark_runs WHERE status = 'complete' AND suite_id = ?1 GROUP BY language, runtime`,
+      ).bind(EFFICIENCY_SUITE),
     ]);
     type R = Record<string, any>;
     const llmAgents = new Map((llmByAgent.results as R[]).map((r) => [r.agent_name, r]));
@@ -649,9 +657,12 @@ analytics.get('/impact', (c) =>
       };
     });
 
+    const eff = new Map((benchEff.results as R[]).map((r) => [`${r.language}/${r.runtime}`, r]));
     const byRuntime = (benchLang.results as R[]).map((r) => {
       const fp = footprint((r.cpu_ms ?? 0) / 1000);
-      return { language: r.language, runtime: r.runtime, runs: r.runs, games: r.games, moves: r.moves, ...fp, energyPerMillionMovesWh: r.moves ? (fp.energyKwh * 1000 * 1e6) / r.moves : null };
+      const e = eff.get(`${r.language}/${r.runtime}`);
+      const effKwh = e?.moves ? footprint((e.cpu_ms ?? 0) / 1000).energyKwh : null;
+      return { language: r.language, runtime: r.runtime, runs: r.runs, games: r.games, moves: r.moves, ...fp, energyPerMillionMovesWh: effKwh !== null ? (effKwh * 1000 * 1e6) / e!.moves : null };
     });
     const byAlgorithm = (benchAlgo.results as R[]).map((r) => {
       const fp = footprint((r.cpu_ms ?? 0) / 1000);
@@ -705,6 +716,7 @@ analytics.get('/impact', (c) =>
       },
       footprint: { ...total, ...equivalents(total.energyKwh) },
       byAgent: perAgent.sort((a, b) => b.totalCostUsd - a.totalCostUsd),
+      efficiencySuite: EFFICIENCY_SUITE,
       byRuntime: byRuntime.sort((a, b) => (a.energyPerMillionMovesWh ?? Infinity) - (b.energyPerMillionMovesWh ?? Infinity)),
       byAlgorithm,
       benchmarkRuns: benchRuns,

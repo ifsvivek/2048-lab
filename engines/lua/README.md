@@ -48,7 +48,7 @@ an interpreter: `G2048_LUA=lua5.4 bin/g2048 validate`.
   `{"language":"lua","engineVersion":"1.0.0","passed":N,"failed":M,"failures":[...]}`.
   `benchmarks-heavy.json` is skipped unless you pass `--heavy`, the same way
   the Go and Python validators skip it. `engine-random-10k` takes about 5 s;
-  `expectimax-canonical-3` probably needs well over an hour in Lua.
+  `expectimax-canonical-3` takes about 6 minutes (Lua 5.5, checksum 74c35bae).
 * `bench --suite FILE [--out FILE]` writes a `BenchmarkResult` to `--out` (or
   stdout) and progress to stderr. Field order, number formatting and summary
   definitions match the Go port. `language` is `"lua"`, `runtime` is `"lua"`,

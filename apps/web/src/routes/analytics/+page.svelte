@@ -166,7 +166,7 @@
 		<div class="card mt-4 p-6"><Skeleton rows={4} /></div>
 	{:else}
 		{@const f = impact.footprint}
-		{@const native = impact.byRuntime.filter((r: Any) => r.runtime !== 'browser' && r.runtime !== 'workerd')}
+		{@const native = impact.byRuntime.filter((r: Any) => r.runtime !== 'browser' && r.runtime !== 'workerd' && r.energyPerMillionMovesWh !== null)}
 		{@const t = impact.totals}
 		{@const A = impact.assumptions}
 		{@const search = impact.byAlgorithm.filter((a: Any) => String(a.algorithm).startsWith('expectimax') && a.energyPerMillionMovesWh).sort((a: Any, b: Any) => b.energyPerMillionMovesWh - a.energyPerMillionMovesWh)[0]}
@@ -222,7 +222,7 @@
 		<div class="mt-4 grid gap-4 lg:grid-cols-2">
 			<div class="card p-5" style="background: var(--surface-chart)">
 				<h3 class="font-semibold">Energy per 1M moves, by runtime <span class="font-normal text-ink-500">lower is better</span></h3>
-				<p class="mb-4 text-xs text-ink-500">Same games in every language; the difference is pure efficiency.</p>
+				<p class="mb-4 text-xs text-ink-500">Every language plays the identical <span class="mono">{impact.efficiencySuite ?? 'expectimax-d2-10'}</span> games; the difference is pure efficiency.</p>
 				{#if native.length}
 					<BarList title="Energy per million moves by runtime" lowerIsBetter items={native.map((r: Any) => ({ key: `${r.language}/${r.runtime}`, label: LANG_LABEL[r.language] ?? r.language, value: r.energyPerMillionMovesWh, color: langColor(r.language), detail: `${r.runtime} · ${fmtInt(r.runs)} runs\n${fmtDuration(r.computeSeconds)} compute · ${fmtUsd(r.computeCostUsd)}` }))} format={(v) => fmtEnergy(v / 1000)} />
 				{:else}<EmptyState title="No native runtime results yet">Run <code class="mono">pnpm bench --submit</code> to compare languages.</EmptyState>{/if}

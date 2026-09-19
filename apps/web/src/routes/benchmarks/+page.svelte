@@ -4,7 +4,9 @@
 	import { AiWorker } from '$lib/ai/client';
 	import { count } from '$lib/telemetry';
 	import { api } from '$lib/api';
-	import { EXPECTED, type Run, SUITES, remoteRuns } from '$lib/bench-data';
+	import { BASELINE, EXPECTED, type Run, SUITES, remoteRuns } from '$lib/bench-data';
+	import BarList from '$lib/charts/BarList.svelte';
+	import { LANG_ORDER, langColor } from '$lib/charts/series';
 	import Columns from '$lib/charts/Columns.svelte';
 	import DataTable from '$lib/charts/DataTable.svelte';
 	import Stat from '$lib/components/Stat.svelte';
@@ -81,6 +83,16 @@
 		}
 	}
 
+	/** The browser run next to every native port's baseline on the same suite (fastest first). */
+	const versus = $derived.by(() => {
+		if (!result) return [];
+		const r = result;
+		const native = LANG_ORDER.map((l) => BASELINE.find((b) => b.suiteId === r.suiteId && b.language === l))
+			.filter((b): b is Run => !!b?.movesPerSec)
+			.map((b) => ({ key: b.language, label: LANG_LABEL[b.language] ?? b.language, value: b.movesPerSec, color: langColor(b.language), detail: `${b.runtime} ${b.runtimeVersion ?? ''}\nchecksum ${b.checksum}` }));
+		const mine = { key: 'browser', label: 'Your browser', value: r.summary.movesPerSec, color: 'var(--viz-text)', detail: `TypeScript in a Web Worker\nchecksum ${r.checksum}` };
+		return [mine, ...native].sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
+	});
 	const tiles = $derived.by(() => {
 		if (!result) return [];
 		const dist = result.summary.tileDistribution;
@@ -135,6 +147,9 @@
 				Checksum <span class="mono">{result.checksum}</span>
 				{#if ok}<span class="ml-1 font-semibold text-emerald-700 dark:text-emerald-400">✓ matches the reference: identical games in every language port</span>{:else}<span class="ml-1 font-semibold text-red-600">✗ differs from reference</span>{/if}
 			</p>
+			{#if versus.length > 1}
+				<div class="mt-5"><div class="label mb-2">Your browser vs every language port <span class="font-normal normal-case">(moves/s, same games)</span></div><BarList title="Browser run compared with native baselines" items={versus} format={fmtCompact} /></div>
+			{/if}
 			<div class="mt-4"><div class="label mb-2">Max tile distribution</div><Columns title="Games by max tile" data={tiles} /></div>
 			<div class="mt-4 flex items-center gap-3">
 				<button class="btn-ghost" onclick={submit} disabled={!!submitted}>{submitted ? 'Submitted' : 'Submit result'}</button>

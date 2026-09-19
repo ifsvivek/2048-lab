@@ -151,7 +151,7 @@
 		{ label: 'Benchmark runs', value: stats?.runs, fmt: intFmt },
 		impact && impact.tokens > 0
 			? { label: 'LLM tokens tracked', value: impact.tokens, fmt: fmtCompact }
-			: { label: 'Languages in lockstep', value: 4, fmt: intFmt }
+			: { label: 'Languages in lockstep', value: new Set(BASELINE.map((r) => r.language)).size, fmt: intFmt }
 	]);
 
 	let heroEl: HTMLElement;

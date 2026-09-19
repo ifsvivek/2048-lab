@@ -26,3 +26,6 @@ untrustworthy.
 * Benchmarks measure speed only: every runtime plays the same games
   (checksums `3d653498`, `33601a3a`, `74c35bae` … are equal everywhere).
 * Behaviour changes require a spec version bump and regenerated fixtures.
+* Adding a language is mechanical: C, C++, C#, Java and Lua joined the
+  original four by passing the same fixtures and reproducing every checksum,
+  with no change to the spec.

@@ -13,7 +13,7 @@
   REST pull / push        │     ▲                                                         │
  MCP clients ────────────►│  g2048-mcp (Hono, Streamable HTTP) ── service binding ─┘      │
                          └───────────────────────────────────────────────────────────────┘
- Native runners (Rust / Go / Python / Node) ── run shared suites ──► POST /v1/benchmarks/runs
+ Native runners (Rust / Go / C / C++ / C# / Java / Python / Lua / Node) ── run shared suites ──► POST /v1/benchmarks/runs
 ```
 
 ## Flows

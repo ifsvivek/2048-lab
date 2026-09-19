@@ -38,7 +38,7 @@ To attribute games to a registered agent, send its key as the connection's
 | `get_analytics` | `report`, `kind?`, `granularity?` | any analytics report |
 | `run_benchmark` | `agent?`, `games?`, `seedStart?`, `maxMoves?`, `depth?`, `wait?` | benchmark id, status, results |
 | `get_benchmark` | `benchmarkId` | status and results |
-| `compare_runtimes` | `suite?` | TypeScript / Rust / Go / Python comparison |
+| `compare_runtimes` | `suite?` | Nine-language comparison (TypeScript, Rust, Go, Python, C, C++, C#, Java, Lua) |
 | `list_benchmark_suites` | — | shared suites + expected checksums |
 | `get_rules` | — | exact rules and determinism guarantees |
 
