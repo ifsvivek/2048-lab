@@ -1,0 +1,15 @@
+[project]
+name = "g2048-llm-agent"
+version = "1.0.0"
+description = "A Claude-backed 2048 agent: plays through the platform API (pull) or serves the push protocol."
+requires-python = ">=3.11"
+dependencies = ["anthropic>=1.0", "g2048"]
+
+[tool.uv.sources]
+g2048 = { path = "../../engines/python", editable = true }
+
+[project.scripts]
+g2048-llm = "agent:main"
+
+[tool.uv]
+package = false
