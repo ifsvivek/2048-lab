@@ -34,6 +34,7 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import os
+import re
 import urllib.error
 import urllib.request
 
@@ -102,14 +103,37 @@ def parse_move(text: str, valid_moves: list[str]) -> tuple[str, str]:
         return valid_moves[0], "unparseable response"
 
 
+TEXT_SUFFIX = "\n\nReply with exactly one word from the legal moves (up, down, left or right). No other text."
+MOVE_WORD = re.compile(r"\b(up|down|left|right)\b", re.IGNORECASE)
+
+
+def openrouter_params(model: str) -> list[str]:
+    """Supported request parameters for a model, from OpenRouter's public model list."""
+    try:
+        with urllib.request.urlopen("https://openrouter.ai/api/v1/models", timeout=30) as res:
+            for m in json.loads(res.read())["data"]:
+                if m["id"] == model:
+                    return m.get("supported_parameters") or []
+    except (urllib.error.URLError, KeyError, ValueError):
+        pass
+    return []
+
+
 class OpenRouterAgent:
-    """Free models through OpenRouter's OpenAI-compatible endpoint (stdlib HTTP)."""
+    """OpenRouter chat models (stdlib HTTP). Uses structured outputs when the model
+    supports them; otherwise a one-word text protocol parsed and validated locally."""
 
     def __init__(self, model: str = OPENROUTER_DEFAULT) -> None:
         self.key = os.environ.get("OPENROUTER_API_KEY")
         if not self.key:
             raise SystemExit("set OPENROUTER_API_KEY (https://openrouter.ai/keys)")
         self.model = model
+        params = openrouter_params(model)
+        self.structured = "response_format" in params or "structured_outputs" in params
+        self.invalid_answers = 0
+        self.first_option = 0  # answers equal to the first listed legal move (a sign of echoing, not deciding)
+        self.choices = 0
+        print(f"model {model}: {'structured outputs' if self.structured else 'text mode (no structured outputs)'}", flush=True)
         self.provider = "openrouter"
         self.calls = self.input_tokens = self.output_tokens = self.cache_read_tokens = self.reasoning_tokens = 0
         self.cost_usd: float | None = 0.0
@@ -117,16 +141,23 @@ class OpenRouterAgent:
     def decide(self, board: list[list[int]], score: int, move_number: int, valid_moves: list[str]) -> tuple[str, dict]:
         if len(valid_moves) == 1:  # nothing to decide — don't spend a call
             return valid_moves[0], {"timeUs": 0, "reason": "only legal move"}
-        body = {
+        prompt = board_prompt(board, score, move_number, valid_moves)
+        body: dict = {
             "model": self.model,
-            "models": [self.model, OPENROUTER_FALLBACK],  # OpenRouter-side fallback routing
-            "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": board_prompt(board, score, move_number, valid_moves)}],
-            "response_format": {"type": "json_schema", "json_schema": {"name": "move", "strict": True, "schema": schema_for(valid_moves)["schema"]}},
-            # Only route to providers that honour response_format, so the enum is enforced.
-            "provider": {"require_parameters": True},
+            # Text mode sends one user turn: some models (e.g. Relace) reject system + user pairs.
+            "messages": [{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}]
+            if self.structured
+            else [{"role": "user", "content": self._text_prompt(prompt, valid_moves)}],
             "usage": {"include": True},  # OpenRouter returns exact cost per call
-            "max_tokens": 2000,
+            # Text mode still needs headroom: reasoning models think before the one-word answer.
+            "max_tokens": 2000 if self.structured else (400 if self.model.startswith("relace/") else 1024),
         }
+        if self.structured:
+            body["response_format"] = {"type": "json_schema", "json_schema": {"name": "move", "strict": True, "schema": schema_for(valid_moves)["schema"]}}
+            # Only route to providers that honour response_format, so the enum is enforced.
+            body["provider"] = {"require_parameters": True}
+        if self.model == OPENROUTER_DEFAULT:
+            body["models"] = [self.model, OPENROUTER_FALLBACK]  # OpenRouter-side fallback routing
         t0 = time.perf_counter()
         data = self._post(body)
         elapsed_us = int((time.perf_counter() - t0) * 1e6)
@@ -141,8 +172,31 @@ class OpenRouterAgent:
         else:
             self.cost_usd = None  # unknown → let the platform estimate
         text = ((data.get("choices") or [{}])[0].get("message") or {}).get("content") or ""
-        move, reason = parse_move(text, valid_moves)
+        if self.structured:
+            move, reason = parse_move(text, valid_moves)
+        else:
+            assign = re.search(r'next_move\s*=\s*"([a-z]+)"', text, re.IGNORECASE)
+            m = MOVE_WORD.search(assign.group(1)) if assign else MOVE_WORD.search(text)
+            word = m.group(1).lower() if m else None
+            move, reason = (word, "text answer") if word in valid_moves else (valid_moves[0], f"invalid answer {text.strip()[:40]!r}, used {valid_moves[0]}")
+        if reason.startswith(("invalid", "unparseable")):
+            self.invalid_answers += 1
+        else:
+            self.choices += 1
+            self.first_option += move == valid_moves[0]
         return move, {"timeUs": elapsed_us, "reason": reason, "model": data.get("model", self.model)}
+
+    def _text_prompt(self, prompt: str, valid_moves: list[str]) -> str:
+        if self.model.startswith("relace/relace-apply"):
+            # Relace Apply is a code-merge model: it only accepts <code>…</code><update>…</update>.
+            # Frame the decision as an edit to one variable and parse the merged result.
+            board = "\n".join("# " + line for line in prompt.splitlines())
+            return (
+                f"<code>{board}\n# legal moves: {', '.join(valid_moves)}\nnext_move = \"?\"</code>"
+                f"<update>next_move = \"<the best legal 2048 move for this board: one of {', '.join(valid_moves)}; "
+                f"keep the largest tile in a corner>\"</update>"
+            )
+        return f"{SYSTEM}\n\n{prompt}{TEXT_SUFFIX}"
 
     def _post(self, body: dict) -> dict:
         payload = json.dumps(body).encode()
@@ -224,6 +278,9 @@ def play(args: argparse.Namespace) -> None:
     print(f"game {state['gameId']}  replay {state['replayCode']}  seed {state['seed']}", flush=True)
     try:
         while state["status"] == "active" and state["moveNumber"] < args.max_moves:
+            if agent.cost_usd is not None and agent.cost_usd >= args.max_cost:
+                print(f"stopping: spend ${agent.cost_usd:.4f} reached --max-cost ${args.max_cost}", flush=True)
+                break
             move, info = agent.decide(state["board"], state["score"], state["moveNumber"], state["validMoves"])
             state = api.move(state["gameId"], move, time_us=info["timeUs"], metrics={"timeUs": info["timeUs"]})
             print(f"  #{state['moveNumber']:4d} {move:<5} score {state['score']:6d}  {info['reason']}", flush=True)
@@ -238,6 +295,12 @@ def play(args: argparse.Namespace) -> None:
                   f"cost {'unknown' if cost is None else f'${cost:.6f}'}{' (estimated)' if burn.get('costEstimated') else ''}")
         if state["status"] == "active":
             state = api.resign(state["gameId"])
+    if getattr(agent, "invalid_answers", 0):
+        print(f"invalid answers replaced by a legal fallback move: {agent.invalid_answers}/{agent.calls}")
+    if getattr(agent, "choices", 0):
+        share = agent.first_option / agent.choices
+        print(f"picked the first listed legal move in {share:.0%} of real answers"
+              + ("  (likely echoing the prompt, not deciding)" if share > 0.9 and agent.choices >= 10 else ""))
     print(f"final score {state['score']}, max tile {state['maxTile']}, {state['moveNumber']} moves; "
           f"{agent.calls} API calls, {agent.input_tokens} in / {agent.output_tokens} out tokens")
     print(f"watch: /replay/{state['replayCode']}")
@@ -280,6 +343,7 @@ def main() -> None:
     p.add_argument("--api-key")
     p.add_argument("--seed", type=int)
     p.add_argument("--max-moves", type=int, default=200)
+    p.add_argument("--max-cost", type=float, default=0.10, help="stop (and resign) once this many USD are spent")
     s = sub.add_parser("serve", parents=[common])
     s.add_argument("--port", type=int, default=8080)
     args = ap.parse_args()
