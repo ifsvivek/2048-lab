@@ -8,7 +8,9 @@
     "fixtures": "node src/gen-fixtures.ts",
     "validate": "node src/validate.ts",
     "bench": "node src/bench.ts",
-    "typecheck": "tsc -p ."
+    "typecheck": "tsc -p .",
+    "smoke:api": "node src/smoke-api.ts",
+    "smoke:mcp": "node src/smoke-mcp.ts"
   },
   "dependencies": {
     "@g2048/engine": "workspace:*",

@@ -4,10 +4,11 @@
  * Why a Durable Object here (docs/adr/0002-durable-objects.md):
  *  - Move ordering: concurrent requests for one game must serialise; a DO is a
  *    single-threaded actor, so no D1 locking or version columns are needed.
- *  - Write cost: moves are buffered in memory and flushed to DO storage every
- *    64 moves or ~3 s of activity, then written to D1 exactly once when the game
- *    ends. Per-move D1 writes would exhaust the free tier (100k rows/day)
- *    after a handful of AI games.
+ *  - Write cost: each move *request* is one SQLite row in the object's own
+ *    storage (a batch of N moves is still one row), persisted before the
+ *    response is released (output gate), and the game is written to D1 exactly
+ *    once when it ends. Per-move D1 writes would exhaust the free tier
+ *    (100k rows/day) after a handful of AI games.
  *  - Spectators: hibernatable WebSockets fan out each move batch without
  *    polling, and cost nothing while idle.
  *  - Server-driven agents (push protocol / built-ins) run from alarms.
@@ -37,11 +38,6 @@ export interface SessionMeta {
   driver: (DriverSpec & { maxMoves: number; delayMs: number }) | null;
 }
 
-interface Progress {
-  moves: string;
-  timing: number[];
-}
-
 export interface LiveReplay {
   state: PublicGameState;
   moves: string;
@@ -57,8 +53,6 @@ export interface MoveOutcome {
   rejected: { index: number; move: string; reason: 'INVALID_MOVE' | 'GAME_OVER' } | null;
 }
 
-const FLUSH_EVERY_MOVES = 64;
-const FLUSH_DELAY_MS = 3000;
 const DRIVER_BATCH_MS = 20;
 const DRIVER_REMOTE_CALLS = 15;
 
@@ -66,8 +60,6 @@ export class GameSession extends DurableObject<Env> {
   private meta: SessionMeta | null = null;
   private game: Game | null = null;
   private timing: number[] = [];
-  private persisted = 0;
-  private loaded = false;
   private finished: 'over' | 'abandoned' | null = null;
   private lastMove: LastMove | null = null;
   private lastActivity = Date.now();
@@ -75,17 +67,36 @@ export class GameSession extends DurableObject<Env> {
   private driver: Driver | null = null;
   private driverFailures = 0;
   private finishedAt: number | null = null;
+  private readonly sql: SqlStorage;
 
-  private async load(): Promise<void> {
-    if (this.loaded) return;
-    this.loaded = true;
-    const [meta, progress] = await Promise.all([this.ctx.storage.get<SessionMeta>('meta'), this.ctx.storage.get<Progress>('progress')]);
-    if (!meta) return;
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env);
+    this.sql = ctx.storage.sql;
+    // Restore in-memory state from SQLite before any request is delivered.
+    ctx.blockConcurrencyWhile(async () => {
+      this.restore();
+      this.alarmAt = await ctx.storage.getAlarm();
+    });
+  }
+
+  /** Rebuild the game from durable storage (the source of truth). */
+  private restore(): void {
+    this.meta = null;
+    this.game = null;
+    this.timing = [];
+    const hasSchema = this.sql.exec("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'meta'").toArray().length > 0;
+    if (!hasSchema) return;
+    const row = this.sql.exec<{ v: string }>("SELECT v FROM meta WHERE k = 'meta'").toArray()[0];
+    if (!row) return;
+    const meta = JSON.parse(row.v) as SessionMeta;
+    let moves = '';
+    for (const b of this.sql.exec<{ moves: string; timing: string | null }>('SELECT moves, timing FROM batches ORDER BY seq')) {
+      moves += b.moves;
+      const t = b.timing ? (JSON.parse(b.timing) as number[]) : [];
+      for (let i = 0; i < b.moves.length; i++) this.timing.push(t[i] ?? 0);
+    }
     this.meta = meta;
-    this.game = simulate(meta.seed, progress?.moves ?? '');
-    this.timing = progress?.timing ?? [];
-    this.persisted = this.game.moveCount;
-    this.alarmAt = await this.ctx.storage.getAlarm();
+    this.game = simulate(meta.seed, moves);
   }
 
   private require(): { meta: SessionMeta; game: Game } {
@@ -105,13 +116,14 @@ export class GameSession extends DurableObject<Env> {
   // ------------------------------------------------------------------ RPC
 
   async create(meta: SessionMeta): Promise<PublicGameState> {
-    await this.load();
     if (this.meta) throw encodeRpcError(new ApiError('CONFLICT', 'game already exists'));
+    // Schema is created only for real games, so probing unknown IDs writes nothing.
+    this.sql.exec('CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT NOT NULL)');
+    this.sql.exec('CREATE TABLE IF NOT EXISTS batches (seq INTEGER PRIMARY KEY AUTOINCREMENT, moves TEXT NOT NULL, timing TEXT)');
+    this.sql.exec("INSERT INTO meta (k, v) VALUES ('meta', ?)", JSON.stringify(meta));
     this.meta = meta;
     this.game = new Game(meta.seed);
     this.timing = [];
-    this.persisted = 0;
-    await this.ctx.storage.put({ meta, progress: { moves: '', timing: [] } satisfies Progress });
     await upsertGame(this.env.DB, this.record('live')).run();
     await this.schedule(meta.driver ? Date.now() : null);
     log('info', 'game.created', { gameId: meta.gameId, source: meta.source, driver: meta.driver?.type ?? null, agent: meta.player.name });
@@ -119,20 +131,17 @@ export class GameSession extends DurableObject<Env> {
   }
 
   async getState(): Promise<PublicGameState | null> {
-    await this.load();
     return this.meta ? this.state() : null;
   }
 
   /** Replay-so-far of a live game (moves + timing + current state). */
   async getLiveReplay(): Promise<LiveReplay | null> {
-    await this.load();
     if (!this.meta || !this.game) return null;
     return { state: this.state(), moves: this.game.moves, timing: this.timing, agentConfig: this.meta.agentConfig, runtime: this.meta.runtime, source: this.meta.source };
   }
 
   /** Apply moves in order, stopping at the first invalid one. */
   async submitMoves(moves: (string | number)[], timing?: number[], metrics?: Record<string, unknown>): Promise<MoveOutcome> {
-    await this.load();
     const { meta, game } = this.require();
     if (meta.driver) throw encodeRpcError(new ApiError('CONFLICT', 'this game is driven by the platform; moves cannot be submitted'));
     if (this.finished || game.over) {
@@ -157,7 +166,6 @@ export class GameSession extends DurableObject<Env> {
 
   /** End a live game early (e.g. the agent gives up). */
   async resign(): Promise<PublicGameState> {
-    await this.load();
     this.require();
     if (!this.finished) await this.finalize(this.game!.over ? 'over' : 'abandoned');
     return this.state();
@@ -189,22 +197,22 @@ export class GameSession extends DurableObject<Env> {
     }
     const maxMoves = Number(this.env.MAX_MOVES_PER_GAME) || 100000;
     if (applied > 0) {
+      // Persist before anything observes the new state. sql.exec is synchronous and
+      // the output gate holds the response until the write is durable.
+      try {
+        const t = this.timing.slice(from);
+        this.sql.exec('INSERT INTO batches (moves, timing) VALUES (?, ?)', letters.join(''), t.some((x) => x > 0) ? JSON.stringify(t) : null);
+      } catch (e) {
+        this.restore(); // roll memory back to what is durable
+        throw e;
+      }
       this.lastActivity = Date.now();
       this.broadcast({ type: 'moves', from, moves: letters.join(''), score: game.score, moveNumber: game.moveCount, over: game.over, metrics: metrics ?? null });
     }
     if (game.over || game.moveCount >= maxMoves) {
       await this.finalize(game.over ? 'over' : 'abandoned');
-    } else if (applied > 0) {
-      if (game.moveCount - this.persisted >= FLUSH_EVERY_MOVES) await this.persist();
-      else if (this.alarmAt === null || this.alarmAt > Date.now() + FLUSH_DELAY_MS * 2) await this.schedule(Date.now() + FLUSH_DELAY_MS);
     }
     return { state: this.state(), applied, rejected };
-  }
-
-  private async persist(): Promise<void> {
-    if (!this.game || this.game.moveCount === this.persisted) return;
-    await this.ctx.storage.put('progress', { moves: this.game.moves, timing: this.timing } satisfies Progress);
-    this.persisted = this.game.moveCount;
   }
 
   private async schedule(at: number | null): Promise<void> {
@@ -323,30 +331,33 @@ export class GameSession extends DurableObject<Env> {
     if (!this.finished && game.moveCount >= meta.driver!.maxMoves) await this.finalize('abandoned');
   }
 
-  override async alarm(): Promise<void> {
-    await this.load();
+  /**
+   * Alarms drive platform-run agents and expire idle games. The handler is
+   * idempotent: it derives everything from durable state, so a retried or
+   * duplicate alarm just continues where the last committed batch left off.
+   */
+  override async alarm(info?: AlarmInvocationInfo): Promise<void> {
     this.alarmAt = null;
     if (!this.meta || !this.game || this.finished) return;
-    if (this.meta.driver) {
-      await this.driveBatch();
-      if (this.finished) return;
-      await this.persist();
-      await this.schedule(Date.now() + Math.max(this.meta.driver.delayMs, 0));
-      return;
+    try {
+      if (this.meta.driver) {
+        await this.driveBatch();
+        if (!this.finished) await this.schedule(Date.now() + Math.max(this.meta.driver.delayMs, 0));
+        return;
+      }
+      const idle = Number(this.env.LIVE_IDLE_TIMEOUT_MS) || 86_400_000;
+      if (Date.now() - this.lastActivity >= idle) await this.finalize(this.game.over ? 'over' : 'abandoned');
+      else await this.schedule(null);
+    } catch (e) {
+      log('error', 'game.alarm_failed', { gameId: this.meta.gameId, retryCount: info?.retryCount ?? 0, message: (e as Error).message });
+      // Back off ourselves instead of burning the runtime's limited automatic retries.
+      await this.schedule(Date.now() + Math.min(60_000, 1000 * 2 ** (info?.retryCount ?? 0)));
     }
-    await this.persist();
-    const idle = Number(this.env.LIVE_IDLE_TIMEOUT_MS) || 86_400_000;
-    if (Date.now() - this.lastActivity >= idle) {
-      await this.finalize(this.game.over ? 'over' : 'abandoned');
-      return;
-    }
-    await this.schedule(null);
   }
 
   // ---------------------------------------------------- spectator sockets
 
   override async fetch(request: Request): Promise<Response> {
-    await this.load();
     if (request.headers.get('upgrade')?.toLowerCase() !== 'websocket') return new Response('expected websocket', { status: 426 });
     if (!this.meta || !this.game) return Response.json(new ApiError('GAME_NOT_FOUND', 'game is not live').toJSON(), { status: 404 });
     const pair = new WebSocketPair();
@@ -362,6 +373,14 @@ export class GameSession extends DurableObject<Env> {
   override async webSocketClose(ws: WebSocket, code: number): Promise<void> {
     try {
       ws.close(code === 1005 ? 1000 : code, 'bye');
+    } catch {
+      /* already closed */
+    }
+  }
+
+  override async webSocketError(ws: WebSocket): Promise<void> {
+    try {
+      ws.close(1011, 'error');
     } catch {
       /* already closed */
     }

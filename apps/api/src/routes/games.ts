@@ -14,7 +14,7 @@ const SOURCES = new Set(['api', 'mcp', 'web', 'runner']);
 const BUILTINS = new Set(['random', 'greedy', 'expectimax']);
 
 export function gameStub(c: Ctx, gameId: string) {
-  return c.env.GAME.get(c.env.GAME.idFromName(gameId));
+  return c.env.GAME.getByName(gameId);
 }
 
 interface CreateOptions {

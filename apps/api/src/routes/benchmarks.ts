@@ -179,7 +179,7 @@ benchmarks.get('/compare', (c) =>
 // ------------------------------------------------------ server-run sessions
 
 function benchStub(c: Ctx, id: string) {
-  return c.env.BENCH.get(c.env.BENCH.idFromName(id));
+  return c.env.BENCH.getByName(id);
 }
 
 benchmarks.post('/sessions', async (c) => {
